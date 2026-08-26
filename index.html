@@ -40,14 +40,69 @@ window.CONFIG = {
       "How leaders in your seat are being asked to evidence AI decisions, and to whom"
     ],
     date: "Thursday, September 18",
-    time: "11:00 AM to 11:40 AM CDT",
+    time: "11:00 AM to 11:45 AM CDT",
     location: "Virtual",
-    calendarNote: "Cannot make the time? Register anyway and the recording comes to the same address."
+    calendarNote: "Cannot make the time? Register anyway and the recording comes to the same address.",
+    price: "$199",
+    priceNote: "Per seat. All workshops are $199."
   },
+
+  /* THE LONG READ. Everything between the takeaways and the session details. */
+  readiness: {
+    heading: "AI Is Already in Your Organization. Are You Ready for It?",
+    intro: [
+      "AI adoption didn\u2019t wait for the perfect strategy.",
+      "Licenses were purchased. Tools were introduced. Pilots went live. Employees began experimenting. And before many organizations had a chance to step back and assess the bigger picture, the question changed from:"
+    ],
+    shiftFrom: "\u201cShould we use AI?\u201d",
+    shiftTo: "\u201cWhat can we honestly say about the AI we\u2019re already using?\u201d",
+    afterShift: [ "That\u2019s the question this session addresses." ],
+    subheading: "Move Beyond AI Adoption to AI Readiness",
+    body: [
+      "This session gives leaders a practical way to understand what they can see, what they can\u2019t, and\u2014most importantly\u2014which gaps in visibility could actually affect a business decision.",
+      "You\u2019ll gain a clearer view of your organization\u2019s AI landscape and what it takes to move from simply using AI to being ready to manage, measure, and scale it."
+    ],
+    takeawaysHeading: "What You\u2019ll Take Away",
+    takeaways: [
+      "The four critical questions most organizations cannot answer about their own AI\u2014and which gaps matter most.",
+      "The difference between AI adoption and true AI readiness\u2014and what separates organizations that are experimenting with AI from those prepared to scale it responsibly.",
+      "How leaders are being asked to demonstrate and defend AI decisions\u2014including what evidence matters and who is asking for it.",
+      "A clearer perspective on where your organization may have AI blind spots and where greater visibility can lead to better decisions."
+    ]
+  },
+
+  /* THE CLOSE. Sits under the session details, above the form. */
+  closing: [
+    "The goal isn\u2019t to become an AI expert.",
+    "It\u2019s to know enough about the AI already operating in your organization to ask better questions, make better decisions, and lead with confidence.",
+    "Reserve your spot and find out what you know\u2014and what you may be missing\u2014about your organization\u2019s AI. Feel free to invite others."
+  ],
+
+  /* THE COHORTS. One workshop per group of seats. A cohort with tba:true
+     shows as "to be announced" and cannot be registered for yet. */
+  cohorts: [
+    { id:"exec", audience:"CEO, COO, Engineering",
+      date:"Thursday, September 18", time:"11:00 AM to 11:45 AM CDT", location:"Virtual" },
+
+    { id:"tech", audience:"IT, Security, AI", tba:true,
+      date:"", time:"", location:"Virtual" },
+
+    { id:"biz", audience:"HR, Finance", tba:true,
+      date:"", time:"", location:"Virtual" }
+  ],
+
+  /* WHO IS RUNNING IT. One line above the bios, then a bio each.
+     Replace the placeholder bio text and the second speaker's details. */
+  speakerNote: "My colleague and I will run this session together \u2014 PLACEHOLDER, replace with the line you want here.",
 
   speakers: [
     { name:"Suneeta Modekurty", role:"Founder and CEO", org:"METRIS",
-      photo:"", linkedin:"https://www.linkedin.com/in/suneetamodekurty/" }
+      photo:"", linkedin:"https://www.linkedin.com/in/suneetamodekurty/",
+      bio:"PLACEHOLDER BIO \u2014 two or three sentences on Suneeta\u2019s background, the work she does with leadership teams on AI readiness, and why she runs this session. Replace this text." },
+
+    { name:"Karlos Bledsoe Sr.", role:"PLACEHOLDER \u2014 role or title", org:"PLACEHOLDER \u2014 organization",
+      photo:"", linkedin:"",
+      bio:"PLACEHOLDER BIO \u2014 two or three sentences on Karlos\u2019s background and what he brings to the session. Replace this text, along with the role, organization and LinkedIn above." }
   ],
 
   /* WHERE REGISTRATIONS GO.
@@ -80,54 +135,76 @@ window.SIZE_PIVOT = 250;
 
 window.SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
 
-/* QUESTIONS 1 AND 2. Same question for everyone, two dialects. */
+/* QUESTIONS 1 AND 2. Same question for everyone, two dialects.
+   multi:true      renders checkboxes instead of radio buttons
+   other:true      appends an "Other" option that opens a "Tell us" box
+   exclusive:[...] options that clear every other tick when chosen */
 window.SHARED = {
   q1: {
     label: "Where is AI in your organization right now?",
-    small: ["Not started","One or two of us use tools on our own","A pilot is running","It sits in something customers touch","It is spread across the team"],
-    large: ["Not started","People are using tools on their own","Piloting in one or two functions","Running in production somewhere","Spreading across functions"]
+    multi: true,
+    exclusive: ["Not started","Not sure"],
+    small: ["Not started","One or two of us use tools on our own","A pilot is running","It sits in something customers touch","It is spread across the team","Not sure"],
+    large: ["Not started","People are using tools on their own","Piloting in one or two functions","Running in production somewhere","Spreading across functions","Not sure"]
   },
   q2: {
     label: "Who decides about AI today?",
-    small: ["I do","A cofounder or a lead","Whoever is closest to it","Nobody yet","Still working that out"],
-    large: ["One named executive","A committee or working group","IT or engineering, by default","No single owner","Still being decided"]
+    multi: true, other: true,
+    exclusive: ["Nobody yet","Still working that out","No single owner","Still being decided","Not sure"],
+    small: ["I do","A cofounder or a lead","Whoever is closest to it","Nobody yet","Still working that out","Not sure"],
+    large: ["One named executive","A committee or working group","IT or engineering, by default","No single owner","Still being decided","Not sure"]
   }
 };
 
 /* QUESTION 3. Role decides which one. Nine seats for large companies,
-   six for small, because the other three do not exist there. */
+   six for small, because the other three do not exist there.
+   Same multi / other / exclusive keys as above. */
 window.ROLE_QUESTIONS = {
   ceo: { label:"CEO or Founder", smallLabel:"Founder or CEO",
     q:"What AI decision is in front of you in the next two quarters?",
-    options:["Whether to spend more","Whether to put AI in front of customers","Whether to build or buy","Whether to slow down until we understand the risk","Nothing decided yet"] },
+    multi:true, other:true,
+    exclusive:["Nothing decided yet","Not sure"],
+    options:["Whether to spend more","Whether to put AI in front of customers","Whether to build or buy","Whether to slow down until we understand the risk","Nothing decided yet","Not sure"] },
 
   cfo: { label:"CFO or Finance", smallLabel:"Finance",
     q:"What can you see about AI spend today?",
-    options:["A total on an invoice","Broken out by vendor or team","Broken out by use case","Tied to an outcome","Not visible at all"] },
+    options:["A total on an invoice","Broken out by vendor or team","Broken out by use case","Tied to an outcome","Not visible at all","Not sure"] },
 
   cto: { label:"CTO, CIO or Engineering", smallLabel:"Engineering or technical lead",
     q:"Once an AI system is live, how do you know it is doing what you intended?",
-    options:["We hear about it when something breaks","Someone checks the outputs by hand","We monitor the model","We monitor the decisions it affects","We do not have a good answer yet"] },
+    multi:true,
+    exclusive:["We do not have a good answer yet","Not sure"],
+    options:["We hear about it when something breaks","Someone checks the outputs by hand","We monitor the model","We monitor the decisions it affects","We do not have a good answer yet","Not sure"] },
 
   ciso: { label:"CISO or Security",
     q:"What do you know about AI tools in use that nobody approved?",
-    options:["Nothing","We think there are some","We have found some","We keep an inventory","We block them at the network"] },
+    multi:true,
+    exclusive:["Nothing","Not sure"],
+    options:["Nothing","We think there are some","We have found some","We keep an inventory","We block them at the network","Not sure"] },
 
   chro: { label:"CHRO or People", smallLabel:"People or operations",
     q:"What do you know about what your people can actually do with AI?",
-    options:["Nothing measured","Training completion rates","What managers tell us","A self reported survey","We have measured it directly"] },
+    multi:true,
+    exclusive:["Nothing measured","Not sure"],
+    options:["Nothing measured","Training completion rates","What managers tell us","A self reported survey","We have measured it directly","Not sure"] },
 
   coo: { label:"COO or Operations",
     q:"Which processes have changed because of AI, and how do you know?",
-    options:["None yet","Some changed, we never measured the effect","We track time saved","We track quality as well as time","We redesigned the process end to end"] },
+    multi:true,
+    exclusive:["None yet","Not sure"],
+    options:["None yet","Some changed, we never measured the effect","We track time saved","We track quality as well as time","We redesigned the process end to end","Not sure"] },
 
   risk: { label:"Risk, Compliance or Legal",
     q:"What are you being asked to evidence about AI, and to whom?",
-    options:["Nothing yet","Internal audit or the board","Customers, in contracts and questionnaires","A regulator","All of these"] },
+    multi:true, other:true,
+    exclusive:["Nothing yet","Not sure"],
+    options:["Nothing yet","Internal audit or the board","Customers, in contracts and questionnaires","A regulator","Not sure"] },
 
   data: { label:"Data and AI leadership",
     q:"What stops a model going from pilot to production today?",
-    options:["Data access","Security or legal review","No owner for the decision","We cannot show it behaves as intended","Nothing, we ship"] },
+    multi:true, other:true,
+    exclusive:["Nothing, we ship","Not sure"],
+    options:["Data access","Security or legal review","No owner for the decision","We cannot show it behaves as intended","Nothing, we ship","Not sure"] },
 
   other: { label:"Another seat", freeText:true,
     q:"What brought you to this session?",
@@ -173,7 +250,7 @@ h1{font-weight:600;font-size:clamp(29px,6vw,44px);line-height:1.15;letter-spacin
   color:var(--ink-soft);margin:0 0 16px;}
 
 .details{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  margin:34px 0;padding:20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  margin:34px 0;padding:20px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;}
 .detail dt{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
 .detail dd{margin:0;font-weight:500;font-size:16px;line-height:1.4;}
@@ -186,6 +263,61 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 .takeaways li{padding:13px 0 13px 30px;border-bottom:1px solid var(--rule);position:relative;}
 .takeaways li:first-child{border-top:1px solid var(--rule);}
 .takeaways li::before{content:"";position:absolute;left:4px;top:23px;width:10px;height:1px;background:var(--spruce);}
+
+/* the long read */
+.prose h3{font-size:clamp(23px,4.4vw,31px);font-weight:600;line-height:1.2;
+  letter-spacing:-.018em;margin:0 0 20px;max-width:22ch;}
+.prose h4{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:32px 0 14px;}
+.prose p{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.65;
+  color:var(--ink-soft);margin:0 0 15px;}
+.shift{margin:22px 0 24px;padding:18px 20px;background:var(--white);
+  border:1px solid var(--rule);border-radius:3px;}
+.shift p{font-family:"IBM Plex Sans",system-ui,sans-serif;margin:0;color:var(--ink);
+  font-size:18px;font-weight:600;line-height:1.4;}
+.shift .to{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft);font-weight:400;margin:9px 0;}
+.shift .after{color:var(--spruce);}
+.prose .takeaways li{padding-left:30px;}
+.prose .takeaways li::before{top:24px;}
+.take-head{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:34px 0 16px;}
+
+.closing{border-left:3px solid var(--spruce);padding:4px 0 4px 20px;margin:0 0 44px;}
+.closing p{font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;line-height:1.6;
+  color:var(--ink);margin:0 0 13px;}
+.closing p:last-child{margin-bottom:0;color:var(--ink-soft);}
+
+.speaker-note{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.6;
+  color:var(--ink-soft);margin:0 0 24px;}
+.speaker{align-items:flex-start;}
+.speaker .bio{margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;}
+.speakers{flex-direction:column;gap:30px;}
+.speaker>div{max-width:56ch;}
+
+.price-tag{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--spruce);border:1px solid var(--spruce);
+  border-radius:2px;padding:5px 9px;display:inline-block;margin:0 0 18px;}
+.price-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 6px;}
+.price-line .amt{font-size:26px;font-weight:600;letter-spacing:-.01em;}
+.price-line .per{font-size:14px;color:var(--ink-soft);}
+
+.other-wrap{margin:11px 0 0;}
+.other-wrap[hidden]{display:none;}
+.other-lab{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
+
+.cohorts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+.cohort{background:var(--white);border:1px solid var(--rule);border-radius:3px;padding:17px 18px 18px;}
+.cohort.is-tba{background:transparent;border-style:dashed;}
+.cohort .aud{font-weight:600;font-size:16px;line-height:1.35;margin:0 0 12px;}
+.cohort dl{margin:0;display:flex;flex-direction:column;gap:9px;}
+.cohort dt{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);margin:0 0 2px;}
+.cohort dd{margin:0;font-size:15px;line-height:1.35;}
+.cohort .tba{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--signal);margin:0 0 12px;}
+.cohort .tba-note{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.45;}
 
 .speakers{display:flex;flex-wrap:wrap;gap:26px;}
 .speaker{display:flex;gap:14px;align-items:center;}
@@ -251,7 +383,7 @@ input:focus,select:focus,textarea:focus,.tile:focus-visible,.opt:focus-within,bu
 .consent a{color:var(--spruce);}
 .err{border-left:3px solid var(--signal);background:#FDF6EE;padding:12px 14px;margin:16px 0 0;
   font-size:15px;color:#6B3E10;}
-.err[hidden],#segFields[hidden],#rolePick[hidden]{display:none;}
+.err[hidden],#segFields[hidden],#rolePick[hidden],#closing-block[hidden]{display:none;}
 
 .done .mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--spruce);margin:0 0 14px;}
@@ -295,6 +427,7 @@ footer a:hover{text-decoration:underline;}
       <div class="detail"><dt>Date</dt><dd id="d-date"></dd></div>
       <div class="detail"><dt>Time</dt><dd id="d-time"></dd></div>
       <div class="detail"><dt>Location</dt><dd id="d-loc"></dd></div>
+      <div class="detail" id="d-price-cell"><dt>Price</dt><dd id="d-price"></dd></div>
     </dl>
   </section>
 
@@ -303,8 +436,33 @@ footer a:hover{text-decoration:underline;}
     <ul class="takeaways" id="takeaways"></ul>
   </section>
 
+  <section class="section wrap prose" id="readiness-block">
+    <h3 id="r-heading"></h3>
+    <div id="r-intro"></div>
+    <div class="shift">
+      <p id="r-from"></p>
+      <p class="to">to</p>
+      <p id="r-to"></p>
+      <p class="after" id="r-after"></p>
+    </div>
+    <h4 id="r-sub"></h4>
+    <div id="r-body"></div>
+    <p class="take-head" id="r-take-head"></p>
+    <ul class="takeaways" id="r-takeaways"></ul>
+  </section>
+
+  <section class="section wrap" id="cohort-block">
+    <h2>Session details</h2>
+    <div class="cohorts" id="cohorts"></div>
+  </section>
+
+  <section class="wrap" id="closing-block">
+    <div class="closing" id="closing"></div>
+  </section>
+
   <section class="section wrap" id="speaker-block">
     <h2>Speaking</h2>
+    <p class="speaker-note" id="speakerNote"></p>
     <div class="speakers" id="speakers"></div>
   </section>
 
@@ -313,6 +471,7 @@ footer a:hover{text-decoration:underline;}
 
       <div id="formBox">
         <h3>Reserve your seat</h3>
+        <div class="price-line" id="priceLine"></div>
         <p class="lede" id="calNote"></p>
 
         <!-- what the link already told us -->
@@ -432,16 +591,57 @@ footer a:hover{text-decoration:underline;}
   $("abstract").innerHTML=C.event.abstract.map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
   $("d-date").textContent=C.event.date; $("d-time").textContent=C.event.time;
   $("d-loc").textContent=C.event.location; $("calNote").textContent=C.event.calendarNote;
+  if(C.event.price){
+    $("d-price").textContent=C.event.price;
+    $("priceLine").innerHTML='<span class="amt">'+esc(C.event.price)+'</span>'+
+      '<span class="per">'+esc(C.event.priceNote||"")+'</span>';
+  } else { $("d-price-cell").style.display="none"; }
+
+  var R=C.readiness;
+  if(R){
+    $("r-heading").textContent=R.heading;
+    $("r-intro").innerHTML=(R.intro||[]).map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
+    $("r-from").textContent=R.shiftFrom; $("r-to").textContent=R.shiftTo;
+    $("r-after").textContent=(R.afterShift||[]).join(" ");
+    $("r-sub").textContent=R.subheading;
+    $("r-body").innerHTML=(R.body||[]).map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
+    $("r-take-head").textContent=R.takeawaysHeading;
+    $("r-takeaways").innerHTML=(R.takeaways||[]).map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
+  } else { $("readiness-block").style.display="none"; }
+
+  if(C.closing&&C.closing.length){
+    $("closing").innerHTML=C.closing.map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
+  } else { $("closing-block").hidden=true; }
+
   if(C.event.takeaways&&C.event.takeaways.length){
     $("takeaways").innerHTML=C.event.takeaways.map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
   } else { $("takeaway-block").style.display="none"; }
+  if(C.cohorts&&C.cohorts.length){
+    $("cohorts").innerHTML=C.cohorts.map(function(k){
+      if(k.tba){
+        return '<div class="cohort is-tba"><p class="aud">'+esc(k.audience)+'</p>'+
+          '<p class="tba">To be announced</p>'+
+          '<p class="tba-note">Date and time are being set. Register for the session below and we will write to you as soon as this one opens.</p></div>';
+      }
+      return '<div class="cohort"><p class="aud">'+esc(k.audience)+'</p><dl>'+
+        '<div><dt>Date</dt><dd>'+esc(k.date)+'</dd></div>'+
+        '<div><dt>Time</dt><dd>'+esc(k.time)+'</dd></div>'+
+        '<div><dt>Location</dt><dd>'+esc(k.location)+'</dd></div>'+
+        (C.event.price?'<div><dt>Price</dt><dd>'+esc(C.event.price)+'</dd></div>':'')+
+        '</dl></div>';
+    }).join("");
+  } else { $("cohort-block").style.display="none"; }
+
+  if(C.speakerNote) $("speakerNote").textContent=C.speakerNote;
+  else $("speakerNote").style.display="none";
   $("speakers").innerHTML=(C.speakers||[]).map(function(s){
     var ini=s.name.split(" ").map(function(w){return w[0];}).slice(0,2).join("");
     var av=s.photo?'<img class="avatar" src="'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
                   :'<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
     return '<div class="speaker">'+av+'<div><p class="nm">'+esc(s.name)+'</p><p class="rl">'+
-      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.linkedin?'<a href="'+esc(s.linkedin)+
-      '" target="_blank" rel="noopener">LinkedIn</a>':'')+'</div></div>';
+      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.bio?'<p class="bio">'+esc(s.bio)+'</p>':'')+
+      (s.linkedin?'<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>':'')+
+      '</div></div>';
   }).join("");
   $("consent").innerHTML='By registering you agree we may contact you about this session and related work. Read the <a href="'+esc(C.footer.privacyUrl)+'" target="_blank" rel="noopener">privacy policy</a>.';
   $("footOrg").textContent=C.footer.org;
@@ -496,35 +696,101 @@ footer a:hover{text-decoration:underline;}
   });
 
   /* ---------- the three questions ---------- */
+  var A={q1:"",q2:"",q3:""};
+
   function paintQuestions(){
-    if(!seg.role){ $("questions").innerHTML=""; return; }
+    if(!seg.role){ $("questions").innerHTML=""; A={q1:"",q2:"",q3:""}; return; }
     var band=isSmall()?"small":"large", r=RQ[seg.role];
     var list=[
-      {key:"q1",label:SH.q1.label,options:SH.q1[band]},
-      {key:"q2",label:SH.q2.label,options:SH.q2[band]},
-      {key:"q3",label:r.q,options:r.options,textarea:r.textarea,placeholder:r.placeholder}
+      {key:"q1",label:SH.q1.label,options:SH.q1[band],multi:SH.q1.multi,other:SH.q1.other,exclusive:SH.q1.exclusive},
+      {key:"q2",label:SH.q2.label,options:SH.q2[band],multi:SH.q2.multi,other:SH.q2.other,exclusive:SH.q2.exclusive},
+      {key:"q3",label:r.q,options:r.options,multi:r.multi,other:r.other,exclusive:r.exclusive,
+       textarea:r.textarea,placeholder:r.placeholder}
     ];
     $("questions").innerHTML=list.map(function(q,i){
       if(q.textarea){
-        return '<div class="q"><span class="q-label" id="l'+i+'">'+esc(q.label)+'</span>'+
+        return '<div class="q" data-q="'+q.key+'"><span class="q-label" id="l'+i+'">'+esc(q.label)+'</span>'+
           '<textarea data-key="'+q.key+'" aria-labelledby="l'+i+'" placeholder="'+esc(q.placeholder||"")+'"></textarea></div>';
       }
-      return '<div class="q"><span class="q-label">'+esc(q.label)+'</span><div class="opts" role="radiogroup" aria-label="'+esc(q.label)+'">'+
-        q.options.map(function(o){
-          return '<label class="opt"><input type="radio" name="'+q.key+'" value="'+esc(o)+'"/> <span>'+esc(o)+'</span></label>';
-        }).join("")+'</div></div>';
+      var opts=(q.options||[]).slice();
+      if(q.other) opts.push("Other");
+      var type=q.multi?"checkbox":"radio";
+      var rows=opts.map(function(o){
+        var flags=(q.exclusive&&q.exclusive.indexOf(o)>-1?' data-x="1"':'')+(o==="Other"?' data-other="1"':'');
+        return '<label class="opt"><input type="'+type+'" name="'+q.key+'" value="'+esc(o)+'"'+flags+
+          '/> <span>'+esc(o)+'</span></label>';
+      }).join("");
+      return '<div class="q" data-q="'+q.key+'"><span class="q-label">'+esc(q.label)+'</span>'+
+        (q.multi?'<p class="q-hint">Tick everything that applies.</p>':'')+
+        '<div class="opts" role="'+(q.multi?"group":"radiogroup")+'" aria-label="'+esc(q.label)+'">'+rows+'</div>'+
+        (q.other?'<div class="other-wrap" hidden><label class="other-lab" for="ot-'+q.key+'">Tell us</label>'+
+          '<input type="text" class="other-text" id="ot-'+q.key+'" placeholder="A few words is plenty." /></div>':'')+
+        '</div>';
     }).join("");
+    A=readAnswers();
   }
-  var A={q1:"",q2:"",q3:""};
+
+  /* one exclusive tick clears the rest; any normal tick clears the exclusives */
+  function applyExclusive(inp){
+    if(inp.type!=="checkbox"||!inp.checked) return;
+    var mine=inp.dataset.x==="1";
+    Array.prototype.forEach.call(inp.closest(".opts").querySelectorAll('input[type=checkbox]'),function(b){
+      if(b===inp) return;
+      if(mine||b.dataset.x==="1") b.checked=false;
+    });
+  }
+  function paintPicked(grp){
+    Array.prototype.forEach.call(grp.querySelectorAll(".opt"),function(l){
+      l.classList.toggle("is-picked", !!l.querySelector("input").checked);
+    });
+  }
+  function syncOther(wrap){
+    var o=wrap.querySelector('input[data-other="1"]'), box=wrap.querySelector(".other-wrap");
+    if(!o||!box) return;
+    var on=o.checked;
+    box.hidden=!on;
+    if(!on){ var t=box.querySelector(".other-text"); if(t) t.value=""; }
+  }
+  function readAnswers(){
+    var out={q1:"",q2:"",q3:""};
+    ["q1","q2","q3"].forEach(function(k){
+      var wrap=$("questions").querySelector('[data-q="'+k+'"]'); if(!wrap) return;
+      var ta=wrap.querySelector('textarea[data-key="'+k+'"]');
+      if(ta){ out[k]=ta.value.trim(); return; }
+      var txt=wrap.querySelector(".other-text"), vals=[];
+      Array.prototype.forEach.call(wrap.querySelectorAll("input:checked"),function(i){
+        if(i.dataset.other==="1"){
+          var v=txt?txt.value.trim():"";
+          vals.push(v?"Other: "+v:"Other");
+        } else vals.push(i.value);
+      });
+      out[k]=vals.join("; ");
+    });
+    return out;
+  }
+  /* true when "Other" is ticked but the Tell us box is still empty */
+  function otherBlank(){
+    var qs=$("questions").querySelectorAll(".q");
+    for(var i=0;i<qs.length;i++){
+      var o=qs[i].querySelector('input[data-other="1"]'), t=qs[i].querySelector(".other-text");
+      if(o&&o.checked&&t&&!t.value.trim()) return true;
+    }
+    return false;
+  }
+
   $("questions").addEventListener("change",function(e){
-    if(e.target.type!=="radio") return;
-    A[e.target.name]=e.target.value;
-    var g=e.target.closest(".opts");
-    Array.prototype.forEach.call(g.querySelectorAll(".opt"),function(l){l.classList.remove("is-picked");});
-    e.target.closest(".opt").classList.add("is-picked");
+    var inp=e.target;
+    if(inp.type!=="radio"&&inp.type!=="checkbox") return;
+    applyExclusive(inp);
+    paintPicked(inp.closest(".opts"));
+    syncOther(inp.closest(".q"));
+    A=readAnswers();
+    if(inp.dataset.other==="1"&&inp.checked){
+      var t=inp.closest(".q").querySelector(".other-text"); if(t) t.focus();
+    }
   });
   $("questions").addEventListener("input",function(e){
-    if(e.target.tagName==="TEXTAREA"&&e.target.dataset.key) A[e.target.dataset.key]=e.target.value;
+    if(e.target.tagName==="TEXTAREA"||e.target.classList.contains("other-text")) A=readAnswers();
   });
 
   /* ---------- first paint ---------- */
@@ -552,6 +818,7 @@ footer a:hover{text-decoration:underline;}
     if(!seg.role) return fail("Pick the seat you sit in, then register.");
     if(!data.sizeBand||!data.industry) return fail("Company size and industry are still blank.");
     if(!A.q1||!A.q2||!A.q3) return fail("Three questions above are still unanswered.");
+    if(otherBlank()) return fail("You picked Other. Tell us what you mean in the box, then register.");
     var miss=["firstName","lastName","email","jobTitle","company","country"].filter(function(k){return !data[k];});
     if(miss.length) return fail("Fill in every field marked with a star, then register.");
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
