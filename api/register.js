@@ -66,9 +66,11 @@ module.exports = async (req, res) => {
     });
   }
 
-  const payload = JSON.stringify(
-    Object.assign({}, data, { name, email, receivedAt: new Date().toISOString() })
-  );
+  /* the collector checks this before it writes, so the /exec URL being public
+     does not mean anyone can put rows in the sheet */
+  const outgoing = Object.assign({}, data, { name, email });
+  if (process.env.SHEET_SHARED_SECRET) outgoing.secret = process.env.SHEET_SHARED_SECRET;
+  const payload = JSON.stringify(outgoing);
 
   let upstream;
   try {
