@@ -347,7 +347,19 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
   transition:border-color .16s,background .16s;}
 .opt:hover{border-color:var(--spruce);background:#fff;}
 .opt.is-picked{border-color:var(--spruce);background:#fff;}
-.opt input{margin:4px 0 0;accent-color:var(--spruce);flex:none;}
+/* shape carries the meaning: a circle takes one answer, a square takes several */
+.opt input{appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  width:18px;height:18px;flex:none;margin:3px 0 0;cursor:pointer;
+  border:1.5px solid #A6AEAB;background-color:var(--white);
+  background-repeat:no-repeat;background-position:center;
+  transition:border-color .14s,background-color .14s,box-shadow .14s;}
+.opt input[type="radio"]{border-radius:50%;}
+.opt input[type="checkbox"]{border-radius:3px;}
+.opt input:checked{border-color:var(--spruce);background-color:var(--spruce);}
+.opt input[type="radio"]:checked{box-shadow:inset 0 0 0 3.5px var(--white);}
+.opt input[type="checkbox"]:checked{background-size:12px 12px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6'/></svg>");}
+.opt:hover input{border-color:var(--spruce);}
 
 .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
 .tile{display:block;width:100%;text-align:left;cursor:pointer;background:var(--paper);
