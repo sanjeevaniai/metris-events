@@ -5,19 +5,18 @@ Vercel picks them up automatically — there is no build step for the page itsel
 
 What happens when someone registers:
 
-1. The page posts the whole registration to `/api/checkout`.
-2. That function writes a row to the Google Sheet with **paid = no**.
-3. If the sheet write fails it stops there and nobody is charged.
-4. It creates a Stripe Checkout session and returns its URL; the page redirects.
-5. Stripe takes the $199 and returns the person to `/success.html`.
-6. Stripe calls `/api/stripe-webhook`, which flips that row to **paid = yes**
-   and records the amount and session id.
+1. The page posts the registration to `/api/register`, which writes the row to
+   the Google Sheet with **paid = no**.
+2. Only once that write has come back ok does the page ask `/api/checkout` for a
+   Stripe Checkout session and hand the registrant over. The order is deliberate:
+   an abandoned payment still leaves the lead in the sheet.
+3. Stripe takes the $199 and returns them to `/success.html?session_id=...`.
+4. That page shows nothing until `/api/session` has asked Stripe, server side,
+   whether the session was actually paid. A cancelled, unpaid or invented session
+   id gets a page saying the seat is **not** booked.
 
-The row is written *before* payment on purpose, so you can see who reached the
-card screen and did not pay.
-
-`/api/register` does the same thing without the payment leg. Nothing on the page
-uses it; it is there for a comped seat or a booking taken by hand.
+There is no webhook, which means **nothing ever changes the paid column**. See
+"What the missing webhook costs you" at the end.
 
 ---
 
@@ -125,9 +124,31 @@ any CVC. Register once and check that:
 
 Then swap the test keys for live ones and redeploy.
 
+## What the missing webhook costs you
+
+Without a webhook, **the paid column stays `no` on every row, forever** — including
+rows where the money arrived. Nothing writes back to the sheet after checkout.
+
+So the sheet answers "who filled in the form", not "who paid". To know who paid,
+read the Stripe dashboard, and reconcile by email or by the `client_reference_id`
+on each payment, which is the registration id.
+
+The confirmation page is not a substitute. It verifies payment properly for the
+person looking at it, but it verifies nothing for you, and it never writes
+anything down.
+
+Two ways to close the gap when you want it:
+
+- **Add the webhook back.** It is in git history: `git show 53d1760:api/stripe-webhook.js`.
+  It listens for `checkout.session.completed` and flips the row to paid. This is
+  the reliable option, because Stripe retries until it succeeds.
+- **Have `/api/session` mark the row** when it sees a paid session. Roughly ten
+  lines. Cheaper, but it only fires if the registrant actually lands back on the
+  confirmation page, so anyone who pays and closes the tab stays `no`.
+
 ## Still to do
 
-- The Zoom link is not on the page or in any email yet. The success page tells
-  people the joining link comes separately by email, so nothing is broken while
-  it is missing — but somebody has to send that email.
+- The Zoom link is not on the page or in any email. The confirmation page says
+  the joining link follows by email, so nothing is broken while it is missing,
+  but somebody has to send that email.
 - Nothing emails the registrant beyond Stripe's own receipt.

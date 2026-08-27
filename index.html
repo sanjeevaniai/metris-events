@@ -115,11 +115,15 @@ window.CONFIG = {
   ],
 
   /* WHERE REGISTRATIONS GO.
-     The page posts the whole registration to this endpoint. It records the seat
-     as unpaid, then returns a Stripe Checkout URL to send the registrant to.
+     Two steps, in this order and not the other way round. The page posts the
+     registration to registerUrl, which puts the row in the sheet as paid = no.
+     Only once that has come back ok does it ask checkoutUrl for a Stripe
+     session and hand the registrant over. Someone who abandons the card screen
+     is therefore still in the sheet as a lead.
      Sheet columns live in apps-script/Code.gs, not here. */
   submit: {
-    url: "/api/checkout"
+    registerUrl: "/api/register",
+    checkoutUrl: "/api/checkout"
   },
 
   footer: {
@@ -858,25 +862,42 @@ footer a:hover{text-decoration:underline;}
     if(miss.length) return fail("Fill in every field marked with a star, then register.");
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
 
-    err.hidden=true; btn.disabled=true; btn.textContent="Taking you to payment";
+    /* STEP ONE: record the lead. Nothing is charged until this has succeeded. */
+    err.hidden=true; btn.disabled=true; btn.textContent="Registering";
+    var reg;
     try{
-      var res=await fetch(C.submit.url,{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
+      var r1=await fetch(C.submit.registerUrl,{
+        method:"POST", headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)
       });
-      var out=null;
-      try{ out=await res.json(); }catch(e){}
-      if(!res.ok||!out||out.ok!==true||!out.url){
-        throw new Error((out&&out.error)||("The server answered "+res.status+" "+res.statusText+"."));
+      reg=null; try{ reg=await r1.json(); }catch(e){}
+      if(!r1.ok||!reg||reg.ok!==true){
+        throw new Error((reg&&reg.error)||("The server answered "+r1.status+" "+r1.statusText+"."));
       }
-      /* Stripe takes it from here; the seat is already recorded as unpaid */
-      window.location.assign(out.url);
     }catch(e){
       btn.disabled=false; btn.textContent="Register and pay $199";
-      fail((e&&e.message?e.message:"That did not go through, and you have not been charged.")+
-           " Try once more, and if it fails again write to "+
-           C.footer.replyTo+" and you will be registered by hand.");
+      return fail((e&&e.message?e.message:"That did not go through, and nothing was recorded.")+
+        " You have not been charged. Try once more, and if it fails again write to "+
+        C.footer.replyTo+" and you will be registered by hand.");
+    }
+
+    /* STEP TWO: now that the lead is safe, go and take the money. */
+    btn.textContent="Taking you to payment";
+    try{
+      var r2=await fetch(C.submit.checkoutUrl,{
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(Object.assign({},data,{id:reg.id||""}))
+      });
+      var pay=null; try{ pay=await r2.json(); }catch(e){}
+      if(!r2.ok||!pay||pay.ok!==true||!pay.url){
+        throw new Error((pay&&pay.error)||("The server answered "+r2.status+" "+r2.statusText+"."));
+      }
+      window.location.assign(pay.url);
+    }catch(e){
+      btn.disabled=false; btn.textContent="Register and pay $199";
+      fail("Your details are saved and you have not been charged, but the payment page would not open. "+
+           (e&&e.message?e.message:"")+
+           " Try once more, or write to "+C.footer.replyTo+" and we will send you a payment link.");
     }
   });
 })();

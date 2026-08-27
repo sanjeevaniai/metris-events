@@ -4,6 +4,12 @@
 
 const { postToSheet } = require("./_sheet.js");
 
+/* the id is minted here, not by the Apps Script: its reply is behind a 302 that
+   we deliberately do not follow, so we would never see an id it generated */
+function newId() {
+  return "reg_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
+}
+
 function readBody(req) {
   if (typeof req.body === "string") {
     try { return { body: JSON.parse(req.body || "{}") }; }
@@ -29,10 +35,13 @@ module.exports = async (req, res) => {
   if (!name)  return res.status(400).json({ ok: false, error: "Name is required." });
   if (!email) return res.status(400).json({ ok: false, error: "Email is required." });
 
+  const id = String(data.id || "").trim() || newId();
+
   const written = await postToSheet(Object.assign({}, data, {
-    name: name, email: email, paid: "no"
+    id: id, name: name, email: email, paid: "no"
   }));
   if (!written.ok) return res.status(502).json({ ok: false, error: written.error });
 
-  return res.status(200).json({ ok: true });
+  /* the id goes back so the payment step can carry it as client_reference_id */
+  return res.status(200).json({ ok: true, id: id });
 };
