@@ -106,18 +106,11 @@ window.CONFIG = {
   ],
 
   /* WHERE REGISTRATIONS GO.
-     Google Form: type "google-form", url ending /formResponse, map every key.
-     Own endpoint: type "webhook", url receives JSON with the same keys. */
+     The page posts the whole registration to this endpoint. The endpoint writes
+     a row to the Google Sheet, then returns a Stripe Checkout URL to send the
+     registrant to. Sheet columns live in apps-script/Code.gs, not here. */
   submit: {
-    type: "google-form",
-    url: "",
-    fields: {
-      firstName:"entry.0000000001", lastName:"entry.0000000002", email:"entry.0000000003",
-      jobTitle:"entry.0000000004", company:"entry.0000000005", country:"entry.0000000006",
-      role:"entry.0000000007", headcount:"entry.0000000008", sizeBand:"entry.0000000009",
-      industry:"entry.0000000010", q1:"entry.0000000011", q2:"entry.0000000012",
-      q3:"entry.0000000013", campaign:"entry.0000000014"
-    }
+    url: "/api/checkout"
   },
 
   footer: {
@@ -386,10 +379,7 @@ input:focus,select:focus,textarea:focus,.tile:focus-visible,.opt:focus-within,bu
   font-size:15px;color:#6B3E10;}
 .err[hidden],#segFields[hidden],#rolePick[hidden],#closing-block[hidden]{display:none;}
 
-.done .mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--spruce);margin:0 0 14px;}
-.done p{color:var(--ink-soft);margin:0 0 14px;}
-#doneBox[hidden],#formBox[hidden]{display:none;}
+
 
 footer{background:var(--graphite);color:#B9C2C0;padding:38px 0 44px;}
 footer .wrap{display:flex;flex-direction:column;gap:13px;}
@@ -534,18 +524,9 @@ footer a:hover{text-decoration:underline;}
         <div class="field"><label for="country">Country <span class="req">*</span></label>
           <select id="country"></select></div>
 
-        <button class="btn" id="send">Register</button>
+        <button class="btn" id="send">Register and pay</button>
         <p class="consent" id="consent"></p>
         <div class="err" id="err" hidden></div>
-      </div>
-
-      <div id="doneBox" hidden>
-        <div class="done">
-          <p class="mark">Registered</p>
-          <h3>You are on the list.</h3>
-          <p>A confirmation and the joining link are on their way to the address you gave us. If the time does not work, keep the email, the recording goes to the same place.</p>
-          <p id="doneRole"></p>
-        </div>
       </div>
 
     </div>
@@ -794,6 +775,12 @@ footer a:hover{text-decoration:underline;}
     if(e.target.tagName==="TEXTAREA"||e.target.classList.contains("other-text")) A=readAnswers();
   });
 
+  /* came back from Stripe without paying */
+  if(p.get("cancelled")){
+    var e0=$("err"); e0.hidden=false;
+    e0.textContent="Payment was cancelled, so the seat is not booked yet. Your answers are still here \u2014 press Register and pay when you are ready.";
+  }
+
   /* ---------- first paint ---------- */
   if(known.size) $("sizeBand").value=sizeBand;
   if(known.industry) $("industry").value=seg.industry;
@@ -824,23 +811,22 @@ footer a:hover{text-decoration:underline;}
     if(miss.length) return fail("Fill in every field marked with a star, then register.");
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
 
-    err.hidden=true; btn.disabled=true; btn.textContent="Registering";
+    err.hidden=true; btn.disabled=true; btn.textContent="Taking you to payment";
     try{
       if(!C.submit.url) throw new Error("no endpoint configured");
-      if(C.submit.type==="google-form"){
-        var body=new URLSearchParams();
-        Object.keys(C.submit.fields).forEach(function(k){ if(data[k]) body.append(C.submit.fields[k],data[k]); });
-        await fetch(C.submit.url,{method:"POST",mode:"no-cors",body:body});
-      } else {
-        var res=await fetch(C.submit.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-        if(!res.ok) throw new Error("status "+res.status);
-      }
-      $("doneRole").textContent="We have you down as "+roleLabel+". The agenda gets built around the seats that register.";
-      $("formBox").hidden=true; $("doneBox").hidden=false;
-      document.querySelector(".panel").scrollIntoView({block:"start"});
+      var res=await fetch(C.submit.url,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(data)
+      });
+      var out={};
+      try{ out=await res.json(); }catch(e){}
+      if(!res.ok||!out.url) throw new Error(out.error||("status "+res.status));
+      /* Stripe takes it from here; the seat is already recorded as pending */
+      window.location.assign(out.url);
     }catch(e){
-      btn.disabled=false; btn.textContent="Register";
-      fail("That did not go through. Try once more, and if it fails again write to "+C.footer.replyTo+" and you will be registered by hand.");
+      btn.disabled=false; btn.textContent="Register and pay";
+      fail("That did not go through, and you have not been charged. Try once more, and if it fails again write to "+C.footer.replyTo+" and you will be registered by hand.");
     }
   });
 })();

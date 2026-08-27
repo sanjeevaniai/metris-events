@@ -1,0 +1,84 @@
+# Setting up payment and registration capture
+
+The page is still static. Two serverless functions sit beside it in `api/`, and
+Vercel picks them up automatically — there is no build step for the page itself.
+
+What happens when someone registers:
+
+1. The page posts the whole registration to `/api/checkout`.
+2. That function writes a row to the Google Sheet with status **pending**.
+3. It creates a Stripe Checkout session and returns its URL; the page redirects.
+4. Stripe takes the payment and returns the person to `/success.html`.
+5. Stripe calls `/api/stripe-webhook`, which flips that row to **paid**.
+
+The row is written *before* payment on purpose, so you can see who reached the
+card screen and did not pay.
+
+---
+
+## 1. The Google Sheet
+
+1. Make a new Google Sheet, name it something like `METRIS registrations`.
+2. **Extensions → Apps Script**, delete what is there, paste in
+   `apps-script/Code.gs` from this repo.
+3. Change `SHARED_SECRET` at the top to a long random string. Keep it handy.
+4. **Deploy → New deployment → Web app**
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+5. Copy the `/exec` URL it gives you.
+
+Opening that URL in a browser should say the collector is running.
+
+The sheet and its `Registrations` tab are created on the first registration, so
+do not worry that the sheet looks empty.
+
+## 2. Stripe
+
+1. In the Stripe dashboard, copy your secret key (`sk_live_…`, or `sk_test_…`
+   while you are testing).
+2. **Developers → Webhooks → Add endpoint**
+   - URL: `https://events.sanjeevaniai.com/api/stripe-webhook`
+   - Event: `checkout.session.completed`
+3. Copy that endpoint's **signing secret** (`whsec_…`).
+
+The price is set in code, not in Stripe, so there is no product to create. If you
+would rather manage it in Stripe, make a Price there and set `STRIPE_PRICE_ID`.
+
+## 3. Vercel environment variables
+
+**Project → Settings → Environment Variables**, for Production and Preview:
+
+| Name | Value |
+|---|---|
+| `STRIPE_SECRET_KEY` | `sk_live_…` from step 2 |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_…` from step 2 |
+| `SHEET_WEBHOOK_URL` | the `/exec` URL from step 1 |
+| `SHEET_SHARED_SECRET` | the same random string you put in `Code.gs` |
+
+Optional:
+
+| Name | Value |
+|---|---|
+| `PRICE_CENTS` | defaults to `19900`. Set it to change the price. |
+| `STRIPE_PRICE_ID` | `price_…` to use a Stripe Price instead of `PRICE_CENTS` |
+| `SITE_URL` | overrides the site address used in the return links |
+
+Redeploy after adding them — Vercel only picks up new variables on a fresh build.
+
+## 4. Test before going live
+
+Use the test key and Stripe's test card `4242 4242 4242 4242`, any future expiry,
+any CVC. Register once and check that:
+
+- a row appears in the sheet as **pending**
+- it flips to **paid** within a few seconds of payment
+- you land on `/success.html` with a reference number
+
+Then swap the test keys for live ones and redeploy.
+
+## Still to do
+
+- The Zoom link is not on the page or in any email yet. The success page tells
+  people the joining link comes separately by email, so nothing is broken while
+  it is missing — but somebody has to send that email.
+- Nothing emails the registrant beyond Stripe's own receipt.

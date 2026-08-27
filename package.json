@@ -1,0 +1,9 @@
+{
+  "name": "metris-events",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static event pages for SANJEEVANI AI, with Stripe checkout and Google Sheet capture",
+  "dependencies": {
+    "stripe": "^17.5.0"
+  }
+}

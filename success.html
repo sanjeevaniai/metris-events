@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>You are registered · METRIS</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F272B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#14181B; --ink-soft:#4A5257; --paper:#F6F6F2; --white:#FFFFFF;
+  --rule:#D6D7CE; --spruce:#0E5C4A; --spruce-bright:#12775F;
+  --graphite:#1F272B; --measure:720px;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100vh;}
+.wrap{max-width:var(--measure);margin:0 auto;padding:0 22px;width:100%;}
+.masthead{background:var(--graphite);}
+.masthead .wrap{display:flex;align-items:center;height:62px;}
+.wordmark{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.wordmark img{width:26px;height:26px;display:block;flex:none;}
+.wordmark span{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.24em;
+  text-transform:uppercase;color:#F6F6F2;font-weight:500;padding-left:.24em;}
+main{flex:1;padding:56px 0 64px;}
+.mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spruce);margin:0 0 14px;}
+h1{font-weight:600;font-size:clamp(27px,5vw,38px);line-height:1.15;letter-spacing:-.02em;
+  margin:0 0 22px;max-width:18ch;}
+p{color:var(--ink-soft);margin:0 0 16px;}
+.panel{background:var(--white);border:1px solid var(--rule);border-radius:3px;
+  padding:24px 24px 26px;margin:28px 0 0;}
+.panel h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:0 0 16px;}
+dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;}
+dt{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
+dd{margin:0;font-weight:500;font-size:16px;line-height:1.4;}
+.next{border-left:3px solid var(--spruce);padding:2px 0 2px 18px;margin:30px 0 0;}
+.next p{color:var(--ink);margin:0 0 10px;}
+.next p:last-child{margin:0;}
+.ref{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);
+  margin:26px 0 0;word-break:break-all;}
+a{color:var(--spruce);}
+footer{background:var(--graphite);color:#B9C2C0;padding:30px 0 34px;}
+footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9997;margin:0;}
+@media (max-width:620px){ main{padding:38px 0 44px;} .panel{padding:20px 18px 22px;} }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="METRIS">
+      <img src="metris-mark.png" alt="" width="240" height="240" />
+      <span>METRIS</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="mark">Payment received</p>
+    <h1>Your seat is booked.</h1>
+    <p>A receipt is on its way from Stripe to the email address you paid with. Keep it — it is your proof of registration.</p>
+
+    <div class="panel">
+      <h2>The session</h2>
+      <dl>
+        <div><dt>Date</dt><dd id="s-date">Thursday, September 18</dd></div>
+        <div><dt>Time</dt><dd id="s-time">11:00 AM to 11:45 AM CDT</dd></div>
+        <div><dt>Location</dt><dd id="s-loc">Virtual</dd></div>
+      </dl>
+    </div>
+
+    <div class="next">
+      <p><strong>The joining link comes separately.</strong> We send it by email a few days before the session, to the address you registered with.</p>
+      <p>If the time turns out not to work, keep the email anyway. The recording goes to the same address.</p>
+    </div>
+
+    <p class="ref" id="ref" hidden></p>
+    <p style="margin-top:26px"><a href="/">Back to the event page</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-org">METRIS by SANJEEVANI AI LLC · St. Louis, Missouri</p>
+  </div>
+</footer>
+
+<script>
+/* Stripe appends the session id on the way back. Showing it gives people
+   something to quote if they ever need to write to us about their booking. */
+(function(){
+  var id = new URLSearchParams(location.search).get("session_id");
+  if(!id) return;
+  var el = document.getElementById("ref");
+  el.textContent = "Reference: " + id;
+  el.hidden = false;
+})();
+</script>
+</body>
+</html>
