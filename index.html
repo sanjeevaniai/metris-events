@@ -81,13 +81,13 @@ window.CONFIG = {
   /* THE COHORTS. One workshop per group of seats. A cohort with tba:true
      shows as "to be announced" and cannot be registered for yet. */
   cohorts: [
-    { id:"exec", audience:"CEO, COO, Engineering",
+    { id:"a", letter:"A", audience:"CEO and COO",
       date:"Thursday, September 18", time:"11:00 AM to 11:45 AM CDT", location:"Virtual" },
 
-    { id:"tech", audience:"IT, Security, AI", tba:true,
+    { id:"b", letter:"B", audience:"CTO, CISO, and Data and AI Leadership", tba:true,
       date:"", time:"", location:"Virtual" },
 
-    { id:"biz", audience:"HR, Finance", tba:true,
+    { id:"c", letter:"C", audience:"CHRO, CFO, and Risk", tba:true,
       date:"", time:"", location:"Virtual" }
   ],
 
@@ -304,6 +304,8 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 .cohorts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
 .cohort{background:var(--white);border:1px solid var(--rule);border-radius:3px;padding:17px 18px 18px;}
 .cohort.is-tba{background:transparent;border-style:dashed;}
+.cohort .wshop{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
 .cohort .aud{font-weight:600;font-size:16px;line-height:1.35;margin:0 0 12px;}
 .cohort dl{margin:0;display:flex;flex-direction:column;gap:9px;}
 .cohort dt{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
@@ -626,12 +628,13 @@ footer a:hover{text-decoration:underline;}
   } else { $("takeaway-block").style.display="none"; }
   if(C.cohorts&&C.cohorts.length){
     $("cohorts").innerHTML=C.cohorts.map(function(k){
+      var mark=k.letter?'<p class="wshop">Workshop '+esc(k.letter)+'</p>':'';
       if(k.tba){
-        return '<div class="cohort is-tba"><p class="aud">'+esc(k.audience)+'</p>'+
+        return '<div class="cohort is-tba">'+mark+'<p class="aud">'+esc(k.audience)+'</p>'+
           '<p class="tba">To be announced</p>'+
           '<p class="tba-note">Date and time are being set. Register for the session below and we will write to you as soon as this one opens.</p></div>';
       }
-      return '<div class="cohort"><p class="aud">'+esc(k.audience)+'</p><dl>'+
+      return '<div class="cohort">'+mark+'<p class="aud">'+esc(k.audience)+'</p><dl>'+
         '<div><dt>Date</dt><dd>'+esc(k.date)+'</dd></div>'+
         '<div><dt>Time</dt><dd>'+esc(k.time)+'</dd></div>'+
         '<div><dt>Location</dt><dd>'+esc(k.location)+'</dd></div>'+
