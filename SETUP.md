@@ -27,7 +27,15 @@ card screen and did not pay.
    - Who has access: **Anyone**
 5. Copy the `/exec` URL it gives you.
 
-Opening that URL in a browser should say the collector is running.
+Opening that URL in a browser should say the collector is running. If it says
+**"Script function not found: doGet"**, the deployment is live but is pinned to a
+version of the script that predates the code — see below.
+
+**Editing the script does not change an existing deployment.** Apps Script pins
+each deployment to a version, so after any edit you have to publish a new one:
+**Deploy → Manage deployments → the pencil icon → Version: New version → Deploy**.
+Doing it that way keeps the same `/exec` URL. Creating a brand new deployment
+instead gives you a different URL, which then has to go back into the env vars.
 
 The sheet and its `Registrations` tab are created on the first registration, so
 do not worry that the sheet looks empty.
