@@ -98,11 +98,16 @@ window.CONFIG = {
   speakers: [
     { name:"Suneeta Modekurty", role:"Founder and CEO", org:"METRIS",
       photo:"", linkedin:"https://www.linkedin.com/in/suneetamodekurty/",
-      bio:"PLACEHOLDER BIO \u2014 two or three sentences on Suneeta\u2019s background, the work she does with leadership teams on AI readiness, and why she runs this session. Replace this text." },
+      bio:["PLACEHOLDER BIO \u2014 two or three sentences on Suneeta\u2019s background, the work she does with leadership teams on AI readiness, and why she runs this session. Replace this text."] },
 
-    { name:"Karlos Bledsoe Sr.", role:"PLACEHOLDER \u2014 role or title", org:"PLACEHOLDER \u2014 organization",
-      photo:"", linkedin:"",
-      bio:"PLACEHOLDER BIO \u2014 two or three sentences on Karlos\u2019s background and what he brings to the session. Replace this text, along with the role, organization and LinkedIn above." }
+    { name:"Karlos Bledsoe Sr.", role:"Certified Business and Executive Coach",
+      org:"FocalPoint Coaching",
+      photo:"karlos-bledsoe.jpg", linkedin:"",
+      bio:[
+        "Karlos Bledsoe Sr. is a FocalPoint business and executive coach. He draws on more than 25 years with large companies \u2014 Anheuser-Busch, Edward Jones and BJC, where he finished as Director of Strategy and Operations \u2014 to help companies overcome challenges, grow and succeed.",
+        "He has led strategic planning and strategy execution, data warehousing, data analytics, project management and lean six sigma, across IT, manufacturing, internal consulting and coaching, and sales training.",
+        "Karlos is a founding member of the St. Louis chapter of the Society for Information Management, founder of the St. Louis Gateway to Innovation IT conference, and has served on the boards of City Academy School and Great Circle."
+      ] }
   ],
 
   /* WHERE REGISTRATIONS GO.
@@ -283,7 +288,6 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 
 .speaker-note{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.6;
   color:var(--ink-soft);margin:0 0 24px;}
-.speaker{align-items:flex-start;}
 .speaker .bio{margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft);
   font-family:"IBM Plex Sans",system-ui,sans-serif;}
 .speakers{flex-direction:column;gap:30px;}
@@ -316,8 +320,8 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 .cohort .tba-note{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.45;}
 
 .speakers{display:flex;flex-wrap:wrap;gap:26px;}
-.speaker{display:flex;gap:14px;align-items:center;}
-.avatar{width:62px;height:62px;border-radius:2px;flex:none;background:var(--graphite);color:#F6F6F2;
+.speaker{display:flex;gap:14px;align-items:flex-start;}
+.avatar{width:76px;height:76px;border-radius:2px;flex:none;background:var(--graphite);color:#F6F6F2;
   display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
   font-size:17px;object-fit:cover;}
 .speaker .nm{font-weight:600;margin:0;line-height:1.3;}
@@ -650,7 +654,7 @@ footer a:hover{text-decoration:underline;}
     var av=s.photo?'<img class="avatar" src="'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
                   :'<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
     return '<div class="speaker">'+av+'<div><p class="nm">'+esc(s.name)+'</p><p class="rl">'+
-      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.bio?'<p class="bio">'+esc(s.bio)+'</p>':'')+
+      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.bio?[].concat(s.bio).map(function(b){return '<p class="bio">'+esc(b)+'</p>';}).join(''):'')+
       (s.linkedin?'<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>':'')+
       '</div></div>';
   }).join("");
