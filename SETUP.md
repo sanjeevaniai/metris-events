@@ -65,7 +65,40 @@ Optional:
 
 Redeploy after adding them — Vercel only picks up new variables on a fresh build.
 
-## 4. Test before going live
+## 4. Running it locally
+
+```
+npx vercel dev
+```
+
+Put the variables in **`.env`**, not `.env.local`. `vercel dev` does not read
+`.env.local` — that file is only where `vercel env pull` writes what it fetches
+from the Vercel project. Both files are gitignored.
+
+```
+SHEET_WEBHOOK_URL="https://script.google.com/macros/s/YOUR_ID/exec"
+```
+
+`vercel dev` reads the file once at startup, so restart it after any change.
+Exporting the variable in the shell that launches it works too:
+
+```
+SHEET_WEBHOOK_URL="https://script.google.com/macros/s/YOUR_ID/exec" npx vercel dev
+```
+
+Check the endpoint without touching the form:
+
+```
+curl -X POST http://localhost:3000/api/register \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Test","email":"t@example.com"}'
+```
+
+`{"ok":true}` means the row landed. Anything else says what went wrong: a 404
+means the Apps Script deployment does not exist at that URL, and an HTML page
+means it is not shared with Anyone.
+
+## 5. Test before going live
 
 Use the test key and Stripe's test card `4242 4242 4242 4242`, any future expiry,
 any CVC. Register once and check that:
