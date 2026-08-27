@@ -6,13 +6,18 @@ Vercel picks them up automatically — there is no build step for the page itsel
 What happens when someone registers:
 
 1. The page posts the whole registration to `/api/checkout`.
-2. That function writes a row to the Google Sheet with status **pending**.
-3. It creates a Stripe Checkout session and returns its URL; the page redirects.
-4. Stripe takes the payment and returns the person to `/success.html`.
-5. Stripe calls `/api/stripe-webhook`, which flips that row to **paid**.
+2. That function writes a row to the Google Sheet with **paid = no**.
+3. If the sheet write fails it stops there and nobody is charged.
+4. It creates a Stripe Checkout session and returns its URL; the page redirects.
+5. Stripe takes the $199 and returns the person to `/success.html`.
+6. Stripe calls `/api/stripe-webhook`, which flips that row to **paid = yes**
+   and records the amount and session id.
 
 The row is written *before* payment on purpose, so you can see who reached the
 card screen and did not pay.
+
+`/api/register` does the same thing without the payment leg. Nothing on the page
+uses it; it is there for a comped seat or a booking taken by hand.
 
 ---
 
@@ -42,15 +47,18 @@ do not worry that the sheet looks empty.
 
 ## 2. Stripe
 
-1. In the Stripe dashboard, copy your secret key (`sk_live_…`, or `sk_test_…`
-   while you are testing).
-2. **Developers → Webhooks → Add endpoint**
+1. Copy your secret key from the Stripe dashboard: `sk_test_...` while you are
+   testing, `sk_live_...` when you go live.
+2. **Developers > Webhooks > Add endpoint**
    - URL: `https://events.sanjeevaniai.com/api/stripe-webhook`
    - Event: `checkout.session.completed`
-3. Copy that endpoint's **signing secret** (`whsec_…`).
+3. Copy that endpoint's **signing secret** (`whsec_...`).
 
-The price is set in code, not in Stripe, so there is no product to create. If you
-would rather manage it in Stripe, make a Price there and set `STRIPE_PRICE_ID`.
+The price lives in code, so there is no product to create in Stripe. If you would
+rather manage it there, make a Price and set `STRIPE_PRICE_ID` instead.
+
+The webhook is what turns the **paid** column from no to yes. Without it the sheet
+records who reached the card screen, not who paid.
 
 ## 3. Vercel environment variables
 

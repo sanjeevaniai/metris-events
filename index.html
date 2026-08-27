@@ -115,11 +115,11 @@ window.CONFIG = {
   ],
 
   /* WHERE REGISTRATIONS GO.
-     The page posts the whole registration to this endpoint, which forwards it
-     to the Apps Script bound to the Google Sheet. Sheet columns live in
-     apps-script/Code.gs, not here. */
+     The page posts the whole registration to this endpoint. It records the seat
+     as unpaid, then returns a Stripe Checkout URL to send the registrant to.
+     Sheet columns live in apps-script/Code.gs, not here. */
   submit: {
-    url: "/api/register"
+    url: "/api/checkout"
   },
 
   footer: {
@@ -551,7 +551,7 @@ footer a:hover{text-decoration:underline;}
         <div class="field"><label for="country">Country <span class="req">*</span></label>
           <select id="country"></select></div>
 
-        <button class="btn" id="send">Register</button>
+        <button class="btn" id="send">Register and pay $199</button>
         <p class="consent" id="consent"></p>
         <div class="err" id="err" hidden></div>
       </div>
@@ -858,7 +858,7 @@ footer a:hover{text-decoration:underline;}
     if(miss.length) return fail("Fill in every field marked with a star, then register.");
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
 
-    err.hidden=true; btn.disabled=true; btn.textContent="Registering";
+    err.hidden=true; btn.disabled=true; btn.textContent="Taking you to payment";
     try{
       var res=await fetch(C.submit.url,{
         method:"POST",
@@ -867,17 +867,14 @@ footer a:hover{text-decoration:underline;}
       });
       var out=null;
       try{ out=await res.json(); }catch(e){}
-      if(!res.ok||!out||out.ok!==true){
-        /* show what actually went wrong, rather than a shrug, because a
-           registration that quietly fails here is a registration lost */
+      if(!res.ok||!out||out.ok!==true||!out.url){
         throw new Error((out&&out.error)||("The server answered "+res.status+" "+res.statusText+"."));
       }
-      $("doneRole").textContent="We have you down as "+roleLabel+". The agenda gets built around the seats that register.";
-      $("formBox").hidden=true; $("doneBox").hidden=false;
-      document.querySelector(".panel").scrollIntoView({block:"start"});
+      /* Stripe takes it from here; the seat is already recorded as unpaid */
+      window.location.assign(out.url);
     }catch(e){
-      btn.disabled=false; btn.textContent="Register";
-      fail((e&&e.message?e.message:"That did not go through, and nothing was recorded.")+
+      btn.disabled=false; btn.textContent="Register and pay $199";
+      fail((e&&e.message?e.message:"That did not go through, and you have not been charged.")+
            " Try once more, and if it fails again write to "+
            C.footer.replyTo+" and you will be registered by hand.");
     }
