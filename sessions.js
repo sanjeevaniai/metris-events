@@ -16,6 +16,14 @@
    TIMES ARE STORED ONCE, as a date and a wall-clock time in Central. The other
    zones and the daylight-saving abbreviation are computed from the date at
    render time by time.js. Never store four times.
+
+   THE STRIPE PRICE IDS BELOW ARE TEST-MODE OBJECTS. They exist only in the
+   sandbox and will NOT resolve against a live key: with sk_live_ set, every
+   group refuses by name and no payment can be taken. They are here so the flow
+   can be exercised end to end before launch, and they must be replaced.
+
+   Before launch, Suneeta creates the live products and prices in Stripe and
+   supplies the ids. Nothing in this repo may create them.
    ========================================================================== */
 
 (function (root, factory) {
@@ -226,8 +234,8 @@
       slug: "group-a",
       letter: "A",
       seats: ["ceo", "coo"],
-      /* Stripe price for the whole three-session track. Create it in Stripe,
-         then paste the id. Until then this group cannot take payment, and
+      /* TEST MODE ONLY - replace before launch. See the note at the top.
+         Until a real id is here this group cannot take payment, and
          api/checkout.js refuses by name rather than charging a wrong price. */
       stripePriceId: "price_1U9Fns3jDOmjx0I3PKkD5gBN",
       copy: {
@@ -246,6 +254,7 @@
       slug: "group-b",
       letter: "B",
       seats: ["cto", "ciso", "data"],
+      /* TEST MODE ONLY - replace before launch */
       stripePriceId: "price_1U9Fnt3jDOmjx0I3s90g7C1G",
       copy: { room: null, lede: null, body: null },
       figure: null,
@@ -259,6 +268,7 @@
       slug: "group-c",
       letter: "C",
       seats: ["chro", "cfo", "risk"],
+      /* TEST MODE ONLY - replace before launch */
       stripePriceId: "price_1U9Fnt3jDOmjx0I3ffiWgQ34",
       copy: { room: null, lede: null, body: null },
       figure: null,
