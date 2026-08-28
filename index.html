@@ -174,15 +174,14 @@
         campaign:campaign, jobTitle: seat.freeText ? otherSeat : ""
       }, { timeoutMs: 12000, keepalive: true });
 
-      /* Wait briefly so the row usually lands first, then go regardless. The
-         request is not cancelled: keepalive lets it finish after this page has
-         gone, so a slow sheet costs the visitor nothing. */
-      var saved = await NET.raceTimeout(capture, 2500);
-      if(saved && !saved.ok && saved.status >= 400 && saved.status < 500){
-        /* our own endpoint rejected the data, which routing will not fix */
-        btn.disabled = false; btn.textContent = "Continue";
-        return fail(saved.error);
-      }
+      /* No wait at all. The id was minted here, so nothing downstream needs the
+         response, and keepalive lets the request finish after this page is gone.
+         Waiting only bought write ordering, and the endpoint is slower than any
+         wait worth making a person sit through: at ~3.5s the old 2.5s race was
+         exhausted on every submit, so everyone paid it. The row still lands. */
+      capture.then(function(saved){
+        if(saved && !saved.ok) console.warn("METRIS: lead capture failed —", saved.error);
+      });
 
       var group = M.groupForSeat(seatId);
       var qs = new URLSearchParams();

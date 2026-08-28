@@ -71,5 +71,11 @@
     ]);
   }
 
+  /* Says which build is running. A page loaded before a change keeps the old
+     JavaScript in memory however good the cache headers are, and the only way to
+     tell from the outside used to be a screenshot. If this line is missing from
+     the console, the tab is stale and a reload is the fix. */
+  try { console.info("METRIS build: submit paths are timeout-bounded (net.js loaded)"); } catch (e) {}
+
   return { newId: newId, postJson: postJson, raceTimeout: raceTimeout };
 });
