@@ -133,6 +133,21 @@
     </div>
   </aside>
 </div><!-- /layout -->
+
+<!-- The full bio, opened from Read more. A native dialog, so Escape closes it,
+     focus is trapped, and the backdrop comes for free. -->
+<dialog class="bio-dialog" id="bioDialog" aria-labelledby="bioName">
+  <button type="button" class="bio-close" id="bioClose" aria-label="Close">&times;</button>
+  <div class="bio-head">
+    <img id="bioPhoto" src="" alt="" />
+    <div>
+      <p class="bio-nm" id="bioName"></p>
+      <p class="bio-rl" id="bioRole"></p>
+      <a id="bioLinked" href="" target="_blank" rel="noopener" class="bio-li">LinkedIn</a>
+    </div>
+  </div>
+  <div class="bio-body" id="bioBody"></div>
+</dialog>
 </main>
 
 <footer>
@@ -143,5 +158,6 @@
 </footer>
 
 <script src="/page-group.js"></script>
+<script src="/panel.js"></script>
 </body>
 </html>

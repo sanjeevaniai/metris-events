@@ -8,9 +8,9 @@
 
   var speakerNote = "My colleague Karlos and I lead this session together. He brings twenty-five years of experience inside large organizations, seeing where strategy succeeds, or breaks down, in operations. I build the measurement that shows whether it’s working. Together, we cover both sides of the question: what should you do, and how do you know it worked?";
 
-  /* Two bios each. shortBio is what the 340px panel shows, since the full one
-     will not fit at that width without an internal scroll. bio is the full
-     version, kept for anywhere with room for it. */
+  /* Two bios each. shortBio is the two sentences the panel shows; bio is the
+     full version, opened from Read more. Everything anyone might want is in the
+     full one, which matters for people who are new to this material. */
   var speakers = [
     {
       name: "Suneeta Modekurty",
@@ -22,7 +22,8 @@
       bio: [
         "Suneeta builds the measurement systems behind METRIS, after ten years as a data scientist and bioinformatician inside healthcare, insurance, title and life sciences companies, where the hard part was rarely the model and almost always whether anyone could tell if it was working.",
         "She teaches this material as an O\u2019Reilly live trainer, wrote The AI-Human Synergy in 2024, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
-        "She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers. Before any of it she taught for seventeen years in India."
+        "She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers.",
+        "Before any of it she taught for seventeen years in India."
       ]
     },
     {
@@ -31,11 +32,12 @@
       org: "FocalPoint Coaching",
       photo: "karlos-bledsoe.jpg",
       linkedin: "https://www.linkedin.com/in/karlos-bledsoe/",
-      shortBio: "Karlos spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations. He now coaches executives on strategy execution and operational performance.",
+      shortBio: "Karlos is the pioneer of Gateway to Innovation, the St. Louis IT conference he founded. He spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations, and now coaches executives on strategy execution and operational performance.",
       bio: [
-        "Karlos spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations, and now coaches executives on strategy execution and operational performance.",
-        "He has led strategic planning, data warehousing and analytics, project management and lean six sigma across IT, manufacturing and internal consulting.",
-        "He is a founding member of the St. Louis chapter of the Society for Information Management and founded the St. Louis Gateway to Innovation IT conference."
+        "Karlos Bledsoe Sr. is a Focal Point business and executive coach. He uses his 25+ years with large companies; Anheuser-Busch, Edward Jones, and BJC, where he wrapped up his time as Director of Strategy and Operations\u2014to help companies overcome challenges, grow, and succeed.",
+        "With strong and successful experience leading strategic planning, strategy execution, data warehousing, data analytics, project management, and lean-six sigma, he has led in IT, manufacturing, internal consulting/coaching, and sales training.",
+        "Karlos is a husband and the father of four sons, where he enjoyed the crazy fun of sports, band instruments, academics, and navigating this hurried world. He\u2019s learned to balance professional and personal time, which is also part of his coaching.",
+        "Karlos is a founding member of the St. Louis chapter of the Society for Information Management (SIM), the founder of the St. Louis Gateway to Innovation IT conference, served on the boards of City Academy School, and Great Circle \u2013 an organization dedicated to the treatment and care of emotionally disturbed children. Karlos is also an ordained minister at the First Baptist Church of Chesterfield."
       ]
     }
   ];

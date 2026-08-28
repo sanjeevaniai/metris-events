@@ -14,8 +14,9 @@
 <link rel="stylesheet" href="/styles.css" />
 <script src="/sessions.js"></script>
 <script src="/content.js"></script>
+<script src="/time.js"></script>
 </head>
-<body>
+<body class="page-group">
 
 <header class="masthead">
   <div class="wrap">
@@ -27,7 +28,9 @@
 </header>
 
 <main>
-  <section class="hero wrap">
+<div class="layout">
+  <div class="col-main">
+<section class="hero wrap">
     <p class="eyebrow">Three sessions</p>
     <h1>AI is already in your organization. What can you actually prove about it?</h1>
 
@@ -42,7 +45,7 @@
     </div>
   </section>
 
-  <section class="wrap" id="register">
+  <section class="section wrap" id="register">
     <div class="panel">
       <div class="q">
         <span class="q-label">Which seat are you sitting in?</span>
@@ -71,6 +74,29 @@
       <div class="err" id="err" hidden></div>
     </div>
   </section>
+  </div><!-- /col-main -->
+
+  <aside class="col-side">
+    <div class="side-panel">
+      <h2>Who runs these sessions</h2>
+      <div class="side-people" id="sidePeople"></div>
+      <div class="side-cta" id="sideCta"></div>
+    </div>
+  </aside>
+</div><!-- /layout -->
+
+<dialog class="bio-dialog" id="bioDialog" aria-labelledby="bioName">
+  <button type="button" class="bio-close" id="bioClose" aria-label="Close">&times;</button>
+  <div class="bio-head">
+    <img id="bioPhoto" src="" alt="" />
+    <div>
+      <p class="bio-nm" id="bioName"></p>
+      <p class="bio-rl" id="bioRole"></p>
+      <a id="bioLinked" href="" target="_blank" rel="noopener" class="bio-li">LinkedIn</a>
+    </div>
+  </div>
+  <div class="bio-body" id="bioBody"></div>
+</dialog>
 </main>
 
 <footer>
@@ -163,5 +189,6 @@
   });
 })();
 </script>
+<script src="/panel.js"></script>
 </body>
 </html>
