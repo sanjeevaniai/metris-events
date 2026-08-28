@@ -12,59 +12,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
-<style>
-:root{
-  --ink:#14181B; --ink-soft:#4A5257; --paper:#F6F6F2; --white:#FFFFFF;
-  --rule:#D6D7CE; --spruce:#0E5C4A; --graphite:#1F272B; --signal:#B4661C; --measure:720px;
-}
-*{box-sizing:border-box;}
-body{margin:0;background:var(--paper);color:var(--ink);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:17px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100vh;}
-.wrap{max-width:var(--measure);margin:0 auto;padding:0 22px;width:100%;}
-.masthead{background:var(--graphite);}
-.masthead .wrap{display:flex;align-items:center;height:62px;}
-.wordmark{display:flex;align-items:center;gap:11px;text-decoration:none;}
-.wordmark img{width:26px;height:26px;display:block;flex:none;}
-.wordmark span{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.24em;
-  text-transform:uppercase;color:#F6F6F2;font-weight:500;padding-left:.24em;}
-main{flex:1;padding:56px 0 64px;}
-.mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;margin:0 0 14px;color:var(--spruce);}
-.mark.warn{color:var(--signal);}
-h1{font-weight:600;font-size:clamp(26px,5vw,38px);line-height:1.15;letter-spacing:-.02em;
-  margin:0 0 22px;max-width:18ch;}
-p{color:var(--ink-soft);margin:0 0 16px;}
-.panel{background:var(--white);border:1px solid var(--rule);border-radius:3px;
-  padding:24px 24px 26px;margin:28px 0 0;}
-.panel h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:0 0 16px;}
-dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;}
-dt{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
-dd{margin:0;font-weight:500;font-size:16px;line-height:1.4;}
-.next{border-left:3px solid var(--spruce);padding:2px 0 2px 18px;margin:30px 0 0;}
-.next p{color:var(--ink);margin:0 0 10px;}
-.next p:last-child{margin:0;}
-.ref{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft);
-  margin:26px 0 0;word-break:break-all;}
-a{color:var(--spruce);}
-.btn{display:inline-block;font-size:16px;font-weight:600;background:var(--spruce);color:#fff;
-  border-radius:2px;padding:13px 24px;text-decoration:none;margin-top:6px;}
-[hidden]{display:none !important;}
-.loading{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);}
-footer{background:var(--graphite);color:#B9C2C0;padding:30px 0 34px;}
-footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9997;margin:0;}
-@media (max-width:620px){ main{padding:38px 0 44px;} .panel{padding:20px 18px 22px;} }
-</style>
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/time.js"></script>
+<script src="/content.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="wrap">
     <a class="wordmark" href="/" aria-label="METRIS">
-      <img src="metris-mark.png" alt="" width="240" height="240" />
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
       <span>METRIS</span>
     </a>
   </div>
@@ -80,21 +38,16 @@ footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9
     <div id="paid" hidden>
       <p class="mark">Payment received</p>
       <h1>Your seat is booked.</h1>
-      <p>A receipt is on its way from Stripe to <span id="payerEmail">the address you paid with</span>. Keep it — it is your proof of registration.</p>
+      <p>A receipt is on its way from Stripe to <span id="payerEmail">the address you paid with</span> for <span id="paidAmount">your seat</span>. Keep it &mdash; it is your proof of registration.</p>
 
       <div class="panel">
-        <h2>The session</h2>
-        <dl>
-          <div><dt>Date</dt><dd>Thursday, September 18</dd></div>
-          <div><dt>Time</dt><dd>11:00 AM to 11:45 AM CDT</dd></div>
-          <div><dt>Location</dt><dd>Virtual</dd></div>
-          <div><dt>Paid</dt><dd id="paidAmount">&mdash;</dd></div>
-        </dl>
+        <h2>Your three sessions</h2>
+        <ul class="sessions" id="sessions"></ul>
       </div>
 
       <div class="next">
-        <p><strong>The joining link comes separately.</strong> We send it by email a few days before the session, to the address you registered with.</p>
-        <p>If the time turns out not to work, keep the email anyway. The recording goes to the same address.</p>
+        <p><strong>One recurring meeting serves all three sessions</strong>, so the joining link above works for every date. It is also in the confirmation email.</p>
+        <p>If a date turns out not to work, keep the email anyway. The recording goes to the same address.</p>
       </div>
 
       <p class="ref" id="ref" hidden></p>
@@ -106,10 +59,10 @@ footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9
       <h1>This seat is not booked.</h1>
       <p id="whyUnpaid">We cannot find a completed payment for this link, so nothing has been reserved and you have not been charged.</p>
       <p>Your details are still with us. Go back to the session page and finish the payment when you are ready, and if you think this is wrong, write to <a href="mailto:hello@sanjeevaniai.com">hello@sanjeevaniai.com</a> and we will sort it out by hand.</p>
-      <p><a class="btn" href="/#register">Back to the session</a></p>
+      <p><a class="btn" href="/">Back to the start</a></p>
     </div>
 
-    <p style="margin-top:26px"><a href="/">Back to the event page</a></p>
+    <p style="margin-top:26px"><a href="/">Back to the start</a></p>
   </div>
 </main>
 
@@ -125,7 +78,39 @@ footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9
    payment_status comes back "paid". Until that answer arrives, and on any
    failure, this page confirms nothing. */
 (function(){
+  var M = window.METRIS, T = window.METRIS_TIME;
   function $(id){ return document.getElementById(id); }
+  function esc(x){ var d=document.createElement("div"); d.textContent=x==null?"":x; return d.innerHTML; }
+  function missing(w){ return '<em class="tbc">'+esc(w)+'</em>'; }
+
+  /* The three sessions of the track that was actually bought. The group comes
+     from the server, which derived it from the seat on the Stripe session. */
+  function renderSessions(groupSlug){
+    var g = groupSlug ? M.group(groupSlug) : null;
+    if(!g){
+      $("sessions").innerHTML = '<li class="session"><p class="when">'+
+        missing("we could not tell which track this was")+'</p>'+
+        '<p class="len">Write to hello@sanjeevaniai.com quoting the reference below and we will confirm your dates.</p></li>';
+      return;
+    }
+    document.title = "Track " + g.letter + " \u00b7 METRIS";
+    $("sessions").innerHTML = g.sessions.map(function(sn){
+      var d = T.describe(sn, { timezone: M.TIMEZONE, zones: M.ZONES });
+      var layer = (M.LAYERS[sn.layer] && M.LAYERS[sn.layer].name) || ("Layer " + sn.layer);
+      var when = d.known ? esc(d.date) : missing("date to be confirmed");
+      var len = d.duration ? esc(d.duration) : missing("length to be confirmed");
+      var times = d.known
+        ? '<ul class="zones">' + d.times.map(function(t){
+            return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
+          }).join("") + '</ul>'
+        : '<p class="len">'+missing("start time to be confirmed")+'</p>';
+      var join = M.JOIN_URL
+        ? '<p class="len"><a href="'+esc(M.JOIN_URL)+'">Join this session</a></p>'
+        : '<p class="len">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
+      return '<li class="session"><p class="layer">'+esc(layer)+'</p>'+
+             '<p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</li>';
+    }).join("");
+  }
   function show(which, why){
     $("checking").hidden = true;
     $(which).hidden = false;
@@ -146,6 +131,7 @@ footer .foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9
         if(b.amount) $("paidAmount").textContent = "$" + b.amount + (b.currency ? " " + b.currency : "");
         $("ref").textContent = "Reference: " + id;
         $("ref").hidden = false;
+        renderSessions(b.group);
         return show("paid");
       }
       if(b.paymentStatus === "unpaid" || b.status === "expired" || b.status === "open"){

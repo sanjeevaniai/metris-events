@@ -3,572 +3,72 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Live session · METRIS</title>
-<meta name="description" content="A live working session from METRIS. Register to attend, or sign up and receive the recording." />
+<title>AI readiness sessions &middot; METRIS</title>
+<meta name="description" content="Three sessions on what you can actually prove about the AI already running in your organization. Pick the seat you sit in." />
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta name="theme-color" content="#1F272B" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
-
-<script>
-/* ==========================================================================
-   EDIT THIS BLOCK ONLY.
-
-   LINK FORMAT for Apollo and Sales Navigator sequences:
-     https://events.sanjeevaniai.com/?r=cfo&s=500&i=insurance&c=aug-cfo-seq1
-
-     r = role id      (see ROLE_QUESTIONS below for the ids)
-     s = headcount    (a plain number from the Apollo export, e.g. 42, 500, 9000)
-     i = industry     (free text from the export, e.g. insurance, software)
-     c = campaign     (your own label, so you can tell sequences apart)
-
-   Any of the four may be missing. Whatever is missing, the page asks for.
-   ========================================================================== */
-window.CONFIG = {
-  event: {
-    eyebrow: "Live session",
-    title: "AI is already in your organization. What do you actually know about it?",
-    abstract: [
-      "Adoption arrived faster than anyone planned for. Licences were bought, tools were adopted, pilots went live, and somewhere in the middle of it the question changed from whether to use AI to what the organization can honestly say about the AI it is already running.",
-      "This session is about that second question. What a leader can see today, what they cannot, and which of the things they cannot see actually change a decision."
-    ],
-    takeaways: [
-      "The four things most organizations cannot answer about their own AI, and which of them matter",
-      "What separates a company that has adopted AI from one that is ready for it",
-      "How leaders in your seat are being asked to evidence AI decisions, and to whom"
-    ],
-    date: "Thursday, September 18",
-    time: "11:00 AM to 11:45 AM CDT",
-    location: "Virtual",
-    calendarNote: "Cannot make the time? Register anyway and the recording comes to the same address.",
-    price: "$199",
-    priceNote: "Per seat. All workshops are $199."
-  },
-
-  /* THE LONG READ. Everything between the takeaways and the session details. */
-  readiness: {
-    heading: "AI Is Already in Your Organization. Are You Ready for It?",
-    intro: [
-      "AI adoption didn\u2019t wait for the perfect strategy.",
-      "Licenses were purchased. Tools were introduced. Pilots went live. Employees began experimenting. And before many organizations had a chance to step back and assess the bigger picture, the question changed from:"
-    ],
-    shiftFrom: "\u201cShould we use AI?\u201d",
-    shiftTo: "\u201cWhat can we honestly say about the AI we\u2019re already using?\u201d",
-    afterShift: [ "That\u2019s the question this session addresses." ],
-    subheading: "Move Beyond AI Adoption to AI Readiness",
-    body: [
-      "This session gives leaders a practical way to understand what they can see, what they can\u2019t, and\u2014most importantly\u2014which gaps in visibility could actually affect a business decision.",
-      "You\u2019ll gain a clearer view of your organization\u2019s AI landscape and what it takes to move from simply using AI to being ready to manage, measure, and scale it."
-    ],
-    takeawaysHeading: "What You\u2019ll Take Away",
-    takeaways: [
-      "The four critical questions most organizations cannot answer about their own AI\u2014and which gaps matter most.",
-      "The difference between AI adoption and true AI readiness\u2014and what separates organizations that are experimenting with AI from those prepared to scale it responsibly.",
-      "How leaders are being asked to demonstrate and defend AI decisions\u2014including what evidence matters and who is asking for it.",
-      "A clearer perspective on where your organization may have AI blind spots and where greater visibility can lead to better decisions."
-    ]
-  },
-
-  /* THE CLOSE. Sits under the session details, above the form. */
-  closing: [
-    "The goal isn\u2019t to become an AI expert.",
-    "It\u2019s to know enough about the AI already operating in your organization to ask better questions, make better decisions, and lead with confidence.",
-    "Reserve your spot and find out what you know\u2014and what you may be missing\u2014about your organization\u2019s AI. Feel free to invite others."
-  ],
-
-  /* THE COHORTS. One workshop per group of seats. A cohort with tba:true
-     shows as "to be announced" and cannot be registered for yet. */
-  cohorts: [
-    { id:"a", letter:"A", audience:"CEO and COO",
-      date:"Thursday, September 18", time:"11:00 AM to 11:45 AM CDT", location:"Virtual" },
-
-    { id:"b", letter:"B", audience:"CTO, CISO, and Data and AI Leadership", tba:true,
-      date:"", time:"", location:"Virtual" },
-
-    { id:"c", letter:"C", audience:"CHRO, CFO, and Risk", tba:true,
-      date:"", time:"", location:"Virtual" }
-  ],
-
-  /* WHO IS RUNNING IT. One line above the bios, then a bio each.
-     Replace the placeholder bio text and the second speaker's details. */
-  speakerNote: "My colleague Karlos and I lead this session together. He brings twenty-five years of experience inside large organizations, seeing where strategy succeeds, or breaks down, in operations. I build the measurement that shows whether it\u2019s working. Together, we cover both sides of the question: what should you do, and how do you know it worked?",
-
-  speakers: [
-    { name:"Suneeta Modekurty", role:"Founder and CEO", org:"METRIS",
-      photo:"suneeta-modekurty.jpg", linkedin:"https://www.linkedin.com/in/smodekurty/",
-      bio:[
-        "Suneeta Modekurty builds the measurement systems behind METRIS. She spent ten years as a data scientist and bioinformatician inside healthcare, insurance, title and life sciences companies, where the hard part was rarely the model and almost always the question of whether anyone could tell if it was working.",
-        "METRIS came out of that. It measures two things a company can otherwise only estimate: whether its AI governance holds up against published requirements, and whether its people can handle the situations AI actually puts in front of them. She teaches this material as an O\u2019Reilly author and live trainer, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
-        "Before any of it she taught for seventeen years in India. She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers."
-      ] },
-
-    { name:"Karlos Bledsoe Sr.", role:"Certified Business and Executive Coach",
-      org:"FocalPoint Coaching",
-      photo:"karlos-bledsoe.jpg", linkedin:"https://www.linkedin.com/in/karlos-bledsoe/",
-      bio:[
-        "Karlos Bledsoe Sr. is a FocalPoint business and executive coach. He draws on more than 25 years with large companies \u2014 Anheuser-Busch, Edward Jones and BJC, where he finished as Director of Strategy and Operations \u2014 to help companies overcome challenges, grow and succeed.",
-        "He has led strategic planning and strategy execution, data warehousing, data analytics, project management and lean six sigma, across IT, manufacturing, internal consulting and coaching, and sales training.",
-        "Karlos is a founding member of the St. Louis chapter of the Society for Information Management, founder of the St. Louis Gateway to Innovation IT conference, and has served on the boards of City Academy School and Great Circle."
-      ] }
-  ],
-
-  /* WHERE REGISTRATIONS GO.
-     Two steps, in this order and not the other way round. The page posts the
-     registration to registerUrl, which puts the row in the sheet as paid = no.
-     Only once that has come back ok does it ask checkoutUrl for a Stripe
-     session and hand the registrant over. Someone who abandons the card screen
-     is therefore still in the sheet as a lead.
-     Sheet columns live in apps-script/Code.gs, not here. */
-  submit: {
-    registerUrl: "/api/register",
-    checkoutUrl: "/api/checkout"
-  },
-
-  footer: {
-    org:"METRIS by SANJEEVANI AI LLC · St. Louis, Missouri",
-    privacyUrl:"https://www.sanjeevaniai.com/privacy",
-    termsUrl:"https://www.sanjeevaniai.com/terms",
-    linkedin:"https://www.linkedin.com/company/sanjeevaniai/",
-    replyTo:"hello@sanjeevaniai.com"
-  }
-};
-
-/* THE SIZE SPLIT. One number decides which wording a registrant sees.
-   Under it, the company has no committee. Over it, it does. */
-window.SIZE_PIVOT = 250;
-
-window.SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
-
-/* QUESTIONS 1 AND 2. Same question for everyone, two dialects.
-   multi:true      renders checkboxes instead of radio buttons
-   other:true      appends an "Other" option that opens a "Tell us" box
-   exclusive:[...] options that clear every other tick when chosen */
-window.SHARED = {
-  q1: {
-    label: "Where is AI in your organization right now?",
-    multi: true,
-    exclusive: ["Not started","Not sure"],
-    small: ["Not started","One or two of us use tools on our own","A pilot is running","It sits in something customers touch","It is spread across the team","Not sure"],
-    large: ["Not started","People are using tools on their own","Piloting in one or two functions","Running in production","Spreading across functions","Not sure"]
-  },
-  q2: {
-    label: "Who makes organization wide AI decisions?",
-    multi: true, other: true,
-    exclusive: ["Nobody yet","Still working that out","No single owner","Still being decided","Not sure"],
-    small: ["I do","A cofounder or a lead","Whoever is closest to it","Nobody yet","Still working that out","Not sure"],
-    large: ["One named executive","A committee or working group","IT or engineering, by default","No single owner","Still being decided","Not sure"]
-  }
-};
-
-/* QUESTION 3. Role decides which one. Nine seats for large companies,
-   six for small, because the other three do not exist there.
-   Same multi / other / exclusive keys as above. */
-window.ROLE_QUESTIONS = {
-  ceo: { label:"CEO or Founder", smallLabel:"Founder or CEO",
-    q:"What AI decision is in front of you in the next two quarters?",
-    multi:true, other:true,
-    exclusive:["Nothing decided yet","Not sure"],
-    options:["Whether to spend more","Whether to put AI in front of customers","Whether to build or buy","Whether to slow down until we understand the risk","Nothing decided yet","Not sure"] },
-
-  cfo: { label:"CFO or Finance", smallLabel:"Finance",
-    q:"What visibility do you have into the ROI of your AI implementation?",
-    exclusive:["Not sure"],
-    options:["We have not yet implemented AI","We are in the AI pilot stage and will formulate AI financial measures","AI is being implemented and we track AI license expenditures and token usage/cost","AI expenses and usage are tracked in divisions, departments, or teams and we still have more work to do","We track AI spend in a structured way and also track AI ROI","Not sure"] },
-
-  cto: { label:"CTO, CIO or Engineering", smallLabel:"Engineering or technical lead",
-    q:"Once an AI system is live, how do you know it is doing what you intended?",
-    multi:true,
-    exclusive:["We do not have a good answer yet","Not sure"],
-    options:["We hear about it when something breaks","Someone checks the outputs by hand","We monitor the model","We monitor the decisions it affects","We do not have a good answer yet","Not sure"] },
-
-  ciso: { label:"CISO or Security",
-    q:"How do you track AI usage, and what controls are in place for its implementation?",
-    multi:true,
-    exclusive:["Not sure"],
-    options:["We have some controls and we\u2019re in the process of developing more","We know there is AI usage in our organization but don\u2019t specifically track where AI agents are running","We have documented clear guidelines and perform audits to ensure compliance","We have some policies in place but they may be inadequate for the future","We do not allow unauthorized AI usage","Not sure"] },
-
-  chro: { label:"CHRO or People", smallLabel:"People or operations",
-    q:"How have you included AI in your people or talent strategy?",
-    multi:true,
-    exclusive:["We do not have a talent or people strategy","Not sure"],
-    options:["We do not have a talent or people strategy","We provide training on how to use AI","We evaluate our organization\u2019s overall and departmental AI readiness","We do not specifically call out AI in our talent or people strategy","We have productivity measures and know the impact AI makes in terms of quality, labor needs, and efficiency","Not sure"] },
-
-  coo: { label:"COO or Operations",
-    q:"What operational approach do you use to guide AI implementation?",
-    multi:true,
-    exclusive:["We do not have a well defined operational approach for AI implementation","Not sure"],
-    options:["Divisions, departments, or areas determine where to apply AI","We have a governing process that prioritizes which processes should be improved with AI","We track quality and time to determine processes to improve","We have an overall AI implementation map based on operational needs","We do not have a well defined operational approach for AI implementation","Not sure"] },
-
-  risk: { label:"Risk, Compliance or Legal",
-    q:"What accountability does your organization have for AI results and outcomes?",
-    multi:true, other:true,
-    exclusive:["We have not yet created specific AI expectations and outcomes","Not sure"],
-    options:["We have a general expectation that AI will generate positive results","There are documented expected outcomes tied to financial outcomes and productivity improvement","Each division, department, or area is responsible for tracking results","We have some documented expectations for AI outcomes","We have not yet created specific AI expectations and outcomes","Not sure"] },
-
-  data: { label:"Data and AI leadership",
-    q:"What process do you have to organize and structure AI implementation?",
-    multi:true, other:true,
-    exclusive:["We do not have a structured governance and tracking process for AI","Not sure"],
-    options:["We have processes to stop unauthorized AI usage","We encourage AI usage and have basic guidelines","We have some AI governance but it\u2019s not as organized as it should be","We do not have a structured governance and tracking process for AI","Our governance process is less than adequate","Not sure"] },
-
-  other: { label:"Another seat", freeText:true,
-    q:"What brought you to this session?",
-    textarea:true, placeholder:"A sentence is plenty." }
-};
-
-/* Which seats appear in the picker when the link did not name one. */
-window.SMALL_ROLES = ["ceo","cto","cfo","chro","data","other"];
-window.LARGE_ROLES = ["ceo","cfo","cto","ciso","chro","coo","risk","data","other"];
-</script>
-
-<style>
-:root{
-  --ink:#14181B; --ink-soft:#4A5257; --paper:#F6F6F2; --white:#FFFFFF;
-  --rule:#D6D7CE; --spruce:#0E5C4A; --spruce-bright:#12775F;
-  --graphite:#1F272B; --signal:#B4661C; --measure:720px;
-}
-*{box-sizing:border-box;}
-html{-webkit-text-size-adjust:100%;}
-body{margin:0;background:var(--paper);color:var(--ink);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:17px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;}
-.wrap{max-width:var(--measure);margin:0 auto;padding:0 22px;}
-
-.masthead{position:sticky;top:0;z-index:40;background:var(--graphite);}
-.masthead .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
-.wordmark{display:flex;align-items:center;gap:11px;text-decoration:none;}
-.wordmark img{width:26px;height:26px;display:block;flex:none;}
-.wordmark span{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.24em;
-  text-transform:uppercase;color:#F6F6F2;font-weight:500;padding-left:.24em;}
-.btn-top{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
-  text-transform:uppercase;background:var(--spruce-bright);color:#fff;
-  padding:10px 16px;border-radius:2px;text-decoration:none;}
-.btn-top:hover{background:#159a7b;}
-
-.hero{padding:56px 0 34px;}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--spruce);margin:0 0 20px;display:flex;align-items:center;gap:12px;}
-.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule);}
-h1{font-weight:600;font-size:clamp(29px,6vw,44px);line-height:1.15;letter-spacing:-.02em;
-  margin:0 0 26px;max-width:17ch;}
-.abstract p{font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;line-height:1.65;
-  color:var(--ink-soft);margin:0 0 16px;}
-
-.details{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  margin:34px 0;padding:20px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;}
-.detail dt{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
-.detail dd{margin:0;font-weight:500;font-size:16px;line-height:1.4;}
-
-.section{padding:8px 0 36px;}
-h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--spruce);font-weight:500;margin:0 0 20px;display:flex;align-items:center;gap:12px;}
-h2::after{content:"";flex:1;height:1px;background:var(--rule);}
-.takeaways{list-style:none;margin:0;padding:0;}
-.takeaways li{padding:13px 0 13px 30px;border-bottom:1px solid var(--rule);position:relative;}
-.takeaways li:first-child{border-top:1px solid var(--rule);}
-.takeaways li::before{content:"";position:absolute;left:4px;top:23px;width:10px;height:1px;background:var(--spruce);}
-
-/* the long read */
-.prose h3{font-size:clamp(23px,4.4vw,31px);font-weight:600;line-height:1.2;
-  letter-spacing:-.018em;margin:0 0 20px;max-width:22ch;}
-.prose h4{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:32px 0 14px;}
-.prose p{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.65;
-  color:var(--ink-soft);margin:0 0 15px;}
-.shift{margin:22px 0 24px;padding:18px 20px;background:var(--white);
-  border:1px solid var(--rule);border-radius:3px;}
-.shift p{font-family:"IBM Plex Sans",system-ui,sans-serif;margin:0;color:var(--ink);
-  font-size:18px;font-weight:600;line-height:1.4;}
-.shift .to{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-soft);font-weight:400;margin:9px 0;}
-.shift .after{color:var(--spruce);}
-.prose .takeaways li{padding-left:30px;}
-.prose .takeaways li::before{top:24px;}
-.take-head{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:34px 0 16px;}
-
-.closing{border-left:3px solid var(--spruce);padding:4px 0 4px 20px;margin:0 0 44px;}
-.closing p{font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;line-height:1.6;
-  color:var(--ink);margin:0 0 13px;}
-.closing p:last-child{margin-bottom:0;color:var(--ink-soft);}
-
-.speaker-note{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.6;
-  color:var(--ink-soft);margin:0 0 24px;}
-.speaker .bio{margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;}
-.speakers{flex-direction:column;gap:30px;}
-.speaker>div{max-width:56ch;}
-
-.price-tag{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--spruce);border:1px solid var(--spruce);
-  border-radius:2px;padding:5px 9px;display:inline-block;margin:0 0 18px;}
-.price-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 6px;}
-.price-line .amt{font-size:26px;font-weight:600;letter-spacing:-.01em;}
-.price-line .per{font-size:14px;color:var(--ink-soft);}
-
-.other-wrap{margin:11px 0 0;}
-.other-wrap[hidden]{display:none;}
-.other-lab{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
-
-.cohorts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
-.cohort{background:var(--white);border:1px solid var(--rule);border-radius:3px;padding:17px 18px 18px;}
-.cohort.is-tba{background:transparent;border-style:dashed;}
-.cohort .wshop{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
-.cohort .aud{font-weight:600;font-size:16px;line-height:1.35;margin:0 0 12px;}
-.cohort dl{margin:0;display:flex;flex-direction:column;gap:9px;}
-.cohort dt{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 2px;}
-.cohort dd{margin:0;font-size:15px;line-height:1.35;}
-.cohort .tba{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--signal);margin:0 0 12px;}
-.cohort .tba-note{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.45;}
-
-.speakers{display:flex;flex-wrap:wrap;gap:26px;}
-.speaker{display:flex;gap:14px;align-items:flex-start;}
-.avatar{width:76px;height:76px;border-radius:2px;flex:none;background:var(--graphite);color:#F6F6F2;
-  display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
-  font-size:17px;object-fit:cover;}
-.speaker .nm{font-weight:600;margin:0;line-height:1.3;}
-.speaker .rl{margin:2px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.35;}
-.speaker a{color:var(--spruce);font-size:13px;font-family:"IBM Plex Mono",monospace;text-decoration:none;}
-
-/* ---------- the panel ---------- */
-.panel{background:var(--white);border:1px solid var(--rule);border-radius:3px;
-  margin:6px 0 56px;padding:28px 26px 30px;}
-.panel h3{font-size:24px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;}
-.panel .lede{color:var(--ink-soft);font-size:16px;margin:0 0 24px;}
-
-/* signature: the segment slug, a stamped line that says what we already know */
-.slug{border-left:3px solid var(--spruce);background:var(--paper);
-  padding:13px 15px;margin:0 0 26px;font-size:15px;line-height:1.5;}
-.slug .k{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:5px;}
-.slug b{font-weight:600;}
-.slug button{background:none;border:none;padding:0;margin-left:8px;font:inherit;font-size:14px;
-  color:var(--spruce);text-decoration:underline;cursor:pointer;}
-.slug[hidden]{display:none;}
-
-.q{margin:0 0 26px;}
-.q-label{display:block;font-weight:600;font-size:17px;line-height:1.4;margin:0 0 12px;}
-.q-hint{font-size:14px;color:var(--ink-soft);margin:-8px 0 12px;}
-.opts{display:flex;flex-direction:column;gap:8px;}
-.opt{display:flex;align-items:flex-start;gap:11px;cursor:pointer;border:1px solid var(--rule);
-  border-radius:2px;padding:11px 13px;background:var(--paper);font-size:16px;line-height:1.4;
-  transition:border-color .16s,background .16s;}
-.opt:hover{border-color:var(--spruce);background:#fff;}
-.opt.is-picked{border-color:var(--spruce);background:#fff;}
-/* shape carries the meaning: a circle takes one answer, a square takes several */
-.opt input{appearance:none;-webkit-appearance:none;-moz-appearance:none;
-  width:18px;height:18px;flex:none;margin:3px 0 0;cursor:pointer;
-  border:1.5px solid #A6AEAB;background-color:var(--white);
-  background-repeat:no-repeat;background-position:center;
-  transition:border-color .14s,background-color .14s,box-shadow .14s;}
-.opt input[type="radio"]{border-radius:50%;}
-.opt input[type="checkbox"]{border-radius:3px;}
-.opt input:checked{border-color:var(--spruce);background-color:var(--spruce);}
-.opt input[type="radio"]:checked{box-shadow:inset 0 0 0 3.5px var(--white);}
-.opt input[type="checkbox"]:checked{background-size:12px 12px;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' d='M3.5 8.5l3 3 6-6'/></svg>");}
-.opt:hover input{border-color:var(--spruce);}
-
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.tile{display:block;width:100%;text-align:left;cursor:pointer;background:var(--paper);
-  border:1px solid var(--rule);border-radius:2px;padding:13px;font:inherit;font-size:15px;
-  line-height:1.35;color:var(--ink);transition:border-color .16s,background .16s;}
-.tile:hover{border-color:var(--spruce);background:#fff;}
-.tile[aria-pressed="true"]{border-color:var(--spruce);background:#fff;
-  box-shadow:inset 3px 0 0 var(--spruce);font-weight:600;}
-
-.divider{border:0;border-top:1px solid var(--rule);margin:30px 0 26px;}
-.field{margin:0 0 16px;}
-.field label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
-.req{color:var(--signal);}
-input[type=text],input[type=email],select,textarea{width:100%;font:inherit;font-size:16px;
-  color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:12px 13px;}
-textarea{min-height:80px;resize:vertical;}
-input:focus,select:focus,textarea:focus,.tile:focus-visible,.opt:focus-within,button:focus-visible{
-  outline:2px solid var(--spruce);outline-offset:2px;}
-.two-up{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-
-.btn{font-size:16px;font-weight:600;background:var(--spruce);color:#fff;border:none;border-radius:2px;
-  padding:14px 28px;cursor:pointer;margin-top:8px;transition:background .16s;font-family:inherit;}
-.btn:hover{background:var(--spruce-bright);}
-.btn[disabled]{background:#9AA3A0;cursor:not-allowed;}
-.consent{font-size:13px;color:var(--ink-soft);margin:14px 0 0;line-height:1.5;}
-.consent a{color:var(--spruce);}
-.err{border-left:3px solid var(--signal);background:#FDF6EE;padding:12px 14px;margin:16px 0 0;
-  font-size:15px;color:#6B3E10;}
-.err[hidden],#segFields[hidden],#rolePick[hidden],#closing-block[hidden]{display:none;}
-
-.done .mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--spruce);margin:0 0 14px;}
-.done p{color:var(--ink-soft);margin:0 0 14px;}
-#doneBox[hidden],#formBox[hidden]{display:none;}
-
-
-
-footer{background:var(--graphite);color:#B9C2C0;padding:38px 0 44px;}
-footer .wrap{display:flex;flex-direction:column;gap:13px;}
-footer a{color:#DDE4E2;text-decoration:none;font-size:14px;}
-footer a:hover{text-decoration:underline;}
-.foot-links{display:flex;gap:20px;flex-wrap:wrap;}
-.foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9997;}
-
-@media (max-width:620px){
-  .details{grid-template-columns:1fr;gap:14px;}
-  .tiles,.two-up{grid-template-columns:1fr;}
-  .panel{padding:24px 18px 26px;}
-  .hero{padding:40px 0 26px;}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
-</style>
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/content.js"></script>
 </head>
 <body>
 
 <header class="masthead">
   <div class="wrap">
     <a class="wordmark" href="https://www.sanjeevaniai.com" aria-label="METRIS">
-      <img src="metris-mark.png" alt="" width="240" height="240" />
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
       <span>METRIS</span>
     </a>
-    <a class="btn-top" href="#register">Register</a>
   </div>
 </header>
 
 <main>
   <section class="hero wrap">
-    <p class="eyebrow" id="eyebrow"></p>
-    <h1 id="title"></h1>
-    <div class="abstract" id="abstract"></div>
-    <dl class="details">
-      <div class="detail"><dt>Date</dt><dd id="d-date"></dd></div>
-      <div class="detail"><dt>Time</dt><dd id="d-time"></dd></div>
-      <div class="detail"><dt>Location</dt><dd id="d-loc"></dd></div>
-      <div class="detail" id="d-price-cell"><dt>Price</dt><dd id="d-price"></dd></div>
-    </dl>
-  </section>
+    <p class="eyebrow">Three sessions</p>
+    <h1>AI is already in your organization. What can you actually prove about it?</h1>
 
-  <section class="section wrap" id="takeaway-block">
-    <h2>What you leave with</h2>
-    <ul class="takeaways" id="takeaways"></ul>
-  </section>
-
-  <section class="section wrap prose" id="readiness-block">
-    <h3 id="r-heading"></h3>
-    <div id="r-intro"></div>
-    <div class="shift">
-      <p id="r-from"></p>
-      <p class="to">to</p>
-      <p id="r-to"></p>
-      <p class="after" id="r-after"></p>
+    <div class="abstract">
+      <p>Adoption moved faster than anyone could plan for. Licences were bought, pilots went live, employees found their own uses, and AI entered workflows, decisions and customer conversations. The question has changed from whether to use AI to what it is actually changing inside the business, and what evidence you have that it is working.</p>
+      <p>Most organizations can describe the activity in detail. They know which tools were purchased, how many people have access, how many pilots launched, how often the application is used and which policies were approved. Every one of those numbers can be accurate while the questions that matter stay unanswered. What changed. Whether the change created value. Whether the controls that exist on paper are operating. Whether the people responsible for supervising AI can actually do it.</p>
+      <p>These sessions look at that gap from three seats. What you own determines what you can see, so the conversation is different depending on where you sit.</p>
     </div>
-    <h4 id="r-sub"></h4>
-    <div id="r-body"></div>
-    <p class="take-head" id="r-take-head"></p>
-    <ul class="takeaways" id="r-takeaways"></ul>
-  </section>
 
-  <section class="section wrap" id="cohort-block">
-    <h2>Session details</h2>
-    <div class="cohorts" id="cohorts"></div>
-  </section>
-
-  <section class="wrap" id="closing-block">
-    <div class="closing" id="closing"></div>
-  </section>
-
-  <section class="section wrap" id="speaker-block">
-    <h2>Speaking</h2>
-    <p class="speaker-note" id="speakerNote"></p>
-    <div class="speakers" id="speakers"></div>
+    <div class="lede-close">
+      <p>The objective is not to turn executives into AI specialists. It is to make them considerably harder to fool with AI metrics.</p>
+    </div>
   </section>
 
   <section class="wrap" id="register">
     <div class="panel">
-
-      <div id="formBox">
-        <h3>Reserve your seat</h3>
-        <div class="price-line" id="priceLine"></div>
-        <p class="lede" id="calNote"></p>
-
-        <!-- what the link already told us -->
-        <div class="slug" id="slug" hidden>
-          <span class="k">Registering as</span>
-          <span id="slugText"></span><button type="button" id="slugEdit">Not right?</button>
-        </div>
-
-        <!-- shown only when the link did not name a role -->
-        <div id="rolePick" hidden>
-          <div class="q">
-            <span class="q-label">Which seat are you sitting in?</span>
-            <div class="tiles" id="tiles" role="group" aria-label="Choose your role"></div>
-          </div>
-          <div class="field" id="otherSeatWrap" style="display:none">
-            <label for="otherSeat">Tell us the seat you sit in</label>
-            <input type="text" id="otherSeat" />
-          </div>
-        </div>
-
-        <!-- shown when size or industry is missing, or when they click Not right -->
-        <div id="segFields" hidden>
-          <div class="two-up">
-            <div class="field">
-              <label for="sizeBand">Company size <span class="req">*</span></label>
-              <select id="sizeBand"></select>
-            </div>
-            <div class="field">
-              <label for="industry">Industry <span class="req">*</span></label>
-              <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
-            </div>
-          </div>
-        </div>
-
-        <div id="questions"></div>
-
-        <div class="q">
-          <span class="q-label" id="askLab">Anything you want covered?</span>
-          <p class="q-hint">Optional, and the part read first.</p>
-          <textarea id="openAsk" aria-labelledby="askLab"></textarea>
-        </div>
-
-        <hr class="divider" />
-
-        <div class="two-up">
-          <div class="field"><label for="firstName">First name <span class="req">*</span></label>
-            <input type="text" id="firstName" autocomplete="given-name" /></div>
-          <div class="field"><label for="lastName">Last name <span class="req">*</span></label>
-            <input type="text" id="lastName" autocomplete="family-name" /></div>
-        </div>
-        <div class="field"><label for="email">Work email <span class="req">*</span></label>
-          <input type="email" id="email" autocomplete="email" /></div>
-        <div class="two-up">
-          <div class="field"><label for="jobTitle">Job title <span class="req">*</span></label>
-            <input type="text" id="jobTitle" autocomplete="organization-title" /></div>
-          <div class="field"><label for="company">Company <span class="req">*</span></label>
-            <input type="text" id="company" autocomplete="organization" /></div>
-        </div>
-        <div class="field"><label for="country">Country <span class="req">*</span></label>
-          <select id="country"></select></div>
-
-        <button class="btn" id="send">Register and pay $199</button>
-        <p class="consent" id="consent"></p>
-        <div class="err" id="err" hidden></div>
+      <div class="q">
+        <span class="q-label">Which seat are you sitting in?</span>
+        <div class="tiles" id="tiles" role="group" aria-label="Choose your seat"></div>
       </div>
 
-      <div id="doneBox" hidden>
-        <div class="done">
-          <p class="mark">Registered</p>
-          <h3>You are on the list.</h3>
-          <p>A confirmation and the joining link are on their way to the address you gave us. If the time does not work, keep the email, the recording goes to the same place.</p>
-          <p id="doneRole"></p>
+      <div class="field" id="otherSeatWrap" style="display:none">
+        <label for="otherSeat">Tell us the seat you sit in</label>
+        <input type="text" id="otherSeat" />
+      </div>
+
+      <div class="two-up">
+        <div class="field">
+          <label for="industry">Industry <span class="req">*</span></label>
+          <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
+        </div>
+        <div class="field">
+          <label for="sizeBand">Company size <span class="req">*</span></label>
+          <select id="sizeBand"></select>
         </div>
       </div>
 
+      <p class="price-note" id="priceNote"></p>
+
+      <button class="btn" id="go">Continue</button>
+      <div class="err" id="err" hidden></div>
     </div>
   </section>
 </main>
@@ -582,323 +82,84 @@ footer a:hover{text-decoration:underline;}
 
 <script>
 (function(){
-  var C=window.CONFIG, RQ=window.ROLE_QUESTIONS, SH=window.SHARED, BANDS=window.SIZE_BANDS;
-  function $(id){return document.getElementById(id);}
-  function esc(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML;}
+  var M = window.METRIS, C = window.METRIS_CONTENT;
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
 
-  /* ---------- read the link ---------- */
-  var p=new URLSearchParams(location.search);
-  var seg={
-    role: (p.get("r")||"").toLowerCase().trim(),
-    head: parseInt(p.get("s")||"",10),
-    industry:(p.get("i")||"").trim(),
-    campaign:(p.get("c")||p.get("utm_campaign")||"").trim()
-  };
-  if(!RQ[seg.role]) seg.role="";
-  var known={role:!!seg.role, size:!isNaN(seg.head)&&seg.head>0, industry:!!seg.industry};
+  var SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
 
-  function bandOf(n){
-    if(n<=50)return BANDS[0]; if(n<=250)return BANDS[1];
-    if(n<=1000)return BANDS[2]; if(n<=5000)return BANDS[3]; return BANDS[4];
-  }
-  var sizeBand = known.size ? bandOf(seg.head) : "";
-  function isSmall(){
-    var b = known.size ? sizeBand : $("sizeBand").value;
-    return b===BANDS[0]||b===BANDS[1];
-  }
-
-  /* ---------- paint the event ---------- */
-  $("eyebrow").textContent=C.event.eyebrow;
-  $("title").textContent=C.event.title;
-  $("abstract").innerHTML=C.event.abstract.map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
-  $("d-date").textContent=C.event.date; $("d-time").textContent=C.event.time;
-  $("d-loc").textContent=C.event.location; $("calNote").textContent=C.event.calendarNote;
-  if(C.event.price){
-    $("d-price").textContent=C.event.price;
-    $("priceLine").innerHTML='<span class="amt">'+esc(C.event.price)+'</span>'+
-      '<span class="per">'+esc(C.event.priceNote||"")+'</span>';
-  } else { $("d-price-cell").style.display="none"; }
-
-  var R=C.readiness;
-  if(R){
-    $("r-heading").textContent=R.heading;
-    $("r-intro").innerHTML=(R.intro||[]).map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
-    $("r-from").textContent=R.shiftFrom; $("r-to").textContent=R.shiftTo;
-    $("r-after").textContent=(R.afterShift||[]).join(" ");
-    $("r-sub").textContent=R.subheading;
-    $("r-body").innerHTML=(R.body||[]).map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
-    $("r-take-head").textContent=R.takeawaysHeading;
-    $("r-takeaways").innerHTML=(R.takeaways||[]).map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
-  } else { $("readiness-block").style.display="none"; }
-
-  if(C.closing&&C.closing.length){
-    $("closing").innerHTML=C.closing.map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
-  } else { $("closing-block").hidden=true; }
-
-  if(C.event.takeaways&&C.event.takeaways.length){
-    $("takeaways").innerHTML=C.event.takeaways.map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
-  } else { $("takeaway-block").style.display="none"; }
-  if(C.cohorts&&C.cohorts.length){
-    $("cohorts").innerHTML=C.cohorts.map(function(k){
-      var mark=k.letter?'<p class="wshop">Workshop '+esc(k.letter)+'</p>':'';
-      if(k.tba){
-        return '<div class="cohort is-tba">'+mark+'<p class="aud">'+esc(k.audience)+'</p>'+
-          '<p class="tba">To be announced</p>'+
-          '<p class="tba-note">Date and time are being set. Register for the session below and we will write to you as soon as this one opens.</p></div>';
-      }
-      return '<div class="cohort">'+mark+'<p class="aud">'+esc(k.audience)+'</p><dl>'+
-        '<div><dt>Date</dt><dd>'+esc(k.date)+'</dd></div>'+
-        '<div><dt>Time</dt><dd>'+esc(k.time)+'</dd></div>'+
-        '<div><dt>Location</dt><dd>'+esc(k.location)+'</dd></div>'+
-        (C.event.price?'<div><dt>Price</dt><dd>'+esc(C.event.price)+'</dd></div>':'')+
-        '</dl></div>';
-    }).join("");
-  } else { $("cohort-block").style.display="none"; }
-
-  if(C.speakerNote) $("speakerNote").textContent=C.speakerNote;
-  else $("speakerNote").style.display="none";
-  $("speakers").innerHTML=(C.speakers||[]).map(function(s){
-    var ini=s.name.split(" ").map(function(w){return w[0];}).slice(0,2).join("");
-    var av=s.photo?'<img class="avatar" src="'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
-                  :'<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
-    return '<div class="speaker">'+av+'<div><p class="nm">'+esc(s.name)+'</p><p class="rl">'+
-      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.bio?[].concat(s.bio).map(function(b){return '<p class="bio">'+esc(b)+'</p>';}).join(''):'')+
-      (s.linkedin?'<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>':'')+
-      '</div></div>';
+  /* every seat is offered, whatever the company size */
+  $("tiles").innerHTML = M.SEATS.map(function(s){
+    return '<button type="button" class="tile" data-id="'+s.id+'" aria-pressed="false">'+esc(s.label)+'</button>';
   }).join("");
-  $("consent").innerHTML='By registering you agree we may contact you about this session and related work. Read the <a href="'+esc(C.footer.privacyUrl)+'" target="_blank" rel="noopener">privacy policy</a>.';
-  $("footOrg").textContent=C.footer.org;
-  $("footLinks").innerHTML='<a href="'+esc(C.footer.privacyUrl)+'">Privacy policy</a><a href="'+
-    esc(C.footer.termsUrl)+'">Terms</a><a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
+  $("sizeBand").innerHTML = '<option value="">Select</option>' +
+    SIZE_BANDS.map(function(b){ return "<option>"+esc(b)+"</option>"; }).join("");
+  $("priceNote").innerHTML = "<b>"+esc(M.PRICE.display)+"</b> covers all three sessions in your track.";
 
-  var COUNTRIES=["United States","Canada","United Kingdom","India","Australia","Germany","France","Netherlands","Ireland","Singapore","United Arab Emirates","Saudi Arabia","South Africa","Nigeria","Kenya","Brazil","Mexico","Japan","New Zealand","Spain","Italy","Sweden","Switzerland","Other"];
-  $("country").innerHTML='<option value="">Select</option>'+COUNTRIES.map(function(c){return "<option>"+esc(c)+"</option>";}).join("");
-  $("sizeBand").innerHTML='<option value="">Select</option>'+BANDS.map(function(b){return "<option>"+esc(b)+"</option>";}).join("");
+  $("footOrg").textContent = C.footer.org;
+  $("footLinks").innerHTML =
+    '<a href="'+esc(C.footer.privacyUrl)+'">Privacy policy</a>'+
+    '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
+    '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
-  /* ---------- the slug ---------- */
-  function roleName(id){
-    var r=RQ[id]; if(!r) return "";
-    return (isSmall()&&r.smallLabel)?r.smallLabel:r.label;
-  }
-  function paintSlug(){
-    if(!known.role) return;
-    var bits=[ "<b>"+esc(roleName(seg.role))+"</b>" ];
-    if(known.industry) bits.push("in "+esc(seg.industry));
-    if(known.size) bits.push("at a company of "+esc(sizeBand)+" people");
-    $("slugText").innerHTML=bits.join(", ");
-    $("slug").hidden=false;
-  }
-  $("slugEdit").addEventListener("click",function(){
-    known.role=false; known.size=false; known.industry=false;
-    $("slug").hidden=true; $("rolePick").hidden=false; $("segFields").hidden=false;
-    if(sizeBand) $("sizeBand").value=sizeBand;
-    if(seg.industry) $("industry").value=seg.industry;
-    paintRoles(); $("questions").innerHTML="";
-    if(seg.role){ var t=$("tiles").querySelector('[data-id="'+seg.role+'"]'); if(t) t.click(); }
-  });
-
-  /* ---------- role picker ---------- */
-  function paintRoles(){
-    var ids=isSmall()?window.SMALL_ROLES:window.LARGE_ROLES;
-    $("tiles").innerHTML=ids.map(function(id){
-      return '<button type="button" class="tile" data-id="'+id+'" aria-pressed="false">'+esc(roleName(id))+'</button>';
-    }).join("");
-  }
-  $("tiles").addEventListener("click",function(e){
-    var t=e.target.closest(".tile"); if(!t) return;
-    Array.prototype.forEach.call(this.querySelectorAll(".tile"),function(b){b.setAttribute("aria-pressed","false");});
+  var seatId = "";
+  $("tiles").addEventListener("click", function(e){
+    var t = e.target.closest(".tile"); if(!t) return;
+    Array.prototype.forEach.call(this.querySelectorAll(".tile"), function(b){
+      b.setAttribute("aria-pressed","false");
+    });
     t.setAttribute("aria-pressed","true");
-    seg.role=t.dataset.id;
-    $("otherSeatWrap").style.display=RQ[seg.role].freeText?"block":"none";
-    paintQuestions();
-  });
-  $("sizeBand").addEventListener("change",function(){
-    if(!known.role){ var cur=seg.role; paintRoles();
-      if(cur){ var t=$("tiles").querySelector('[data-id="'+cur+'"]'); if(t) t.click(); } }
-    else { paintQuestions(); paintSlug(); }
+    seatId = t.dataset.id;
+    var seat = M.seat(seatId);
+    $("otherSeatWrap").style.display = (seat && seat.freeText) ? "block" : "none";
   });
 
-  /* ---------- the three questions ---------- */
-  var A={q1:"",q2:"",q3:""};
+  /* whatever the link already carried, so a campaign can pre-fill */
+  var p = new URLSearchParams(location.search);
+  if(p.get("i")) $("industry").value = p.get("i");
+  var campaign = (p.get("c") || p.get("utm_campaign") || "").trim();
 
-  function paintQuestions(){
-    if(!seg.role){ $("questions").innerHTML=""; A={q1:"",q2:"",q3:""}; return; }
-    var band=isSmall()?"small":"large", r=RQ[seg.role];
-    var list=[
-      {key:"q1",label:SH.q1.label,options:SH.q1[band],multi:SH.q1.multi,other:SH.q1.other,exclusive:SH.q1.exclusive},
-      {key:"q2",label:SH.q2.label,options:SH.q2[band],multi:SH.q2.multi,other:SH.q2.other,exclusive:SH.q2.exclusive},
-      {key:"q3",label:r.q,options:r.options,multi:r.multi,other:r.other,exclusive:r.exclusive,
-       textarea:r.textarea,placeholder:r.placeholder}
-    ];
-    $("questions").innerHTML=list.map(function(q,i){
-      if(q.textarea){
-        return '<div class="q" data-q="'+q.key+'"><span class="q-label" id="l'+i+'">'+esc(q.label)+'</span>'+
-          '<textarea data-key="'+q.key+'" aria-labelledby="l'+i+'" placeholder="'+esc(q.placeholder||"")+'"></textarea></div>';
-      }
-      var opts=(q.options||[]).slice();
-      if(q.other) opts.push("Other");
-      var type=q.multi?"checkbox":"radio";
-      var rows=opts.map(function(o){
-        var flags=(q.exclusive&&q.exclusive.indexOf(o)>-1?' data-x="1"':'')+(o==="Other"?' data-other="1"':'');
-        return '<label class="opt"><input type="'+type+'" name="'+q.key+'" value="'+esc(o)+'"'+flags+
-          '/> <span>'+esc(o)+'</span></label>';
-      }).join("");
-      return '<div class="q" data-q="'+q.key+'"><span class="q-label">'+esc(q.label)+'</span>'+
-        (q.multi?'<p class="q-hint">Tick everything that applies.</p>':'')+
-        '<div class="opts" role="'+(q.multi?"group":"radiogroup")+'" aria-label="'+esc(q.label)+'">'+rows+'</div>'+
-        (q.other?'<div class="other-wrap" hidden><label class="other-lab" for="ot-'+q.key+'">Tell us</label>'+
-          '<input type="text" class="other-text" id="ot-'+q.key+'" placeholder="A few words is plenty." /></div>':'')+
-        '</div>';
-    }).join("");
-    A=readAnswers();
-  }
+  $("go").addEventListener("click", async function(){
+    var err = $("err"), btn = this;
+    function fail(m){ err.hidden=false; err.textContent=m; err.scrollIntoView({block:"center"}); }
 
-  /* one exclusive tick clears the rest; any normal tick clears the exclusives */
-  function applyExclusive(inp){
-    if(inp.type!=="checkbox"||!inp.checked) return;
-    var mine=inp.dataset.x==="1";
-    Array.prototype.forEach.call(inp.closest(".opts").querySelectorAll('input[type=checkbox]'),function(b){
-      if(b===inp) return;
-      if(mine||b.dataset.x==="1") b.checked=false;
-    });
-  }
-  function paintPicked(grp){
-    Array.prototype.forEach.call(grp.querySelectorAll(".opt"),function(l){
-      l.classList.toggle("is-picked", !!l.querySelector("input").checked);
-    });
-  }
-  function syncOther(wrap){
-    var o=wrap.querySelector('input[data-other="1"]'), box=wrap.querySelector(".other-wrap");
-    if(!o||!box) return;
-    var on=o.checked;
-    box.hidden=!on;
-    if(!on){ var t=box.querySelector(".other-text"); if(t) t.value=""; }
-  }
-  function readAnswers(){
-    var out={q1:"",q2:"",q3:""};
-    ["q1","q2","q3"].forEach(function(k){
-      var wrap=$("questions").querySelector('[data-q="'+k+'"]'); if(!wrap) return;
-      var ta=wrap.querySelector('textarea[data-key="'+k+'"]');
-      if(ta){ out[k]=ta.value.trim(); return; }
-      var txt=wrap.querySelector(".other-text"), vals=[];
-      Array.prototype.forEach.call(wrap.querySelectorAll("input:checked"),function(i){
-        if(i.dataset.other==="1"){
-          var v=txt?txt.value.trim():"";
-          vals.push(v?"Other: "+v:"Other");
-        } else vals.push(i.value);
-      });
-      out[k]=vals.join("; ");
-    });
-    return out;
-  }
-  /* true when "Other" is ticked but the Tell us box is still empty */
-  function otherBlank(){
-    var qs=$("questions").querySelectorAll(".q");
-    for(var i=0;i<qs.length;i++){
-      var o=qs[i].querySelector('input[data-other="1"]'), t=qs[i].querySelector(".other-text");
-      if(o&&o.checked&&t&&!t.value.trim()) return true;
-    }
-    return false;
-  }
+    if(!seatId) return fail("Pick the seat you sit in, then continue.");
+    var industry = $("industry").value.trim();
+    var sizeBand = $("sizeBand").value;
+    if(!industry || !sizeBand) return fail("Industry and company size are still blank.");
 
-  $("questions").addEventListener("change",function(e){
-    var inp=e.target;
-    if(inp.type!=="radio"&&inp.type!=="checkbox") return;
-    applyExclusive(inp);
-    paintPicked(inp.closest(".opts"));
-    syncOther(inp.closest(".q"));
-    A=readAnswers();
-    if(inp.dataset.other==="1"&&inp.checked){
-      var t=inp.closest(".q").querySelector(".other-text"); if(t) t.focus();
-    }
-  });
-  $("questions").addEventListener("input",function(e){
-    if(e.target.tagName==="TEXTAREA"||e.target.classList.contains("other-text")) A=readAnswers();
-  });
+    var seat = M.seat(seatId);
+    var otherSeat = $("otherSeat").value.trim();
+    if(seat.freeText && !otherSeat) return fail("Tell us the seat you sit in, then continue.");
 
-  /* came back from Stripe without paying */
-  if(p.get("cancelled")){
-    var e0=$("err"); e0.hidden=false;
-    e0.textContent="Payment was cancelled, so the seat is not booked yet. Your answers are still here \u2014 press Register and pay when you are ready.";
-  }
+    err.hidden = true; btn.disabled = true; btn.textContent = "One moment";
 
-  /* ---------- first paint ---------- */
-  if(known.size) $("sizeBand").value=sizeBand;
-  if(known.industry) $("industry").value=seg.industry;
-  if(!known.size||!known.industry) $("segFields").hidden=false;
-  if(known.role){ paintSlug(); paintQuestions(); }
-  else { $("rolePick").hidden=false; paintRoles(); }
-
-  /* ---------- submit ---------- */
-  $("send").addEventListener("click",async function(){
-    var err=$("err"), btn=this;
-    var roleLabel=roleName(seg.role);
-    if(seg.role==="other"&&$("otherSeat").value.trim()) roleLabel="Another seat: "+$("otherSeat").value.trim();
-    var data={
-      /* the endpoint's contract: name, email, company, role, headcount,
-         industry, campaign, answer1..3. The rest is sent as well, because the
-         form already asks for it and dropping it would lose the answers. */
-      name:[$("firstName").value.trim(),$("lastName").value.trim()].filter(Boolean).join(" "),
-      email:$("email").value.trim(),
-      company:$("company").value.trim(),
-      role:roleLabel,
-      headcount:known.size?String(seg.head):"",
-      industry:$("industry").value.trim()||seg.industry,
-      campaign:seg.campaign,
-      answer1:A.q1, answer2:A.q2, answer3:A.q3,
-
-      firstName:$("firstName").value.trim(), lastName:$("lastName").value.trim(),
-      jobTitle:$("jobTitle").value.trim(), country:$("country").value,
-      sizeBand:known.size?sizeBand:$("sizeBand").value,
-      openAsk:$("openAsk").value.trim()
-    };
-    function fail(m){err.hidden=false;err.textContent=m;err.scrollIntoView({block:"center"});}
-
-    if(!seg.role) return fail("Pick the seat you sit in, then register.");
-    if(!data.sizeBand||!data.industry) return fail("Company size and industry are still blank.");
-    if(!A.q1||!A.q2||!A.q3) return fail("Three questions above are still unanswered.");
-    if(otherBlank()) return fail("You picked Other. Tell us what you mean in the box, then register.");
-    var miss=["firstName","lastName","email","jobTitle","company","country"].filter(function(k){return !data[k];});
-    if(miss.length) return fail("Fill in every field marked with a star, then register.");
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
-
-    /* STEP ONE: record the lead. Nothing is charged until this has succeeded. */
-    err.hidden=true; btn.disabled=true; btn.textContent="Registering";
-    var reg;
+    /* Recorded BEFORE routing, so somebody who filters and leaves is still a
+       lead. Marked stage "filter" so these rows are distinguishable from people
+       who went on to register. */
+    var id = "";
     try{
-      var r1=await fetch(C.submit.registerUrl,{
+      var res = await fetch("/api/register", {
         method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(data)
+        body: JSON.stringify({
+          stage:"filter", seat:seatId, industry:industry, sizeBand:sizeBand,
+          campaign:campaign, jobTitle: seat.freeText ? otherSeat : ""
+        })
       });
-      reg=null; try{ reg=await r1.json(); }catch(e){}
-      if(!r1.ok||!reg||reg.ok!==true){
-        throw new Error((reg&&reg.error)||("The server answered "+r1.status+" "+r1.statusText+"."));
-      }
-    }catch(e){
-      btn.disabled=false; btn.textContent="Register and pay $199";
-      return fail((e&&e.message?e.message:"That did not go through, and nothing was recorded.")+
-        " You have not been charged. Try once more, and if it fails again write to "+
-        C.footer.replyTo+" and you will be registered by hand.");
-    }
+      var out=null; try{ out = await res.json(); }catch(e){}
+      if(res.ok && out && out.ok) id = out.id || "";
+    }catch(e){ /* routing must not depend on the sheet being reachable */ }
 
-    /* STEP TWO: now that the lead is safe, go and take the money. */
-    btn.textContent="Taking you to payment";
-    try{
-      var r2=await fetch(C.submit.checkoutUrl,{
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(Object.assign({},data,{id:reg.id||""}))
-      });
-      var pay=null; try{ pay=await r2.json(); }catch(e){}
-      if(!r2.ok||!pay||pay.ok!==true||!pay.url){
-        throw new Error((pay&&pay.error)||("The server answered "+r2.status+" "+r2.statusText+"."));
-      }
-      window.location.assign(pay.url);
-    }catch(e){
-      btn.disabled=false; btn.textContent="Register and pay $199";
-      fail("Your details are saved and you have not been charged, but the payment page would not open. "+
-           (e&&e.message?e.message:"")+
-           " Try once more, or write to "+C.footer.replyTo+" and we will send you a payment link.");
-    }
+    var group = M.groupForSeat(seatId);
+    var qs = new URLSearchParams();
+    qs.set("seat", seatId);
+    qs.set("i", industry);
+    qs.set("s", sizeBand);
+    if(id) qs.set("id", id);
+    if(campaign) qs.set("c", campaign);
+    if(seat.freeText && otherSeat) qs.set("t", otherSeat);
+
+    location.assign((group ? "/" + group.slug : "/other") + "?" + qs.toString());
   });
 })();
 </script>

@@ -22,6 +22,12 @@ var SHEET_NAME    = "Entries";
 var COLUMNS = [
   ["id",                "id"],
   ["timestamp",         "timestamp"],
+  ["stage",             "stage"],
+  ["seat",              "seat"],
+  ["seat label",        "seatLabel"],
+  ["group",             "group"],
+  ["session_slug",      "sessionSlug"],
+  ["layer",             "layer"],
   ["name",              "name"],
   ["email",             "email"],
   ["job title",         "jobTitle"],
@@ -102,6 +108,22 @@ function doPost(e){
     if(!d.id)        d.id = Utilities.getUuid();
     if(!d.timestamp) d.timestamp = new Date();
     if(!d.paid)      d.paid = "no";
+    if(!d.stage)     d.stage = "registration";
+
+    /* Page one writes a filter row and hands its id to the group page, which
+       sends it back. Same id means the same person, so the row is filled in
+       rather than duplicated. Blanks never overwrite something already there. */
+    var existing = findRow_(sh, d.id);
+    if(existing > 0){
+      var current = sh.getRange(existing, 1, 1, COLUMNS.length).getValues()[0];
+      var merged = COLUMNS.map(function(c, i){
+        var v = d[c[1]];
+        if(v === undefined || v === null || v === "") return current[i];
+        return v;
+      });
+      sh.getRange(existing, 1, 1, COLUMNS.length).setValues([merged]);
+      return json_({ ok:true, row: existing, id: d.id, updated: true });
+    }
 
     sh.appendRow(COLUMNS.map(function(c){
       var v = d[c[1]];

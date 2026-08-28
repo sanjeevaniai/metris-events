@@ -10,6 +10,7 @@
      STRIPE_SECRET_KEY   sk_test_... while testing, sk_live_... when live */
 
 const Stripe = require("stripe");
+const M = require("../sessions.js");
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") {
@@ -32,6 +33,16 @@ module.exports = async (req, res) => {
     const s = await stripe.checkout.sessions.retrieve(id);
     const paid = s.payment_status === "paid";
 
+    /* Which track was bought, so the confirmation page can list its three
+       sessions. Derived from the seat in metadata, because seat is the source
+       of truth; the group in metadata is only a cross-check. */
+    var groupSlug = "";
+    if (paid && s.metadata) {
+      var g = s.metadata.seat ? M.groupForSeat(s.metadata.seat) : null;
+      if (!g && s.metadata.group) g = M.group(s.metadata.group);
+      if (g) groupSlug = g.slug;
+    }
+
     /* only what the page needs to render, never the whole session */
     return res.status(200).json({
       ok: true,
@@ -40,7 +51,9 @@ module.exports = async (req, res) => {
       paymentStatus: s.payment_status || "",
       email: paid ? ((s.customer_details && s.customer_details.email) || s.customer_email || "") : "",
       amount: paid ? ((s.amount_total || 0) / 100).toFixed(2) : "",
-      currency: paid ? (s.currency || "usd").toUpperCase() : ""
+      currency: paid ? (s.currency || "usd").toUpperCase() : "",
+      group: groupSlug,
+      seat: paid && s.metadata ? (s.metadata.seat || "") : ""
     });
   } catch (e) {
     /* an id Stripe does not know is a client mistake, not a server fault */

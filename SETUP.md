@@ -5,15 +5,22 @@ Vercel picks them up automatically — there is no build step for the page itsel
 
 What happens when someone registers:
 
-1. The page posts the registration to `/api/register`, which writes the row to
-   the Google Sheet with **paid = no**.
-2. Only once that write has come back ok does the page ask `/api/checkout` for a
-   Stripe Checkout session and hand the registrant over. The order is deliberate:
-   an abandoned payment still leaves the lead in the sheet.
-3. Stripe takes the $199 and returns them to `/success.html?session_id=...`.
-4. That page shows nothing until `/api/session` has asked Stripe, server side,
-   whether the session was actually paid. A cancelled, unpaid or invented session
-   id gets a page saying the seat is **not** booked.
+1. **Page one** (`/`) asks for the seat, the industry and the company size, and
+   posts a row to `/api/register` marked **stage = filter**. Somebody who filters
+   and leaves is a lead, not a nothing. It then routes to the group page for that
+   seat, carrying the row's id in the URL.
+2. **The group page** (`/group-a`, `/group-b`, `/group-c`) asks the three
+   questions and the contact fields, and posts to `/api/register` again with the
+   same id and **stage = registration**. Same id means the same person, so the
+   filter row is filled in rather than duplicated.
+3. Only once that write has come back ok does the page ask `/api/checkout` for a
+   Stripe session and hand the registrant over. **Do not reverse that order** -
+   an abandoned payment must still leave the lead in the sheet.
+4. Stripe returns them to `/success?session_id=...`, which shows nothing until
+   `/api/session` has asked Stripe, server side, whether the session was paid.
+   The confirmation lists all three sessions of the track that was bought.
+5. **The catch-all** (`/other`) takes seat and contact details only, no payment,
+   for anyone whose seat is not part of a track.
 
 There is no webhook, which means **nothing ever changes the paid column**. See
 "What the missing webhook costs you" at the end.
@@ -65,18 +72,15 @@ records who reached the card screen, not who paid.
 
 | Name | Value |
 |---|---|
-| `STRIPE_SECRET_KEY` | `sk_live_…` from step 2 |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_…` from step 2 |
+| `STRIPE_SECRET_KEY` | `sk_live_...` from step 2 |
 | `SHEET_WEBHOOK_URL` | the `/exec` URL from step 1 |
 | `SHEET_SHARED_SECRET` | the same random string you put in `Code.gs` |
+| `PUBLIC_SITE_URL` | `https://events.sanjeevaniai.com` |
 
-Optional:
-
-| Name | Value |
-|---|---|
-| `PRICE_CENTS` | defaults to `19900`. Set it to change the price. |
-| `STRIPE_PRICE_ID` | `price_…` to use a Stripe Price instead of `PRICE_CENTS` |
-| `SITE_URL` | overrides the site address used in the return links |
+There is deliberately no `STRIPE_PRICE_ID` and no `PRICE_CENTS`. The price for
+each track lives in `sessions.js` as that group's `stripePriceId`, and there is
+no environment fallback: a group whose price is missing or whose amount is not
+$249 is refused by name rather than charged the wrong amount.
 
 Redeploy after adding them — Vercel only picks up new variables on a fresh build.
 

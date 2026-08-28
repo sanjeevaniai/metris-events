@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Register &middot; METRIS</title>
+<meta name="description" content="Three sessions on what you can prove about the AI already running in your organization." />
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F272B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/time.js"></script>
+<script src="/content.js"></script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="METRIS">
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
+      <span>METRIS</span>
+    </a>
+    <a class="btn-top" href="#register">Register</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="room" id="room"></p>
+    <h1 id="title"></h1>
+    <div class="abstract" id="copy"></div>
+  </section>
+
+  <!-- THE INTERACTIVE FIGURE MOUNTS HERE.
+       It reads its data from window.METRIS: the group object is on
+       window.METRIS_GROUP once this page has resolved its slug, and the figure
+       data for that group is window.METRIS_GROUP.figure. Replace the contents
+       of #figure with the component; nothing else on the page depends on it. -->
+  <section class="section wrap">
+    <h2>The shape of it</h2>
+    <div class="figure-mount" id="figure">Figure mount point &mdash; component not yet supplied</div>
+  </section>
+
+  <section class="section wrap">
+    <h2>The three sessions</h2>
+    <ul class="sessions" id="sessions"></ul>
+  </section>
+
+  <section class="wrap" id="register">
+    <div class="panel">
+      <div id="formBox">
+        <h3>Reserve your seat</h3>
+        <div class="price-line" id="priceLine"></div>
+
+        <div class="slug" id="slug" hidden>
+          <span class="k">Registering as</span>
+          <span id="slugText"></span><button type="button" id="slugEdit">Not right?</button>
+        </div>
+
+        <div id="rolePick" hidden>
+          <div class="q">
+            <span class="q-label">Which seat are you sitting in?</span>
+            <div class="tiles" id="tiles" role="group" aria-label="Choose your seat"></div>
+          </div>
+        </div>
+
+        <div id="segFields" hidden>
+          <div class="two-up">
+            <div class="field">
+              <label for="industry">Industry <span class="req">*</span></label>
+              <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
+            </div>
+            <div class="field">
+              <label for="sizeBand">Company size <span class="req">*</span></label>
+              <select id="sizeBand"></select>
+            </div>
+          </div>
+        </div>
+
+        <div id="questions"></div>
+
+        <div class="q">
+          <span class="q-label" id="askLab">Anything you want covered?</span>
+          <p class="q-hint">Optional, and the part read first.</p>
+          <textarea id="openAsk" aria-labelledby="askLab"></textarea>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="two-up">
+          <div class="field"><label for="firstName">First name <span class="req">*</span></label>
+            <input type="text" id="firstName" autocomplete="given-name" /></div>
+          <div class="field"><label for="lastName">Last name <span class="req">*</span></label>
+            <input type="text" id="lastName" autocomplete="family-name" /></div>
+        </div>
+        <div class="field"><label for="email">Work email <span class="req">*</span></label>
+          <input type="email" id="email" autocomplete="email" /></div>
+        <div class="two-up">
+          <div class="field"><label for="jobTitle">Job title <span class="req">*</span></label>
+            <input type="text" id="jobTitle" autocomplete="organization-title" /></div>
+          <div class="field"><label for="company">Company <span class="req">*</span></label>
+            <input type="text" id="company" autocomplete="organization" /></div>
+        </div>
+        <div class="field"><label for="country">Country <span class="req">*</span></label>
+          <select id="country"></select></div>
+
+        <button class="btn" id="send">Register and pay</button>
+        <p class="consent" id="consent"></p>
+        <div class="err" id="err" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="speaker-block">
+    <h2>Speaking</h2>
+    <p class="speaker-note" id="speakerNote"></p>
+    <div class="speakers" id="speakers"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links" id="footLinks"></div>
+    <p class="foot-org" id="footOrg"></p>
+  </div>
+</footer>
+
+<script src="/page-group.js"></script>
+</body>
+</html>

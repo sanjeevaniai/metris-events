@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tell us where you sit &middot; METRIS</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F272B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/content.js"></script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="METRIS">
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
+      <span>METRIS</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="eyebrow">Another seat</p>
+    <h1>The three tracks are built around specific seats. Yours is not one of them.</h1>
+    <div class="abstract">
+      <p>Each track is grouped so the people in the room own similar decisions, which is what makes the conversation useful. Rather than put you in a room that does not fit, tell us where you sit and what you are trying to work out.</p>
+      <p>We read these. If enough people share a seat we run a track for it, and if one of the existing tracks would in fact suit you, we will say so.</p>
+    </div>
+  </section>
+
+  <section class="wrap" id="register">
+    <div class="panel">
+      <div id="formBox">
+        <h3>Tell us where you sit</h3>
+        <p class="lede">No payment, and nothing is booked. This is how we decide what to run next.</p>
+
+        <div class="field">
+          <label for="seatText">The seat you sit in <span class="req">*</span></label>
+          <input type="text" id="seatText" placeholder="Chief Data Officer, Head of Internal Audit, and so on" />
+        </div>
+
+        <div class="two-up">
+          <div class="field">
+            <label for="industry">Industry <span class="req">*</span></label>
+            <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
+          </div>
+          <div class="field">
+            <label for="sizeBand">Company size <span class="req">*</span></label>
+            <select id="sizeBand"></select>
+          </div>
+        </div>
+
+        <div class="q">
+          <span class="q-label" id="askLab">What are you trying to work out?</span>
+          <p class="q-hint">Optional, and the part read first.</p>
+          <textarea id="openAsk" aria-labelledby="askLab"></textarea>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="two-up">
+          <div class="field"><label for="firstName">First name <span class="req">*</span></label>
+            <input type="text" id="firstName" autocomplete="given-name" /></div>
+          <div class="field"><label for="lastName">Last name <span class="req">*</span></label>
+            <input type="text" id="lastName" autocomplete="family-name" /></div>
+        </div>
+        <div class="field"><label for="email">Work email <span class="req">*</span></label>
+          <input type="email" id="email" autocomplete="email" /></div>
+        <div class="two-up">
+          <div class="field"><label for="jobTitle">Job title <span class="req">*</span></label>
+            <input type="text" id="jobTitle" autocomplete="organization-title" /></div>
+          <div class="field"><label for="company">Company <span class="req">*</span></label>
+            <input type="text" id="company" autocomplete="organization" /></div>
+        </div>
+        <div class="field"><label for="country">Country <span class="req">*</span></label>
+          <select id="country"></select></div>
+
+        <button class="btn" id="send">Send it</button>
+        <p class="consent" id="consent"></p>
+        <div class="err" id="err" hidden></div>
+      </div>
+
+      <div id="doneBox" hidden>
+        <div class="done">
+          <p class="mark">Received</p>
+          <h3>Thank you, that is with us.</h3>
+          <p>Nothing has been booked and you have not been charged. If a track suits you, or we run one for your seat, we will write to the address you gave us.</p>
+          <p><a href="/">Back to the start</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links" id="footLinks"></div>
+    <p class="foot-org" id="footOrg"></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var M = window.METRIS, C = window.METRIS_CONTENT;
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
+
+  var SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
+  var COUNTRIES = ["United States","Canada","United Kingdom","India","Australia","Germany","France","Netherlands","Ireland","Singapore","United Arab Emirates","Saudi Arabia","South Africa","Nigeria","Kenya","Brazil","Mexico","Japan","New Zealand","Spain","Italy","Sweden","Switzerland","Other"];
+
+  $("sizeBand").innerHTML = '<option value="">Select</option>'+
+    SIZE_BANDS.map(function(b){ return "<option>"+esc(b)+"</option>"; }).join("");
+  $("country").innerHTML = '<option value="">Select</option>'+
+    COUNTRIES.map(function(c){ return "<option>"+esc(c)+"</option>"; }).join("");
+  $("consent").innerHTML = 'By sending this you agree we may contact you about these sessions and related work. Read the <a href="'+esc(C.footer.privacyUrl)+'" target="_blank" rel="noopener">privacy policy</a>.';
+  $("footOrg").textContent = C.footer.org;
+  $("footLinks").innerHTML =
+    '<a href="'+esc(C.footer.privacyUrl)+'">Privacy policy</a>'+
+    '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
+    '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
+
+  var p = new URLSearchParams(location.search);
+  if(p.get("i")) $("industry").value = p.get("i");
+  if(p.get("s")) $("sizeBand").value = p.get("s");
+  if(p.get("t")) $("seatText").value = p.get("t");
+  var leadId = (p.get("id") || "").trim();
+  var campaign = (p.get("c") || "").trim();
+
+  $("send").addEventListener("click", async function(){
+    var err = $("err"), btn = this;
+    function fail(m){ err.hidden=false; err.textContent=m; err.scrollIntoView({block:"center"}); }
+
+    var data = {
+      stage: "registration",
+      id: leadId,
+      seat: "other",
+      name: [$("firstName").value.trim(), $("lastName").value.trim()].filter(Boolean).join(" "),
+      email: $("email").value.trim(),
+      jobTitle: $("jobTitle").value.trim(),
+      company: $("company").value.trim(),
+      country: $("country").value,
+      industry: $("industry").value.trim(),
+      sizeBand: $("sizeBand").value,
+      campaign: campaign,
+      answer3: $("seatText").value.trim(),
+      openAsk: $("openAsk").value.trim()
+    };
+
+    if(!data.answer3) return fail("Tell us the seat you sit in, then send it.");
+    if(!data.industry || !data.sizeBand) return fail("Industry and company size are still blank.");
+    var miss = ["firstName","lastName","email","jobTitle","company","country"].filter(function(k){
+      return !$(k).value.trim();
+    });
+    if(miss.length) return fail("Fill in every field marked with a star, then send it.");
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
+
+    err.hidden = true; btn.disabled = true; btn.textContent = "Sending";
+    try{
+      var res = await fetch("/api/register", {
+        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)
+      });
+      var out = null; try{ out = await res.json(); }catch(e){}
+      if(!res.ok || !out || out.ok !== true){
+        throw new Error((out && out.error) || ("The server answered "+res.status+" "+res.statusText+"."));
+      }
+      $("formBox").hidden = true; $("doneBox").hidden = false;
+      document.querySelector(".panel").scrollIntoView({block:"start"});
+    }catch(e){
+      btn.disabled = false; btn.textContent = "Send it";
+      fail((e && e.message ? e.message : "That did not go through, and nothing was recorded.")+
+        " Try once more, or write to "+C.footer.replyTo+".");
+    }
+  });
+})();
+</script>
+</body>
+</html>
