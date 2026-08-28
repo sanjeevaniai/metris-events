@@ -88,15 +88,14 @@
   function renderSessions(groupSlug, joinUrl){
     var g = groupSlug ? M.group(groupSlug) : null;
     if(!g){
-      $("sessions").innerHTML = '<li class="session"><p class="when">'+
-        missing("we could not tell which track this was")+'</p>'+
-        '<p class="len">Write to hello@sanjeevaniai.com quoting the reference below and we will confirm your dates.</p></li>';
+      $("sessions").innerHTML = '<li class="session"><span class="num">&mdash;</span>'+
+        '<div><p class="when">'+missing("we could not tell which track this was")+'</p>'+
+        '<p class="note">Write to hello@sanjeevaniai.com quoting the reference below and we will confirm your dates.</p></div></li>';
       return;
     }
     document.title = "Track " + g.letter + " \u00b7 METRIS";
-    $("sessions").innerHTML = g.sessions.map(function(sn){
+    $("sessions").innerHTML = g.sessions.map(function(sn, i){
       var d = T.describe(sn, { timezone: M.TIMEZONE, zones: M.ZONES });
-      var layer = (M.LAYERS[sn.layer] && M.LAYERS[sn.layer].name) || ("Layer " + sn.layer);
       var when = d.known ? esc(d.date) : missing("date to be confirmed");
       var len = d.duration ? esc(d.duration) : missing("length to be confirmed");
       var times = d.known
@@ -104,19 +103,12 @@
             return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
           }).join("") + '</ul>'
         : '<p class="len">'+missing("start time to be confirmed")+'</p>';
-      /* joinUrl is whatever the server released for this session, and the
-         server releases it only when Stripe says the payment is paid */
       var join = joinUrl
-        ? '<p class="len"><a href="'+esc(joinUrl)+'">Join this session</a></p>'
-        : '<p class="len">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
-      return '<li class="session"><p class="layer">'+esc(layer)+'</p>'+
-             '<p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</li>';
+        ? '<p class="note"><a href="'+esc(joinUrl)+'">Join this session</a></p>'
+        : '<p class="note">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
+      return '<li class="session"><span class="num">'+("0"+(i+1)).slice(-2)+'</span>'+
+             '<div><p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</div></li>';
     }).join("");
-  }
-  function show(which, why){
-    $("checking").hidden = true;
-    $(which).hidden = false;
-    if(which === "unpaid" && why) $("whyUnpaid").textContent = why;
   }
 
   var id = new URLSearchParams(location.search).get("session_id");

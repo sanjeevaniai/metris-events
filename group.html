@@ -16,7 +16,7 @@
 <script src="/time.js"></script>
 <script src="/content.js"></script>
 </head>
-<body>
+<body class="page-group">
 
 <header class="masthead">
   <div class="wrap">
@@ -120,17 +120,15 @@
 
   </div><!-- /col-main -->
 
-  <!-- Sticky beside the main column on a wide screen; below it, and not sticky,
-       under 900px. A panel that follows you down a phone screen is worse than
-       no panel at all. -->
-  <!-- A fixed panel: it does not move at all, the argument scrolls underneath
-       it. Two equal columns, one person each, and each bio scrolls inside its
-       own column. The price and button sit below both and never scroll. Under
-       900px the panel drops below the argument and all of this turns off. -->
+  <!-- A 340px panel that does not scale. It lives inside the content area, so
+       it is bounded by it: it sticks under the masthead while the argument
+       scrolls past, and stops on its own when the footer arrives, because a
+       sticky element cannot leave its container. Under 900px it drops below the
+       argument. -->
   <aside class="col-side">
     <div class="side-panel">
       <h2>Who runs these sessions</h2>
-      <div class="side-cols" id="sideCols"></div>
+      <div class="side-people" id="sidePeople"></div>
       <div class="side-cta" id="sideCta"></div>
     </div>
   </aside>

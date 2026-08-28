@@ -60,9 +60,8 @@
   }
 
   /* ---------- the three sessions ---------- */
-  $("sessions").innerHTML = group.sessions.map(function(s){
+  $("sessions").innerHTML = group.sessions.map(function(s, i){
     var d = T.describe(s, { timezone: M.TIMEZONE, zones: M.ZONES });
-    var layer = (M.LAYERS[s.layer] && M.LAYERS[s.layer].name) || ("Layer " + s.layer);
     var when = d.known ? esc(d.date) : missing("date to be confirmed");
     var len  = d.duration ? esc(d.duration) : missing("length to be confirmed");
     var times = d.known
@@ -70,12 +69,11 @@
           return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
         }).join("") + '</ul>'
       : '<p class="len">'+missing("start time to be confirmed")+'</p>';
-    /* The joining link is never sent to an unpaid page, so it is not here and
-       must not be added. It is released by /api/session after Stripe confirms
-       the payment. */
-    var join = '<p class="len">Your joining link is emailed when you register.</p>';
-    return '<li class="session"><p class="layer">'+esc(layer)+'</p>'+
-           '<p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</li>';
+    /* the joining link is never sent to an unpaid page */
+    return '<li class="session">'+
+      '<span class="num">'+("0"+(i+1)).slice(-2)+'</span>'+
+      '<div><p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+
+      '<p class="note">Your joining link is emailed when you register.</p></div></li>';
   }).join("");
 
   /* ---------- the form ---------- */
@@ -92,45 +90,25 @@
     '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
     '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
-  /* the panel: one column each, photograph on top, bio scrolling under it */
-  $("sideCols").innerHTML = (C.speakers||[]).map(function(s){
+  /* The panel is 340px, so the short bios go here and there is no internal
+     scroll to hide anything. The full bios stay in content.js for anywhere with
+     the room for them. Suneeta first, then Karlos. */
+  $("sidePeople").innerHTML = (C.speakers||[]).map(function(s){
     var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");
     var av = s.photo ? '<img src="/'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
                      : '<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
-    return '<div class="side-col">'+av+
-      '<p class="nm">'+esc(s.name)+'</p>'+
-      '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p>'+
-      '<div class="side-bio-wrap"><div class="side-bio">'+
-        [].concat(s.bio||[]).map(function(b){ return '<p>'+esc(b)+'</p>'; }).join('')+
-      '</div></div>'+
+    return '<div class="side-person"><div class="who">'+av+
+      '<div><p class="nm">'+esc(s.name)+'</p>'+
+      '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p></div></div>'+
+      (s.shortBio ? '<p class="sb">'+esc(s.shortBio)+'</p>' : '')+
       (s.linkedin ? '<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>' : '')+
       '</div>';
   }).join("");
 
-  /* the same price and a way to act, below both columns and outside their scroll */
   $("sideCta").innerHTML =
     '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
     '<span class="per">Covers all three sessions in this track.</span>'+
     '<a href="#register">Register</a>';
-
-  /* Each column says for itself whether there is more to read. The fade lifts at
-     the end of that bio, and is not drawn when the column does not overflow, so
-     it never claims text that is not there. */
-  (function(){
-    var wraps = Array.prototype.slice.call(document.querySelectorAll(".side-bio-wrap"));
-    function sync(){
-      wraps.forEach(function(w){
-        var box = w.querySelector(".side-bio");
-        var scrolls = box.scrollHeight > box.clientHeight + 2;
-        var atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
-        w.classList.toggle("at-end", !scrolls || atEnd);
-      });
-    }
-    wraps.forEach(function(w){ w.querySelector(".side-bio").addEventListener("scroll", sync); });
-    window.addEventListener("resize", sync);
-    setTimeout(sync, 60);
-    sync();
-  })();
 
   if(C.speakerNote) $("speakerNote").textContent = C.speakerNote;
 
