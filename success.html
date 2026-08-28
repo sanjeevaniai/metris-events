@@ -41,12 +41,12 @@
       <p>A receipt is on its way from Stripe to <span id="payerEmail">the address you paid with</span> for <span id="paidAmount">your seat</span>. Keep it &mdash; it is your proof of registration.</p>
 
       <div class="panel">
-        <h2>Your three sessions</h2>
+        <h2>Your session</h2>
         <ul class="sessions" id="sessions"></ul>
       </div>
 
       <div class="next">
-        <p><strong>One recurring meeting serves all three sessions</strong>, so the joining link above works for every date. It is also in the confirmation email.</p>
+        <p><strong>The joining link is above</strong>, and it is in the confirmation email as well.</p>
         <p>If a date turns out not to work, keep the email anyway. The recording goes to the same address.</p>
       </div>
 
@@ -83,12 +83,12 @@
   function esc(x){ var d=document.createElement("div"); d.textContent=x==null?"":x; return d.innerHTML; }
   function missing(w){ return '<em class="tbc">'+esc(w)+'</em>'; }
 
-  /* The three sessions of the track that was actually bought. The group comes
+  /* The session for the track that was actually bought. The group comes
      from the server, which derived it from the seat on the Stripe session. */
   function renderSessions(groupSlug, joinUrl){
     var g = groupSlug ? M.group(groupSlug) : null;
     if(!g){
-      $("sessions").innerHTML = '<li class="session"><span class="num">&mdash;</span>'+
+      $("sessions").innerHTML = '<li class="session session-solo">'+
         '<div><p class="when">'+missing("we could not tell which track this was")+'</p>'+
         '<p class="note">Write to hello@sanjeevaniai.com quoting the reference below and we will confirm your dates.</p></div></li>';
       return;
@@ -106,7 +106,9 @@
       var join = joinUrl
         ? '<p class="note"><a href="'+esc(joinUrl)+'">Join this session</a></p>'
         : '<p class="note">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
-      return '<li class="session"><span class="num">'+("0"+(i+1)).slice(-2)+'</span>'+
+      var num = g.sessions.length > 1
+        ? '<span class="num">'+("0"+(i+1)).slice(-2)+'</span>' : '';
+      return '<li class="session'+(num?'':' session-solo')+'">'+num+
              '<div><p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</div></li>';
     }).join("");
   }

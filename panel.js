@@ -36,7 +36,7 @@
   if($("sideCta") && M){
     $("sideCta").innerHTML =
       '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
-      '<span class="per">Covers all three sessions in your track.</span>'+
+      '<span class="per">One 90-minute session.</span>'+
       '<a href="#register">Register</a>';
   }
 

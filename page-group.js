@@ -59,7 +59,7 @@
       'for <code>'+esc(group.slug)+'</code> in sessions.js.</div>';
   }
 
-  /* ---------- the three sessions ---------- */
+  /* ---------- the session ---------- */
   $("sessions").innerHTML = group.sessions.map(function(s, i){
     var d = T.describe(s, { timezone: M.TIMEZONE, zones: M.ZONES });
     var when = d.known ? esc(d.date) : missing("date to be confirmed");
@@ -70,15 +70,17 @@
         }).join("") + '</ul>'
       : '<p class="len">'+missing("start time to be confirmed")+'</p>';
     /* the joining link is never sent to an unpaid page */
-    return '<li class="session">'+
-      '<span class="num">'+("0"+(i+1)).slice(-2)+'</span>'+
+    /* a numeral only earns its place when there is a set to count */
+    var num = group.sessions.length > 1
+      ? '<span class="num">'+("0"+(i+1)).slice(-2)+'</span>' : '';
+    return '<li class="session'+(num?'':' session-solo')+'">'+num+
       '<div><p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+
       '<p class="note">Your joining link is emailed when you register.</p></div></li>';
   }).join("");
 
   /* ---------- the form ---------- */
   $("priceLine").innerHTML = '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
-    '<span class="per">Covers all three sessions in this track.</span>';
+    '<span class="per">One 90-minute session.</span>';
   $("sizeBand").innerHTML = '<option value="">Select</option>'+
     SIZE_BANDS.map(function(b){ return "<option>"+esc(b)+"</option>"; }).join("");
   $("country").innerHTML = '<option value="">Select</option>'+

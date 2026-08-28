@@ -246,9 +246,7 @@
       },
       figure: null,        /* the interactive component reads this */
       sessions: [
-        { layer: 1, date: "2026-09-30", startCentral: "11:00", minutes: 90 },
-        { layer: 2, date: "2026-11-04", startCentral: "11:00", minutes: 45 },
-        { layer: 3, date: "2027-01-13", startCentral: "11:00", minutes: 45 }
+        { date: "2026-09-30", startCentral: "11:00", minutes: 90 }
       ]
     },
     {
@@ -260,9 +258,7 @@
       copy: { room: null, lede: null, body: null },
       figure: null,
       sessions: [
-        { layer: 1, date: "2026-10-14", startCentral: "11:00", minutes: 90 },
-        { layer: 2, date: "2026-11-11", startCentral: "11:00", minutes: 45 },
-        { layer: 3, date: "2027-01-20", startCentral: "11:00", minutes: 45 }
+        { date: "2026-10-14", startCentral: "11:00", minutes: 90 }
       ]
     },
     {
@@ -274,18 +270,10 @@
       copy: { room: null, lede: null, body: null },
       figure: null,
       sessions: [
-        { layer: 1, date: "2026-10-28", startCentral: "11:00", minutes: 90 },
-        { layer: 2, date: "2026-11-18", startCentral: "11:00", minutes: 45 },
-        { layer: 3, date: "2027-01-27", startCentral: "11:00", minutes: 45 }
+        { date: "2026-10-28", startCentral: "11:00", minutes: 90 }
       ]
     }
   ];
-
-  var LAYERS = {
-    1: { name: "Layer one" },
-    2: { name: "Layer two" },
-    3: { name: "Layer three" }
-  };
 
   /* ---- lookups. Seat is the source of truth; group is only ever derived. ---- */
 
@@ -306,8 +294,8 @@
   function seatsOf(g) {
     return (g.seats || []).map(seat).filter(Boolean);
   }
-  function sessionSlug(g, session) {
-    return g.slug + "-layer-" + session.layer;
+  function sessionSlug(g) {
+    return g.slug + "-session";
   }
 
   return {
@@ -317,7 +305,6 @@
     SEATS: SEATS,
     SHARED_QUESTIONS: SHARED_QUESTIONS,
     GROUPS: GROUPS,
-    LAYERS: LAYERS,
     seat: seat,
     group: group,
     groupForSeat: groupForSeat,

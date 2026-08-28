@@ -83,7 +83,7 @@ h2{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;
   display:flex;align-items:center;gap:16px;}
 h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 
-/* ---------- the three sessions: an index, not three boxes ----------
+/* ---------- the session ----------
    A numeral in green, a hairline between each, and the first one — the ninety
    minute session the other two build on — set heavier and larger. Related
    without being identical. */
@@ -92,6 +92,7 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
   padding:28px 0;border-top:1px solid var(--rule);}
 .session:first-child{border-top:2px solid var(--ink);padding-top:30px;}
 .session:last-child{border-bottom:1px solid var(--rule);}
+.session-solo{grid-template-columns:1fr;}   /* nothing to number */
 .session .num{font-family:"IBM Plex Mono",monospace;font-size:22px;line-height:1;
   color:var(--spruce);font-weight:400;letter-spacing:-.01em;padding-top:5px;}
 .session .when{font-weight:600;font-size:21px;line-height:1.25;letter-spacing:-.016em;
