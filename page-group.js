@@ -70,9 +70,10 @@
           return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
         }).join("") + '</ul>'
       : '<p class="len">'+missing("start time to be confirmed")+'</p>';
-    var join = M.JOIN_URL
-      ? '<p class="len"><a href="'+esc(M.JOIN_URL)+'">Joining link</a></p>'
-      : '<p class="len">'+missing("joining link to be confirmed")+'</p>';
+    /* The joining link is never sent to an unpaid page, so it is not here and
+       must not be added. It is released by /api/session after Stripe confirms
+       the payment. */
+    var join = '<p class="len">Your joining link is emailed when you register.</p>';
     return '<li class="session"><p class="layer">'+esc(layer)+'</p>'+
            '<p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</li>';
   }).join("");

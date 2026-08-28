@@ -11,6 +11,7 @@
 
 const Stripe = require("stripe");
 const M = require("../sessions.js");
+const PRIVATE = require("./_private.js");
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") {
@@ -53,7 +54,10 @@ module.exports = async (req, res) => {
       amount: paid ? ((s.amount_total || 0) / 100).toFixed(2) : "",
       currency: paid ? (s.currency || "usd").toUpperCase() : "",
       group: groupSlug,
-      seat: paid && s.metadata ? (s.metadata.seat || "") : ""
+      seat: paid && s.metadata ? (s.metadata.seat || "") : "",
+      /* released ONLY on a paid session. On anything else this is "", so a
+         cancelled, unpaid or invented session id can never reveal it. */
+      joinUrl: paid ? (PRIVATE.joinUrl() || "") : ""
     });
   } catch (e) {
     /* an id Stripe does not know is a client mistake, not a server fault */

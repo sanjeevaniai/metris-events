@@ -85,7 +85,7 @@
 
   /* The three sessions of the track that was actually bought. The group comes
      from the server, which derived it from the seat on the Stripe session. */
-  function renderSessions(groupSlug){
+  function renderSessions(groupSlug, joinUrl){
     var g = groupSlug ? M.group(groupSlug) : null;
     if(!g){
       $("sessions").innerHTML = '<li class="session"><p class="when">'+
@@ -104,8 +104,10 @@
             return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
           }).join("") + '</ul>'
         : '<p class="len">'+missing("start time to be confirmed")+'</p>';
-      var join = M.JOIN_URL
-        ? '<p class="len"><a href="'+esc(M.JOIN_URL)+'">Join this session</a></p>'
+      /* joinUrl is whatever the server released for this session, and the
+         server releases it only when Stripe says the payment is paid */
+      var join = joinUrl
+        ? '<p class="len"><a href="'+esc(joinUrl)+'">Join this session</a></p>'
         : '<p class="len">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
       return '<li class="session"><p class="layer">'+esc(layer)+'</p>'+
              '<p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</li>';
@@ -131,7 +133,7 @@
         if(b.amount) $("paidAmount").textContent = "$" + b.amount + (b.currency ? " " + b.currency : "");
         $("ref").textContent = "Reference: " + id;
         $("ref").hidden = false;
-        renderSessions(b.group);
+        renderSessions(b.group, b.joinUrl || "");
         return show("paid");
       }
       if(b.paymentStatus === "unpaid" || b.status === "expired" || b.status === "open"){

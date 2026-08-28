@@ -33,9 +33,10 @@
 
   var PRICE = { amount: 249, display: "$249", currency: "usd" };
 
-  /* One recurring Zoom meeting serves all nine sessions, so there is one URL
-     here rather than nine. Still to be supplied. */
-  var JOIN_URL = null;
+  /* THE JOINING LINK IS NOT IN THIS FILE, AND MUST NOT BE PUT IN IT.
+     Every visitor downloads this file, so anything in it is public. The link is
+     held server side and released only after a payment has been confirmed with
+     the payment processor. See api/_private.js, which the browser never loads. */
 
   var TIMEZONE = "America/Chicago";          /* stored zone; CDT/CST follows the date */
   var ZONES = [                              /* shown together at render time */
@@ -311,7 +312,6 @@
 
   return {
     PRICE: PRICE,
-    JOIN_URL: JOIN_URL,
     TIMEZONE: TIMEZONE,
     ZONES: ZONES,
     SEATS: SEATS,
