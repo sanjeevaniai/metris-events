@@ -51,11 +51,6 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 /* the long read */
 .speaker-note{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.6;
   color:var(--ink-soft);margin:0 0 24px;}
-.speaker .bio{margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--ink-soft);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;}
-.speakers{flex-direction:column;gap:30px;}
-.speaker>div{max-width:56ch;}
-
 .price-tag{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--spruce);border:1px solid var(--spruce);
   border-radius:2px;padding:5px 9px;display:inline-block;margin:0 0 18px;}
@@ -67,15 +62,6 @@ h2::after{content:"";flex:1;height:1px;background:var(--rule);}
 .other-wrap[hidden]{display:none;}
 .other-lab{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;
   letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
-
-.speakers{display:flex;flex-wrap:wrap;gap:26px;}
-.speaker{display:flex;gap:14px;align-items:flex-start;}
-.avatar{width:76px;height:76px;border-radius:2px;flex:none;background:var(--graphite);color:#F6F6F2;
-  display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
-  font-size:17px;object-fit:cover;}
-.speaker .nm{font-weight:600;margin:0;line-height:1.3;}
-.speaker .rl{margin:2px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.35;}
-.speaker a{color:var(--spruce);font-size:13px;font-family:"IBM Plex Mono",monospace;text-decoration:none;}
 
 /* ---------- the panel ---------- */
 .panel{background:var(--white);border:1px solid var(--rule);border-radius:3px;
@@ -195,40 +181,65 @@ footer a:hover{text-decoration:underline;}
 .missing-copy{border-left:3px solid var(--signal);background:#FDF6EE;padding:12px 14px;
   margin:0 0 18px;font-size:15px;color:#6B3E10;}
 
-/* ---------- group pages: main column plus a sticky sidebar ---------- */
-.layout{max-width:1140px;margin:0 auto;padding:0 22px;display:grid;
-  grid-template-columns:minmax(0,1fr) 306px;gap:46px;align-items:start;}
+/* ---------- group pages: main column plus a full-height panel ----------
+   The panel is chrome, not content: it holds still while the argument scrolls
+   past it. Its own bios scroll inside it; the price and the button never do. */
+.layout{max-width:1180px;margin:0 auto;padding:0 22px;display:grid;
+  grid-template-columns:minmax(0,1fr) 340px;gap:44px;align-items:start;}
 .col-main{min-width:0;max-width:720px;}
 .col-main .wrap{max-width:none;padding:0;}
-.col-side{position:sticky;top:80px;}
 
-.side-card{background:var(--white);border:1px solid var(--rule);border-radius:3px;
-  padding:20px 20px 22px;}
-.side-card h2{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:0 0 16px;display:block;}
-.side-card h2::after{content:none;}
-.side-person + .side-person{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
-.side-person .who{display:flex;gap:11px;align-items:center;}
-.side-person img{width:46px;height:46px;border-radius:2px;flex:none;object-fit:cover;}
-.side-person .nm{font-weight:600;font-size:15px;line-height:1.25;margin:0;}
-.side-person .rl{font-size:12.5px;color:var(--ink-soft);line-height:1.35;margin:2px 0 0;}
-.side-person .sb{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0;}
-.side-person a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
-  color:var(--spruce);text-decoration:none;display:inline-block;margin:8px 0 0;}
+/* Sticks just under the 62px masthead and is exactly as tall as what is left of
+   the viewport, so the register button is on screen from the moment the page
+   loads rather than only after the first scroll. */
+.col-side{position:sticky;top:62px;height:calc(100vh - 62px);padding:20px 0;}
+.side-panel{background:var(--graphite);border-radius:3px;height:100%;
+  display:flex;flex-direction:column;overflow:hidden;}
+.side-panel h2{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8FB3A8;font-weight:500;margin:0;display:block;
+  padding:20px 22px 14px;flex:none;}
+.side-panel h2::after{content:none;}
+
+/* the bios scroll; the fade says so */
+.side-scroll-wrap{position:relative;flex:1;min-height:0;display:flex;}
+.side-scroll-wrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:52px;
+  background:linear-gradient(to bottom,rgba(31,39,43,0),rgba(31,39,43,.97));
+  pointer-events:none;opacity:1;transition:opacity .18s;}
+.side-scroll-wrap.at-end::after{opacity:0;}
+.side-scroll{flex:1;min-height:0;overflow-y:auto;padding:0 22px 26px;
+  scrollbar-width:thin;scrollbar-color:#5A666B rgba(255,255,255,.07);}
+.side-scroll::-webkit-scrollbar{width:9px;}
+.side-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.07);border-radius:5px;}
+.side-scroll::-webkit-scrollbar-thumb{background:#5A666B;border-radius:5px;}
+.side-scroll::-webkit-scrollbar-thumb:hover{background:#75838a;}
+
+.side-person + .side-person{margin-top:22px;padding-top:22px;border-top:1px solid #33403F;}
+.side-person .who{display:flex;gap:14px;align-items:center;}
+.side-person img{width:92px;height:92px;border-radius:3px;flex:none;object-fit:cover;}
+.side-person .nm{font-weight:600;font-size:16px;line-height:1.25;margin:0;color:#F6F6F2;}
+.side-person .rl{font-size:13px;color:#A9B6B4;line-height:1.4;margin:3px 0 0;}
+.side-person .sb{font-size:13.5px;line-height:1.55;color:#C3CECC;margin:12px 0 0;}
+.side-person a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.09em;
+  color:#7FD1B9;text-decoration:none;display:inline-block;margin:10px 0 0;}
 .side-person a:hover{text-decoration:underline;}
 
-.side-cta{background:var(--graphite);border-radius:3px;padding:18px 20px 20px;margin:14px 0 0;}
-.side-cta .amt{font-size:25px;font-weight:600;color:#F6F6F2;letter-spacing:-.01em;display:block;}
-.side-cta .per{font-size:13px;color:#B9C2C0;line-height:1.45;margin:5px 0 14px;display:block;}
+/* pinned under the scroll region, never part of it */
+.side-cta{flex:none;border-top:1px solid #33403F;padding:16px 22px 18px;background:#18201F;}
+.side-cta .amt{font-size:26px;font-weight:600;color:#F6F6F2;letter-spacing:-.01em;display:block;}
+.side-cta .per{font-size:12.5px;color:#A9B6B4;line-height:1.45;margin:4px 0 12px;display:block;}
 .side-cta a{display:block;text-align:center;background:var(--spruce-bright);color:#fff;
   font-weight:600;font-size:15px;border-radius:2px;padding:12px 14px;text-decoration:none;}
 .side-cta a:hover{background:#159a7b;}
 
-/* under 900px the sidebar drops below and stops sticking: a sticky panel on a
-   phone eats the screen and is worse than not having one */
+/* Under 900px the panel drops below the argument, stops sticking, stops being a
+   fixed height, and stops scrolling internally: everything renders full length.
+   A panel that follows you down a phone screen is worse than no panel. */
 @media (max-width:900px){
   .layout{display:block;max-width:720px;}
   .col-main{max-width:none;}
-  .col-side{position:static;top:auto;margin:36px 0 0;}
-  .side-card,.side-cta{max-width:none;}
+  .col-side{position:static;height:auto;padding:0;margin:36px 0 0;}
+  .side-panel{height:auto;}
+  .side-scroll-wrap{display:block;}
+  .side-scroll-wrap::after{content:none;}
+  .side-scroll{overflow:visible;min-height:0;}
 }

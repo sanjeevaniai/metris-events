@@ -35,6 +35,7 @@
     <p class="room" id="room"></p>
     <h1 id="title"></h1>
     <div class="abstract" id="copy"></div>
+    <p class="speaker-note" id="speakerNote"></p>
   </section>
 
   <!-- THE INTERACTIVE FIGURE MOUNTS HERE.
@@ -117,22 +118,23 @@
     </div>
   </section>
 
-  <section class="section wrap" id="speaker-block">
-    <h2>Speaking</h2>
-    <p class="speaker-note" id="speakerNote"></p>
-    <div class="speakers" id="speakers"></div>
-  </section>
   </div><!-- /col-main -->
 
   <!-- Sticky beside the main column on a wide screen; below it, and not sticky,
        under 900px. A panel that follows you down a phone screen is worse than
        no panel at all. -->
+  <!-- A full-height panel, sticky from the top, holding still through the whole
+       scroll. The bios scroll inside it; the price and button are pinned below
+       that region and never move. Under 900px it drops below the argument and
+       all of this turns off. -->
   <aside class="col-side">
-    <div class="side-card">
+    <div class="side-panel">
       <h2>Who runs these sessions</h2>
-      <div id="sidePeople"></div>
+      <div class="side-scroll-wrap" id="scrollWrap">
+        <div class="side-scroll" id="sidePeople"></div>
+      </div>
+      <div class="side-cta" id="sideCta"></div>
     </div>
-    <div class="side-cta" id="sideCta"></div>
   </aside>
 </div><!-- /layout -->
 </main>

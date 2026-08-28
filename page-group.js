@@ -92,7 +92,7 @@
     '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
     '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
-  /* the sidebar card: short bios here, the full ones stay at the foot of the page */
+  /* the panel: full bios, larger photographs, LinkedIn each */
   $("sidePeople").innerHTML = (C.speakers||[]).map(function(s){
     var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");
     var av = s.photo ? '<img src="/'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
@@ -100,28 +100,34 @@
     return '<div class="side-person"><div class="who">'+av+
       '<div><p class="nm">'+esc(s.name)+'</p>'+
       '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p></div></div>'+
-      (s.shortBio ? '<p class="sb">'+esc(s.shortBio)+'</p>' : '')+
+      [].concat(s.bio||[]).map(function(b){ return '<p class="sb">'+esc(b)+'</p>'; }).join('')+
       (s.linkedin ? '<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>' : '')+
       '</div>';
   }).join("");
 
-  /* the same price and a way to act, so nobody has to scroll back up */
+  /* the same price and a way to act, pinned below the scrolling bios */
   $("sideCta").innerHTML =
     '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
     '<span class="per">Covers all three sessions in this track.</span>'+
     '<a href="#register">Register</a>';
 
+  /* The fade at the foot of the bios says there is more to read. It is dropped
+     once you reach the bottom, so it never claims content that is not there,
+     and it is not drawn at all when the region does not actually scroll. */
+  (function(){
+    var box = $("sidePeople"), wrap = $("scrollWrap");
+    function sync(){
+      var scrolls = box.scrollHeight > box.clientHeight + 2;
+      var atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
+      wrap.classList.toggle("at-end", !scrolls || atEnd);
+    }
+    box.addEventListener("scroll", sync);
+    window.addEventListener("resize", sync);
+    setTimeout(sync, 60);
+    sync();
+  })();
+
   if(C.speakerNote) $("speakerNote").textContent = C.speakerNote;
-  $("speakers").innerHTML = (C.speakers||[]).map(function(s){
-    var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");
-    var av = s.photo ? '<img class="avatar" src="/'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
-                     : '<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
-    return '<div class="speaker">'+av+'<div><p class="nm">'+esc(s.name)+'</p><p class="rl">'+
-      esc(s.role)+'<br>'+esc(s.org)+'</p>'+
-      (s.bio ? [].concat(s.bio).map(function(b){ return '<p class="bio">'+esc(b)+'</p>'; }).join('') : '')+
-      (s.linkedin ? '<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>' : '')+
-      '</div></div>';
-  }).join("");
 
   /* ---------- seat, carried over or asked for ---------- */
   function seatTiles(){

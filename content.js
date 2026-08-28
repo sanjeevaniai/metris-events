@@ -8,6 +8,8 @@
 
   var speakerNote = "My colleague Karlos and I lead this session together. He brings twenty-five years of experience inside large organizations, seeing where strategy succeeds, or breaks down, in operations. I build the measurement that shows whether it’s working. Together, we cover both sides of the question: what should you do, and how do you know it worked?";
 
+  /* One bio each, shown in the panel beside the group pages. There is no longer
+     a second, longer version at the foot of the page: this is the bio. */
   var speakers = [
     {
       name: "Suneeta Modekurty",
@@ -15,11 +17,10 @@
       org: "METRIS",
       photo: "suneeta-modekurty.jpg",
       linkedin: "https://www.linkedin.com/in/smodekurty/",
-      shortBio: "Suneeta builds the measurement systems behind METRIS, after ten years as a data scientist and bioinformatician inside healthcare, insurance and life sciences companies. She teaches this material as an O\u2019Reilly author and live trainer.",
       bio: [
-        "Suneeta Modekurty builds the measurement systems behind METRIS. She spent ten years as a data scientist and bioinformatician inside healthcare, insurance, title and life sciences companies, where the hard part was rarely the model and almost always the question of whether anyone could tell if it was working.",
-        "METRIS came out of that. It measures organizational readiness for AI, linking system and workforce readiness to measurable ROI rather than to GRC or models alone. She teaches this material as an O’Reilly author and live trainer, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
-        "Before any of it she taught for seventeen years in India. She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers."
+        "Suneeta builds the measurement systems behind METRIS, after ten years as a data scientist and bioinformatician inside healthcare, insurance, title and life sciences companies, where the hard part was rarely the model and almost always whether anyone could tell if it was working.",
+        "She teaches this material as an O\u2019Reilly live trainer, wrote The AI-Human Synergy in 2024, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
+        "She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers. Before any of it she taught for seventeen years in India."
       ]
     },
     {
@@ -28,11 +29,10 @@
       org: "FocalPoint Coaching",
       photo: "karlos-bledsoe.jpg",
       linkedin: "https://www.linkedin.com/in/karlos-bledsoe/",
-      shortBio: "Karlos spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations. He now coaches executives on strategy execution and operational performance.",
       bio: [
-        "Karlos Bledsoe Sr. is a FocalPoint business and executive coach. He draws on more than 25 years with large companies — Anheuser-Busch, Edward Jones and BJC, where he finished as Director of Strategy and Operations — to help companies overcome challenges, grow and succeed.",
-        "He has led strategic planning and strategy execution, data warehousing, data analytics, project management and lean six sigma, across IT, manufacturing, internal consulting and coaching, and sales training.",
-        "Karlos is a founding member of the St. Louis chapter of the Society for Information Management, founder of the St. Louis Gateway to Innovation IT conference, and has served on the boards of City Academy School and Great Circle."
+        "Karlos spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations, and now coaches executives on strategy execution and operational performance.",
+        "He has led strategic planning, data warehousing and analytics, project management and lean six sigma across IT, manufacturing and internal consulting.",
+        "He is a founding member of the St. Louis chapter of the Society for Information Management and founded the St. Louis Gateway to Innovation IT conference."
       ]
     }
   ];
