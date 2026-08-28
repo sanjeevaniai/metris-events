@@ -6,7 +6,8 @@
    dates. Nothing reads the group to decide what to ask a person. */
 
 (function(){
-  var M = window.METRIS, T = window.METRIS_TIME, C = window.METRIS_CONTENT;
+  var M = window.METRIS, T = window.METRIS_TIME, C = window.METRIS_CONTENT,
+      NET = window.METRIS_NET;
   function $(id){ return document.getElementById(id); }
   function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
   function missing(what){ return '<em class="tbc">'+esc(what)+'</em>'; }
@@ -263,42 +264,37 @@
     if(miss.length) return fail("Fill in every field marked with a star, then register.");
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
 
-    /* STEP ONE: the lead is recorded with paid = no. Nothing is charged until
-       this has succeeded, so an abandoned payment still leaves a lead behind. */
+    /* Wrapped end to end. Whatever happens, the button comes back and the
+       visitor is told what actually went wrong: a button stuck on "Registering"
+       loses the registration without anyone knowing. */
     err.hidden = true; btn.disabled = true; btn.textContent = "Registering";
-    var reg;
     try{
-      var r1 = await fetch("/api/register", {
-        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)
-      });
-      reg = null; try{ reg = await r1.json(); }catch(e){}
-      if(!r1.ok || !reg || reg.ok !== true){
-        throw new Error((reg && reg.error) || ("The server answered "+r1.status+" "+r1.statusText+"."));
+      /* STEP ONE: record the lead, paid = no. Nothing is charged until this has
+         succeeded, so an abandoned payment still leaves a lead behind. */
+      var reg = await NET.postJson("/api/register", data, { timeoutMs: 15000 });
+      if(!reg.ok){
+        btn.disabled = false; btn.textContent = "Register and pay";
+        return fail(reg.error + " You have not been charged. Try once more, and if it "+
+          "fails again write to " + C.footer.replyTo + " and you will be registered by hand.");
       }
-    }catch(e){
-      btn.disabled = false; btn.textContent = "Register and pay";
-      return fail((e && e.message ? e.message : "That did not go through, and nothing was recorded.")+
-        " You have not been charged. Try once more, and if it fails again write to "+
-        C.footer.replyTo+" and you will be registered by hand.");
-    }
 
-    /* STEP TWO: only now, take the money. */
-    btn.textContent = "Taking you to payment";
-    try{
-      var r2 = await fetch("/api/checkout", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(Object.assign({}, data, { id: reg.id || leadId }))
-      });
-      var pay = null; try{ pay = await r2.json(); }catch(e){}
-      if(!r2.ok || !pay || pay.ok !== true || !pay.url){
-        throw new Error((pay && pay.error) || ("The server answered "+r2.status+" "+r2.statusText+"."));
+      /* STEP TWO: only now, take the money. */
+      btn.textContent = "Taking you to payment";
+      var pay = await NET.postJson("/api/checkout",
+        Object.assign({}, data, { id: (reg.body && reg.body.id) || leadId }),
+        { timeoutMs: 20000 });
+      if(!pay.ok || !pay.body || !pay.body.url){
+        btn.disabled = false; btn.textContent = "Register and pay";
+        return fail("Your details are saved and you have not been charged, but the payment "+
+          "page would not open. " + (pay.error || "") + " Try once more, or write to " +
+          C.footer.replyTo + " and we will send you a payment link.");
       }
-      window.location.assign(pay.url);
+
+      window.location.assign(pay.body.url);
     }catch(e){
       btn.disabled = false; btn.textContent = "Register and pay";
-      fail("Your details are saved and you have not been charged, but the payment page would not open. "+
-           (e && e.message ? e.message : "")+
-           " Try once more, or write to "+C.footer.replyTo+" and we will send you a payment link.");
+      fail("Something went wrong on this page: " + ((e && e.message) || e) +
+           ". You have not been charged. Press Register and pay to try again.");
     }
   });
 })();

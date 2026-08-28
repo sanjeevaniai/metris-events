@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/styles.css" />
 <script src="/sessions.js"></script>
+<script src="/net.js"></script>
 <script src="/content.js"></script>
 <script src="/time.js"></script>
 </head>
@@ -108,7 +109,7 @@
 
 <script>
 (function(){
-  var M = window.METRIS, C = window.METRIS_CONTENT;
+  var M = window.METRIS, C = window.METRIS_CONTENT, NET = window.METRIS_NET;
   function $(id){ return document.getElementById(id); }
   function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
 
@@ -160,32 +161,44 @@
 
     err.hidden = true; btn.disabled = true; btn.textContent = "One moment";
 
-    /* Recorded BEFORE routing, so somebody who filters and leaves is still a
-       lead. Marked stage "filter" so these rows are distinguishable from people
-       who went on to register. */
-    var id = "";
+    /* Everything below is wrapped, because a throw between here and the
+       redirect used to leave the button disabled and reading "One moment"
+       with nothing to explain it. */
     try{
-      var res = await fetch("/api/register", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          stage:"filter", seat:seatId, industry:industry, sizeBand:sizeBand,
-          campaign:campaign, jobTitle: seat.freeText ? otherSeat : ""
-        })
-      });
-      var out=null; try{ out = await res.json(); }catch(e){}
-      if(res.ok && out && out.ok) id = out.id || "";
-    }catch(e){ /* routing must not depend on the sheet being reachable */ }
+      /* The id is minted here, so routing never waits on the server to hand one
+         back. Recorded before we route, so somebody who filters and leaves is
+         still a lead, and marked stage "filter" to tell those rows apart. */
+      var id = NET.newId();
+      var capture = NET.postJson("/api/register", {
+        stage:"filter", id:id, seat:seatId, industry:industry, sizeBand:sizeBand,
+        campaign:campaign, jobTitle: seat.freeText ? otherSeat : ""
+      }, { timeoutMs: 12000, keepalive: true });
 
-    var group = M.groupForSeat(seatId);
-    var qs = new URLSearchParams();
-    qs.set("seat", seatId);
-    qs.set("i", industry);
-    qs.set("s", sizeBand);
-    if(id) qs.set("id", id);
-    if(campaign) qs.set("c", campaign);
-    if(seat.freeText && otherSeat) qs.set("t", otherSeat);
+      /* Wait briefly so the row usually lands first, then go regardless. The
+         request is not cancelled: keepalive lets it finish after this page has
+         gone, so a slow sheet costs the visitor nothing. */
+      var saved = await NET.raceTimeout(capture, 2500);
+      if(saved && !saved.ok && saved.status >= 400 && saved.status < 500){
+        /* our own endpoint rejected the data, which routing will not fix */
+        btn.disabled = false; btn.textContent = "Continue";
+        return fail(saved.error);
+      }
 
-    location.assign((group ? "/" + group.slug : "/other") + "?" + qs.toString());
+      var group = M.groupForSeat(seatId);
+      var qs = new URLSearchParams();
+      qs.set("seat", seatId);
+      qs.set("i", industry);
+      qs.set("s", sizeBand);
+      qs.set("id", id);
+      if(campaign) qs.set("c", campaign);
+      if(seat.freeText && otherSeat) qs.set("t", otherSeat);
+
+      location.assign((group ? "/" + group.slug : "/other") + "?" + qs.toString());
+    }catch(e){
+      btn.disabled = false; btn.textContent = "Continue";
+      fail("Something went wrong on this page: " + ((e && e.message) || e) +
+           ". Nothing was lost \u2014 press Continue to try again.");
+    }
   });
 })();
 </script>

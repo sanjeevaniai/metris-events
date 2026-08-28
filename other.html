@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/styles.css" />
 <script src="/sessions.js"></script>
+<script src="/net.js"></script>
 <script src="/content.js"></script>
 </head>
 <body>
@@ -109,7 +110,7 @@
 
 <script>
 (function(){
-  var M = window.METRIS, C = window.METRIS_CONTENT;
+  var M = window.METRIS, C = window.METRIS_CONTENT, NET = window.METRIS_NET;
   function $(id){ return document.getElementById(id); }
   function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
 
@@ -164,19 +165,17 @@
 
     err.hidden = true; btn.disabled = true; btn.textContent = "Sending";
     try{
-      var res = await fetch("/api/register", {
-        method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)
-      });
-      var out = null; try{ out = await res.json(); }catch(e){}
-      if(!res.ok || !out || out.ok !== true){
-        throw new Error((out && out.error) || ("The server answered "+res.status+" "+res.statusText+"."));
+      var out = await NET.postJson("/api/register", data, { timeoutMs: 15000 });
+      if(!out.ok){
+        btn.disabled = false; btn.textContent = "Send it";
+        return fail(out.error + " Try once more, or write to " + C.footer.replyTo + ".");
       }
       $("formBox").hidden = true; $("doneBox").hidden = false;
       document.querySelector(".panel").scrollIntoView({block:"start"});
     }catch(e){
       btn.disabled = false; btn.textContent = "Send it";
-      fail((e && e.message ? e.message : "That did not go through, and nothing was recorded.")+
-        " Try once more, or write to "+C.footer.replyTo+".");
+      fail("Something went wrong on this page: " + ((e && e.message) || e) +
+           ". Nothing was recorded. Press Send it to try again.");
     }
   });
 })();
