@@ -60,8 +60,14 @@ do not worry that the sheet looks empty.
    - Event: `checkout.session.completed`
 3. Copy that endpoint's **signing secret** (`whsec_...`).
 
-The price lives in code, so there is no product to create in Stripe. If you would
-rather manage it there, make a Price and set `STRIPE_PRICE_ID` instead.
+Create one Price per track, each $249 one-time, and paste its id into that
+group's `stripePriceId` in `sessions.js`. This is the one thing adding a group
+cannot do from the data file alone.
+
+**The three price ids in `sessions.js` today are test-mode objects.** They work
+in the sandbox and will not resolve against a live key: with `sk_live_` set,
+every group refuses by name and no payment is taken. Replace them with live ids
+before launch. Nothing in this repo creates Stripe objects, by standing rule.
 
 The webhook is what turns the **paid** column from no to yes. Without it the sheet
 records who reached the card screen, not who paid.
