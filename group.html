@@ -123,16 +123,14 @@
   <!-- Sticky beside the main column on a wide screen; below it, and not sticky,
        under 900px. A panel that follows you down a phone screen is worse than
        no panel at all. -->
-  <!-- A full-height panel, sticky from the top, holding still through the whole
-       scroll. The bios scroll inside it; the price and button are pinned below
-       that region and never move. Under 900px it drops below the argument and
-       all of this turns off. -->
+  <!-- A fixed panel: it does not move at all, the argument scrolls underneath
+       it. Two equal columns, one person each, and each bio scrolls inside its
+       own column. The price and button sit below both and never scroll. Under
+       900px the panel drops below the argument and all of this turns off. -->
   <aside class="col-side">
     <div class="side-panel">
       <h2>Who runs these sessions</h2>
-      <div class="side-scroll-wrap" id="scrollWrap">
-        <div class="side-scroll" id="sidePeople"></div>
-      </div>
+      <div class="side-cols" id="sideCols"></div>
       <div class="side-cta" id="sideCta"></div>
     </div>
   </aside>

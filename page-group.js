@@ -92,36 +92,41 @@
     '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
     '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
-  /* the panel: full bios, larger photographs, LinkedIn each */
-  $("sidePeople").innerHTML = (C.speakers||[]).map(function(s){
+  /* the panel: one column each, photograph on top, bio scrolling under it */
+  $("sideCols").innerHTML = (C.speakers||[]).map(function(s){
     var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");
     var av = s.photo ? '<img src="/'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
                      : '<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
-    return '<div class="side-person"><div class="who">'+av+
-      '<div><p class="nm">'+esc(s.name)+'</p>'+
-      '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p></div></div>'+
-      [].concat(s.bio||[]).map(function(b){ return '<p class="sb">'+esc(b)+'</p>'; }).join('')+
+    return '<div class="side-col">'+av+
+      '<p class="nm">'+esc(s.name)+'</p>'+
+      '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p>'+
+      '<div class="side-bio-wrap"><div class="side-bio">'+
+        [].concat(s.bio||[]).map(function(b){ return '<p>'+esc(b)+'</p>'; }).join('')+
+      '</div></div>'+
       (s.linkedin ? '<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>' : '')+
       '</div>';
   }).join("");
 
-  /* the same price and a way to act, pinned below the scrolling bios */
+  /* the same price and a way to act, below both columns and outside their scroll */
   $("sideCta").innerHTML =
     '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
     '<span class="per">Covers all three sessions in this track.</span>'+
     '<a href="#register">Register</a>';
 
-  /* The fade at the foot of the bios says there is more to read. It is dropped
-     once you reach the bottom, so it never claims content that is not there,
-     and it is not drawn at all when the region does not actually scroll. */
+  /* Each column says for itself whether there is more to read. The fade lifts at
+     the end of that bio, and is not drawn when the column does not overflow, so
+     it never claims text that is not there. */
   (function(){
-    var box = $("sidePeople"), wrap = $("scrollWrap");
+    var wraps = Array.prototype.slice.call(document.querySelectorAll(".side-bio-wrap"));
     function sync(){
-      var scrolls = box.scrollHeight > box.clientHeight + 2;
-      var atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
-      wrap.classList.toggle("at-end", !scrolls || atEnd);
+      wraps.forEach(function(w){
+        var box = w.querySelector(".side-bio");
+        var scrolls = box.scrollHeight > box.clientHeight + 2;
+        var atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
+        w.classList.toggle("at-end", !scrolls || atEnd);
+      });
     }
-    box.addEventListener("scroll", sync);
+    wraps.forEach(function(w){ w.querySelector(".side-bio").addEventListener("scroll", sync); });
     window.addEventListener("resize", sync);
     setTimeout(sync, 60);
     sync();
