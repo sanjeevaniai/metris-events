@@ -14,7 +14,7 @@
    SHARED_SECRET must match the SHEET_SHARED_SECRET env var. The /exec URL has to
    be readable by anyone, so this is what stops strangers writing to your sheet. */
 
-var SHARED_SECRET = "CHANGE-ME-to-a-long-random-string";
+var SHARED_SECRET = "REDACTED-SET-VIA-SCRIPT-PROPERTY";
 var SHEET_NAME    = "Entries";
 
 /* [heading, key in the posted JSON] - one list, so headings and values cannot

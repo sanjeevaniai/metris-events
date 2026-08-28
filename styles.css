@@ -194,3 +194,41 @@ footer a:hover{text-decoration:underline;}
   font-size:12px;letter-spacing:.12em;text-transform:uppercase;}
 .missing-copy{border-left:3px solid var(--signal);background:#FDF6EE;padding:12px 14px;
   margin:0 0 18px;font-size:15px;color:#6B3E10;}
+
+/* ---------- group pages: main column plus a sticky sidebar ---------- */
+.layout{max-width:1140px;margin:0 auto;padding:0 22px;display:grid;
+  grid-template-columns:minmax(0,1fr) 306px;gap:46px;align-items:start;}
+.col-main{min-width:0;max-width:720px;}
+.col-main .wrap{max-width:none;padding:0;}
+.col-side{position:sticky;top:80px;}
+
+.side-card{background:var(--white);border:1px solid var(--rule);border-radius:3px;
+  padding:20px 20px 22px;}
+.side-card h2{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spruce);font-weight:500;margin:0 0 16px;display:block;}
+.side-card h2::after{content:none;}
+.side-person + .side-person{margin-top:18px;padding-top:18px;border-top:1px solid var(--rule);}
+.side-person .who{display:flex;gap:11px;align-items:center;}
+.side-person img{width:46px;height:46px;border-radius:2px;flex:none;object-fit:cover;}
+.side-person .nm{font-weight:600;font-size:15px;line-height:1.25;margin:0;}
+.side-person .rl{font-size:12.5px;color:var(--ink-soft);line-height:1.35;margin:2px 0 0;}
+.side-person .sb{font-size:13.5px;line-height:1.5;color:var(--ink-soft);margin:10px 0 0;}
+.side-person a{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+  color:var(--spruce);text-decoration:none;display:inline-block;margin:8px 0 0;}
+.side-person a:hover{text-decoration:underline;}
+
+.side-cta{background:var(--graphite);border-radius:3px;padding:18px 20px 20px;margin:14px 0 0;}
+.side-cta .amt{font-size:25px;font-weight:600;color:#F6F6F2;letter-spacing:-.01em;display:block;}
+.side-cta .per{font-size:13px;color:#B9C2C0;line-height:1.45;margin:5px 0 14px;display:block;}
+.side-cta a{display:block;text-align:center;background:var(--spruce-bright);color:#fff;
+  font-weight:600;font-size:15px;border-radius:2px;padding:12px 14px;text-decoration:none;}
+.side-cta a:hover{background:#159a7b;}
+
+/* under 900px the sidebar drops below and stops sticking: a sticky panel on a
+   phone eats the screen and is worse than not having one */
+@media (max-width:900px){
+  .layout{display:block;max-width:720px;}
+  .col-main{max-width:none;}
+  .col-side{position:static;top:auto;margin:36px 0 0;}
+  .side-card,.side-cta{max-width:none;}
+}

@@ -92,6 +92,25 @@
     '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
     '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
+  /* the sidebar card: short bios here, the full ones stay at the foot of the page */
+  $("sidePeople").innerHTML = (C.speakers||[]).map(function(s){
+    var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");
+    var av = s.photo ? '<img src="/'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
+                     : '<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
+    return '<div class="side-person"><div class="who">'+av+
+      '<div><p class="nm">'+esc(s.name)+'</p>'+
+      '<p class="rl">'+esc(s.role)+', '+esc(s.org)+'</p></div></div>'+
+      (s.shortBio ? '<p class="sb">'+esc(s.shortBio)+'</p>' : '')+
+      (s.linkedin ? '<a href="'+esc(s.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>' : '')+
+      '</div>';
+  }).join("");
+
+  /* the same price and a way to act, so nobody has to scroll back up */
+  $("sideCta").innerHTML =
+    '<span class="amt">'+esc(M.PRICE.display)+'</span>'+
+    '<span class="per">Covers all three sessions in this track.</span>'+
+    '<a href="#register">Register</a>';
+
   if(C.speakerNote) $("speakerNote").textContent = C.speakerNote;
   $("speakers").innerHTML = (C.speakers||[]).map(function(s){
     var ini = s.name.split(" ").map(function(w){ return w[0]; }).slice(0,2).join("");

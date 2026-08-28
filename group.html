@@ -29,6 +29,8 @@
 </header>
 
 <main>
+<div class="layout">
+  <div class="col-main">
   <section class="hero wrap">
     <p class="room" id="room"></p>
     <h1 id="title"></h1>
@@ -120,6 +122,19 @@
     <p class="speaker-note" id="speakerNote"></p>
     <div class="speakers" id="speakers"></div>
   </section>
+  </div><!-- /col-main -->
+
+  <!-- Sticky beside the main column on a wide screen; below it, and not sticky,
+       under 900px. A panel that follows you down a phone screen is worse than
+       no panel at all. -->
+  <aside class="col-side">
+    <div class="side-card">
+      <h2>Who runs these sessions</h2>
+      <div id="sidePeople"></div>
+    </div>
+    <div class="side-cta" id="sideCta"></div>
+  </aside>
+</div><!-- /layout -->
 </main>
 
 <footer>

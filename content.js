@@ -15,9 +15,10 @@
       org: "METRIS",
       photo: "suneeta-modekurty.jpg",
       linkedin: "https://www.linkedin.com/in/smodekurty/",
+      shortBio: "Suneeta builds the measurement systems behind METRIS, after ten years as a data scientist and bioinformatician inside healthcare, insurance and life sciences companies. She teaches this material as an O\u2019Reilly author and live trainer.",
       bio: [
         "Suneeta Modekurty builds the measurement systems behind METRIS. She spent ten years as a data scientist and bioinformatician inside healthcare, insurance, title and life sciences companies, where the hard part was rarely the model and almost always the question of whether anyone could tell if it was working.",
-        "METRIS came out of that. It measures two things a company can otherwise only estimate: whether its AI governance holds up against published requirements, and whether its people can handle the situations AI actually puts in front of them. She teaches this material as an O’Reilly author and live trainer, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
+        "METRIS came out of that. It measures organizational readiness for AI, linking system and workforce readiness to measurable ROI rather than to GRC or models alone. She teaches this material as an O’Reilly author and live trainer, and holds ISO/IEC 27701 and ISO/IEC 42001 Lead Auditor certification.",
         "Before any of it she taught for seventeen years in India. She holds an MS in Bioinformatics from Indiana University, first-authored research presented at ASCO 2024, and reviews manuscripts for PLOS ONE and Frontiers."
       ]
     },
@@ -27,6 +28,7 @@
       org: "FocalPoint Coaching",
       photo: "karlos-bledsoe.jpg",
       linkedin: "https://www.linkedin.com/in/karlos-bledsoe/",
+      shortBio: "Karlos spent more than 25 years at Anheuser-Busch, Edward Jones and BJC, finishing as Director of Strategy and Operations. He now coaches executives on strategy execution and operational performance.",
       bio: [
         "Karlos Bledsoe Sr. is a FocalPoint business and executive coach. He draws on more than 25 years with large companies — Anheuser-Busch, Edward Jones and BJC, where he finished as Director of Strategy and Operations — to help companies overcome challenges, grow and succeed.",
         "He has led strategic planning and strategy execution, data warehousing, data analytics, project management and lean six sigma, across IT, manufacturing, internal consulting and coaching, and sales training.",
