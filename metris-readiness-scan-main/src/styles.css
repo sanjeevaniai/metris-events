@@ -1,0 +1,259 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* METRIS palette */
+  --color-ink: var(--ink);
+  --color-warm-white: var(--warm-white);
+  --color-paper: var(--paper);
+  --color-slate-muted: var(--slate-muted);
+  --color-teal-deep: var(--teal-deep);
+  --color-lime-measure: var(--lime-measure);
+  --color-amber-mark: var(--amber-mark);
+  --color-hairline: var(--hairline);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 1.25rem;
+
+  /* Brand primitives */
+  --ink: oklch(0.243 0.028 272); /* METRIS navy #1a1d2e */
+  --warm-white: oklch(0.968 0.006 95);
+  --paper: oklch(0.933 0.005 106);
+  --slate-muted: oklch(0.567 0.019 258);
+  --teal-deep: oklch(0.432 0.089 166); /* deep METRIS green */
+  --lime-measure: oklch(0.696 0.146 163); /* METRIS green #10b981 */
+  --amber-mark: oklch(0.769 0.157 70); /* warm amber #f59e0b */
+  --hairline: oklch(0.243 0.028 272 / 12%);
+
+  /* Semantic mapping */
+  --background: var(--warm-white);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--warm-white);
+  --secondary: var(--paper);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper);
+  --muted-foreground: oklch(0.492 0.017 258);
+  --accent: var(--teal-deep);
+  --accent-foreground: var(--warm-white);
+  --destructive: oklch(0.505 0.19 27.5);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: var(--hairline);
+  --input: oklch(0.243 0.028 272 / 22%);
+  --ring: var(--lime-measure);
+
+  --chart-1: var(--teal-deep);
+  --chart-2: var(--lime-measure);
+  --chart-3: var(--slate-muted);
+  --chart-4: var(--ink);
+  --chart-5: var(--paper);
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--warm-white);
+  --sidebar-accent: var(--warm-white);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--hairline);
+  --sidebar-ring: var(--teal-deep);
+}
+
+.dark {
+  --background: var(--ink);
+  --foreground: var(--warm-white);
+  --card: oklch(0.24 0.009 265);
+  --card-foreground: var(--warm-white);
+  --popover: oklch(0.24 0.009 265);
+  --popover-foreground: var(--warm-white);
+  --primary: var(--warm-white);
+  --primary-foreground: var(--ink);
+  --secondary: oklch(0.27 0.01 265);
+  --secondary-foreground: var(--warm-white);
+  --muted: oklch(0.27 0.01 265);
+  --muted-foreground: oklch(0.74 0.015 258);
+  --accent: var(--teal-deep);
+  --accent-foreground: var(--warm-white);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: var(--lime-measure);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv05";
+    overflow-x: hidden;
+  }
+
+  /* Sticky nav must never cover an anchored heading. */
+  section[id] {
+    scroll-margin-top: 6.5rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lime-measure);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-amber-mark);
+    color: var(--color-ink);
+  }
+}
+
+@utility hairline-t {
+  border-top: 1px solid var(--color-hairline);
+}
+
+@utility hairline-b {
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+/* Scroll reveal: fade + short rise, once per section. */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+@utility reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+@keyframes use-case-reel {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility animate-use-case-reel {
+  animation: use-case-reel 40s linear infinite;
+}
+
+/* Embossed card: raised surface with soft depth + inner top highlight. */
+@utility card-emboss {
+  box-shadow:
+    0 1px 0 0 oklch(1 0 0 / 70%) inset,
+    0 -1px 0 0 oklch(0.243 0.028 272 / 6%) inset,
+    0 1px 2px 0 oklch(0.243 0.028 272 / 6%),
+    0 10px 22px -12px oklch(0.243 0.028 272 / 22%),
+    0 26px 50px -28px oklch(0.243 0.028 272 / 26%);
+  transition:
+    box-shadow 400ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@utility card-emboss-hover {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 1px 0 0 oklch(1 0 0 / 80%) inset,
+      0 2px 4px 0 oklch(0.243 0.028 272 / 8%),
+      0 18px 34px -14px oklch(0.243 0.028 272 / 28%),
+      0 40px 70px -34px oklch(0.243 0.028 272 / 32%);
+  }
+}
