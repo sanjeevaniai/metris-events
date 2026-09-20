@@ -3,393 +3,101 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Live session · METRIS</title>
-<meta name="description" content="A live working session from METRIS. Register to attend, or sign up and receive the recording." />
+<title>AI readiness sessions &middot; METRIS</title>
+<meta name="description" content="A 90-minute session on what you can actually prove about the AI already running in your organization. Pick the seat you sit in." />
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta name="theme-color" content="#1F272B" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
-
-<script>
-/* ==========================================================================
-   EDIT THIS BLOCK ONLY.
-
-   LINK FORMAT for Apollo and Sales Navigator sequences:
-     https://events.sanjeevaniai.com/?r=cfo&s=500&i=insurance&c=aug-cfo-seq1
-
-     r = role id      (see ROLE_QUESTIONS below for the ids)
-     s = headcount    (a plain number from the Apollo export, e.g. 42, 500, 9000)
-     i = industry     (free text from the export, e.g. insurance, software)
-     c = campaign     (your own label, so you can tell sequences apart)
-
-   Any of the four may be missing. Whatever is missing, the page asks for.
-   ========================================================================== */
-window.CONFIG = {
-  event: {
-    eyebrow: "Live session",
-    title: "AI is already in your organization. What do you actually know about it?",
-    abstract: [
-      "Adoption arrived faster than anyone planned for. Licences were bought, tools were adopted, pilots went live, and somewhere in the middle of it the question changed from whether to use AI to what the organization can honestly say about the AI it is already running.",
-      "This session is about that second question. What a leader can see today, what they cannot, and which of the things they cannot see actually change a decision."
-    ],
-    takeaways: [
-      "The four things most organizations cannot answer about their own AI, and which of them matter",
-      "What separates a company that has adopted AI from one that is ready for it",
-      "How leaders in your seat are being asked to evidence AI decisions, and to whom"
-    ],
-    date: "Thursday, September 18",
-    time: "11:00 AM to 11:40 AM CDT",
-    location: "Virtual",
-    calendarNote: "Cannot make the time? Register anyway and the recording comes to the same address."
-  },
-
-  speakers: [
-    { name:"Suneeta Modekurty", role:"Founder and CEO", org:"METRIS",
-      photo:"", linkedin:"https://www.linkedin.com/in/suneetamodekurty/" }
-  ],
-
-  /* WHERE REGISTRATIONS GO.
-     Google Form: type "google-form", url ending /formResponse, map every key.
-     Own endpoint: type "webhook", url receives JSON with the same keys. */
-  submit: {
-    type: "google-form",
-    url: "",
-    fields: {
-      firstName:"entry.0000000001", lastName:"entry.0000000002", email:"entry.0000000003",
-      jobTitle:"entry.0000000004", company:"entry.0000000005", country:"entry.0000000006",
-      role:"entry.0000000007", headcount:"entry.0000000008", sizeBand:"entry.0000000009",
-      industry:"entry.0000000010", q1:"entry.0000000011", q2:"entry.0000000012",
-      q3:"entry.0000000013", campaign:"entry.0000000014"
-    }
-  },
-
-  footer: {
-    org:"METRIS by SANJEEVANI AI LLC · St. Louis, Missouri",
-    privacyUrl:"https://www.sanjeevaniai.com/privacy",
-    termsUrl:"https://www.sanjeevaniai.com/terms",
-    linkedin:"https://www.linkedin.com/company/sanjeevaniai/",
-    replyTo:"hello@sanjeevaniai.com"
-  }
-};
-
-/* THE SIZE SPLIT. One number decides which wording a registrant sees.
-   Under it, the company has no committee. Over it, it does. */
-window.SIZE_PIVOT = 250;
-
-window.SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
-
-/* QUESTIONS 1 AND 2. Same question for everyone, two dialects. */
-window.SHARED = {
-  q1: {
-    label: "Where is AI in your organization right now?",
-    small: ["Not started","One or two of us use tools on our own","A pilot is running","It sits in something customers touch","It is spread across the team"],
-    large: ["Not started","People are using tools on their own","Piloting in one or two functions","Running in production somewhere","Spreading across functions"]
-  },
-  q2: {
-    label: "Who decides about AI today?",
-    small: ["I do","A cofounder or a lead","Whoever is closest to it","Nobody yet","Still working that out"],
-    large: ["One named executive","A committee or working group","IT or engineering, by default","No single owner","Still being decided"]
-  }
-};
-
-/* QUESTION 3. Role decides which one. Nine seats for large companies,
-   six for small, because the other three do not exist there. */
-window.ROLE_QUESTIONS = {
-  ceo: { label:"CEO or Founder", smallLabel:"Founder or CEO",
-    q:"What AI decision is in front of you in the next two quarters?",
-    options:["Whether to spend more","Whether to put AI in front of customers","Whether to build or buy","Whether to slow down until we understand the risk","Nothing decided yet"] },
-
-  cfo: { label:"CFO or Finance", smallLabel:"Finance",
-    q:"What can you see about AI spend today?",
-    options:["A total on an invoice","Broken out by vendor or team","Broken out by use case","Tied to an outcome","Not visible at all"] },
-
-  cto: { label:"CTO, CIO or Engineering", smallLabel:"Engineering or technical lead",
-    q:"Once an AI system is live, how do you know it is doing what you intended?",
-    options:["We hear about it when something breaks","Someone checks the outputs by hand","We monitor the model","We monitor the decisions it affects","We do not have a good answer yet"] },
-
-  ciso: { label:"CISO or Security",
-    q:"What do you know about AI tools in use that nobody approved?",
-    options:["Nothing","We think there are some","We have found some","We keep an inventory","We block them at the network"] },
-
-  chro: { label:"CHRO or People", smallLabel:"People or operations",
-    q:"What do you know about what your people can actually do with AI?",
-    options:["Nothing measured","Training completion rates","What managers tell us","A self reported survey","We have measured it directly"] },
-
-  coo: { label:"COO or Operations",
-    q:"Which processes have changed because of AI, and how do you know?",
-    options:["None yet","Some changed, we never measured the effect","We track time saved","We track quality as well as time","We redesigned the process end to end"] },
-
-  risk: { label:"Risk, Compliance or Legal",
-    q:"What are you being asked to evidence about AI, and to whom?",
-    options:["Nothing yet","Internal audit or the board","Customers, in contracts and questionnaires","A regulator","All of these"] },
-
-  data: { label:"Data and AI leadership",
-    q:"What stops a model going from pilot to production today?",
-    options:["Data access","Security or legal review","No owner for the decision","We cannot show it behaves as intended","Nothing, we ship"] },
-
-  other: { label:"Another seat", freeText:true,
-    q:"What brought you to this session?",
-    textarea:true, placeholder:"A sentence is plenty." }
-};
-
-/* Which seats appear in the picker when the link did not name one. */
-window.SMALL_ROLES = ["ceo","cto","cfo","chro","data","other"];
-window.LARGE_ROLES = ["ceo","cfo","cto","ciso","chro","coo","risk","data","other"];
-</script>
-
-<style>
-:root{
-  --ink:#14181B; --ink-soft:#4A5257; --paper:#F6F6F2; --white:#FFFFFF;
-  --rule:#D6D7CE; --spruce:#0E5C4A; --spruce-bright:#12775F;
-  --graphite:#1F272B; --signal:#B4661C; --measure:720px;
-}
-*{box-sizing:border-box;}
-html{-webkit-text-size-adjust:100%;}
-body{margin:0;background:var(--paper);color:var(--ink);
-  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:17px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;}
-.wrap{max-width:var(--measure);margin:0 auto;padding:0 22px;}
-
-.masthead{position:sticky;top:0;z-index:40;background:var(--graphite);}
-.masthead .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
-.wordmark{display:flex;align-items:center;gap:11px;text-decoration:none;}
-.wordmark img{width:26px;height:26px;display:block;flex:none;}
-.wordmark span{font-family:"IBM Plex Mono",monospace;font-size:14px;letter-spacing:.24em;
-  text-transform:uppercase;color:#F6F6F2;font-weight:500;padding-left:.24em;}
-.btn-top{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;
-  text-transform:uppercase;background:var(--spruce-bright);color:#fff;
-  padding:10px 16px;border-radius:2px;text-decoration:none;}
-.btn-top:hover{background:#159a7b;}
-
-.hero{padding:56px 0 34px;}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--spruce);margin:0 0 20px;display:flex;align-items:center;gap:12px;}
-.eyebrow::after{content:"";flex:1;height:1px;background:var(--rule);}
-h1{font-weight:600;font-size:clamp(29px,6vw,44px);line-height:1.15;letter-spacing:-.02em;
-  margin:0 0 26px;max-width:17ch;}
-.abstract p{font-family:"IBM Plex Serif",Georgia,serif;font-size:18px;line-height:1.65;
-  color:var(--ink-soft);margin:0 0 16px;}
-
-.details{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  margin:34px 0;padding:20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.detail dt{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px;}
-.detail dd{margin:0;font-weight:500;font-size:16px;line-height:1.4;}
-
-.section{padding:8px 0 36px;}
-h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--spruce);font-weight:500;margin:0 0 20px;display:flex;align-items:center;gap:12px;}
-h2::after{content:"";flex:1;height:1px;background:var(--rule);}
-.takeaways{list-style:none;margin:0;padding:0;}
-.takeaways li{padding:13px 0 13px 30px;border-bottom:1px solid var(--rule);position:relative;}
-.takeaways li:first-child{border-top:1px solid var(--rule);}
-.takeaways li::before{content:"";position:absolute;left:4px;top:23px;width:10px;height:1px;background:var(--spruce);}
-
-.speakers{display:flex;flex-wrap:wrap;gap:26px;}
-.speaker{display:flex;gap:14px;align-items:center;}
-.avatar{width:62px;height:62px;border-radius:2px;flex:none;background:var(--graphite);color:#F6F6F2;
-  display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
-  font-size:17px;object-fit:cover;}
-.speaker .nm{font-weight:600;margin:0;line-height:1.3;}
-.speaker .rl{margin:2px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.35;}
-.speaker a{color:var(--spruce);font-size:13px;font-family:"IBM Plex Mono",monospace;text-decoration:none;}
-
-/* ---------- the panel ---------- */
-.panel{background:var(--white);border:1px solid var(--rule);border-radius:3px;
-  margin:6px 0 56px;padding:28px 26px 30px;}
-.panel h3{font-size:24px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;}
-.panel .lede{color:var(--ink-soft);font-size:16px;margin:0 0 24px;}
-
-/* signature: the segment slug, a stamped line that says what we already know */
-.slug{border-left:3px solid var(--spruce);background:var(--paper);
-  padding:13px 15px;margin:0 0 26px;font-size:15px;line-height:1.5;}
-.slug .k{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:5px;}
-.slug b{font-weight:600;}
-.slug button{background:none;border:none;padding:0;margin-left:8px;font:inherit;font-size:14px;
-  color:var(--spruce);text-decoration:underline;cursor:pointer;}
-.slug[hidden]{display:none;}
-
-.q{margin:0 0 26px;}
-.q-label{display:block;font-weight:600;font-size:17px;line-height:1.4;margin:0 0 12px;}
-.q-hint{font-size:14px;color:var(--ink-soft);margin:-8px 0 12px;}
-.opts{display:flex;flex-direction:column;gap:8px;}
-.opt{display:flex;align-items:flex-start;gap:11px;cursor:pointer;border:1px solid var(--rule);
-  border-radius:2px;padding:11px 13px;background:var(--paper);font-size:16px;line-height:1.4;
-  transition:border-color .16s,background .16s;}
-.opt:hover{border-color:var(--spruce);background:#fff;}
-.opt.is-picked{border-color:var(--spruce);background:#fff;}
-.opt input{margin:4px 0 0;accent-color:var(--spruce);flex:none;}
-
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
-.tile{display:block;width:100%;text-align:left;cursor:pointer;background:var(--paper);
-  border:1px solid var(--rule);border-radius:2px;padding:13px;font:inherit;font-size:15px;
-  line-height:1.35;color:var(--ink);transition:border-color .16s,background .16s;}
-.tile:hover{border-color:var(--spruce);background:#fff;}
-.tile[aria-pressed="true"]{border-color:var(--spruce);background:#fff;
-  box-shadow:inset 3px 0 0 var(--spruce);font-weight:600;}
-
-.divider{border:0;border-top:1px solid var(--rule);margin:30px 0 26px;}
-.field{margin:0 0 16px;}
-.field label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 7px;}
-.req{color:var(--signal);}
-input[type=text],input[type=email],select,textarea{width:100%;font:inherit;font-size:16px;
-  color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:12px 13px;}
-textarea{min-height:80px;resize:vertical;}
-input:focus,select:focus,textarea:focus,.tile:focus-visible,.opt:focus-within,button:focus-visible{
-  outline:2px solid var(--spruce);outline-offset:2px;}
-.two-up{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-
-.btn{font-size:16px;font-weight:600;background:var(--spruce);color:#fff;border:none;border-radius:2px;
-  padding:14px 28px;cursor:pointer;margin-top:8px;transition:background .16s;font-family:inherit;}
-.btn:hover{background:var(--spruce-bright);}
-.btn[disabled]{background:#9AA3A0;cursor:not-allowed;}
-.consent{font-size:13px;color:var(--ink-soft);margin:14px 0 0;line-height:1.5;}
-.consent a{color:var(--spruce);}
-.err{border-left:3px solid var(--signal);background:#FDF6EE;padding:12px 14px;margin:16px 0 0;
-  font-size:15px;color:#6B3E10;}
-.err[hidden],#segFields[hidden],#rolePick[hidden]{display:none;}
-
-.done .mark{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--spruce);margin:0 0 14px;}
-.done p{color:var(--ink-soft);margin:0 0 14px;}
-#doneBox[hidden],#formBox[hidden]{display:none;}
-
-footer{background:var(--graphite);color:#B9C2C0;padding:38px 0 44px;}
-footer .wrap{display:flex;flex-direction:column;gap:13px;}
-footer a{color:#DDE4E2;text-decoration:none;font-size:14px;}
-footer a:hover{text-decoration:underline;}
-.foot-links{display:flex;gap:20px;flex-wrap:wrap;}
-.foot-org{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#8C9997;}
-
-@media (max-width:620px){
-  .details{grid-template-columns:1fr;gap:14px;}
-  .tiles,.two-up{grid-template-columns:1fr;}
-  .panel{padding:24px 18px 26px;}
-  .hero{padding:40px 0 26px;}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
-</style>
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/net.js"></script>
+<script src="/content.js"></script>
+<script src="/time.js"></script>
 </head>
-<body>
+<body class="page-group">
 
 <header class="masthead">
   <div class="wrap">
     <a class="wordmark" href="https://www.sanjeevaniai.com" aria-label="METRIS">
-      <img src="metris-mark.png" alt="" width="240" height="240" />
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
       <span>METRIS</span>
     </a>
-    <a class="btn-top" href="#register">Register</a>
   </div>
 </header>
 
 <main>
-  <section class="hero wrap">
-    <p class="eyebrow" id="eyebrow"></p>
-    <h1 id="title"></h1>
-    <div class="abstract" id="abstract"></div>
-    <dl class="details">
-      <div class="detail"><dt>Date</dt><dd id="d-date"></dd></div>
-      <div class="detail"><dt>Time</dt><dd id="d-time"></dd></div>
-      <div class="detail"><dt>Location</dt><dd id="d-loc"></dd></div>
-    </dl>
-  </section>
+<div class="layout">
+  <div class="col-main">
+<section class="hero wrap">
+    <p class="eyebrow">Three sessions</p>
+    <h1>AI is already in your organization. What can you actually prove about it?</h1>
 
-  <section class="section wrap" id="takeaway-block">
-    <h2>What you leave with</h2>
-    <ul class="takeaways" id="takeaways"></ul>
-  </section>
+    <div class="abstract">
+      <p>Adoption moved faster than anyone could plan for. Licences were bought, pilots went live, employees found their own uses, and AI entered workflows, decisions and customer conversations. The question has changed from whether to use AI to what it is actually changing inside the business, and what evidence you have that it is working.</p>
+      <p>Most organizations can describe the activity in detail. They know which tools were purchased, how many people have access, how many pilots launched, how often the application is used and which policies were approved. Every one of those numbers can be accurate while the questions that matter stay unanswered. What changed. Whether the change created value. Whether the controls that exist on paper are operating. Whether the people responsible for supervising AI can actually do it.</p>
+      <p>These sessions look at that gap from three seats. What you own determines what you can see, so the conversation is different depending on where you sit.</p>
+    </div>
 
-  <section class="section wrap" id="speaker-block">
-    <h2>Speaking</h2>
-    <div class="speakers" id="speakers"></div>
-  </section>
-
-  <section class="wrap" id="register">
-    <div class="panel">
-
-      <div id="formBox">
-        <h3>Reserve your seat</h3>
-        <p class="lede" id="calNote"></p>
-
-        <!-- what the link already told us -->
-        <div class="slug" id="slug" hidden>
-          <span class="k">Registering as</span>
-          <span id="slugText"></span><button type="button" id="slugEdit">Not right?</button>
-        </div>
-
-        <!-- shown only when the link did not name a role -->
-        <div id="rolePick" hidden>
-          <div class="q">
-            <span class="q-label">Which seat are you sitting in?</span>
-            <div class="tiles" id="tiles" role="group" aria-label="Choose your role"></div>
-          </div>
-          <div class="field" id="otherSeatWrap" style="display:none">
-            <label for="otherSeat">Tell us the seat you sit in</label>
-            <input type="text" id="otherSeat" />
-          </div>
-        </div>
-
-        <!-- shown when size or industry is missing, or when they click Not right -->
-        <div id="segFields" hidden>
-          <div class="two-up">
-            <div class="field">
-              <label for="sizeBand">Company size <span class="req">*</span></label>
-              <select id="sizeBand"></select>
-            </div>
-            <div class="field">
-              <label for="industry">Industry <span class="req">*</span></label>
-              <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
-            </div>
-          </div>
-        </div>
-
-        <div id="questions"></div>
-
-        <div class="q">
-          <span class="q-label" id="askLab">Anything you want covered?</span>
-          <p class="q-hint">Optional, and the part read first.</p>
-          <textarea id="openAsk" aria-labelledby="askLab"></textarea>
-        </div>
-
-        <hr class="divider" />
-
-        <div class="two-up">
-          <div class="field"><label for="firstName">First name <span class="req">*</span></label>
-            <input type="text" id="firstName" autocomplete="given-name" /></div>
-          <div class="field"><label for="lastName">Last name <span class="req">*</span></label>
-            <input type="text" id="lastName" autocomplete="family-name" /></div>
-        </div>
-        <div class="field"><label for="email">Work email <span class="req">*</span></label>
-          <input type="email" id="email" autocomplete="email" /></div>
-        <div class="two-up">
-          <div class="field"><label for="jobTitle">Job title <span class="req">*</span></label>
-            <input type="text" id="jobTitle" autocomplete="organization-title" /></div>
-          <div class="field"><label for="company">Company <span class="req">*</span></label>
-            <input type="text" id="company" autocomplete="organization" /></div>
-        </div>
-        <div class="field"><label for="country">Country <span class="req">*</span></label>
-          <select id="country"></select></div>
-
-        <button class="btn" id="send">Register</button>
-        <p class="consent" id="consent"></p>
-        <div class="err" id="err" hidden></div>
-      </div>
-
-      <div id="doneBox" hidden>
-        <div class="done">
-          <p class="mark">Registered</p>
-          <h3>You are on the list.</h3>
-          <p>A confirmation and the joining link are on their way to the address you gave us. If the time does not work, keep the email, the recording goes to the same place.</p>
-          <p id="doneRole"></p>
-        </div>
-      </div>
-
+    <div class="lede-close">
+      <p>The objective is not to turn executives into AI specialists. It is to make them considerably harder to fool with AI metrics.</p>
     </div>
   </section>
+
+  <section class="section wrap" id="register">
+    <div class="panel">
+      <div class="q">
+        <span class="q-label">Which seat are you sitting in?</span>
+        <div class="tiles" id="tiles" role="group" aria-label="Choose your seat"></div>
+      </div>
+
+      <div class="field" id="otherSeatWrap" style="display:none">
+        <label for="otherSeat">Tell us the seat you sit in</label>
+        <input type="text" id="otherSeat" />
+      </div>
+
+      <div class="two-up">
+        <div class="field">
+          <label for="industry">Industry <span class="req">*</span></label>
+          <input type="text" id="industry" placeholder="Insurance, software, healthcare" />
+        </div>
+        <div class="field">
+          <label for="sizeBand">Company size <span class="req">*</span></label>
+          <select id="sizeBand"></select>
+        </div>
+      </div>
+
+      <p class="price-note" id="priceNote"></p>
+
+      <button class="btn" id="go">Continue</button>
+      <div class="err" id="err" hidden></div>
+    </div>
+  </section>
+  </div><!-- /col-main -->
+
+  <aside class="col-side">
+    <div class="side-panel">
+      <h2>Who runs these sessions</h2>
+      <div class="side-people" id="sidePeople"></div>
+      <div class="side-cta" id="sideCta"></div>
+    </div>
+  </aside>
+</div><!-- /layout -->
+
+<dialog class="bio-dialog" id="bioDialog" aria-labelledby="bioName">
+  <button type="button" class="bio-close" id="bioClose" aria-label="Close">&times;</button>
+  <div class="bio-head">
+    <img id="bioPhoto" src="" alt="" />
+    <div>
+      <p class="bio-nm" id="bioName"></p>
+      <p class="bio-rl" id="bioRole"></p>
+      <a id="bioLinked" href="" target="_blank" rel="noopener" class="bio-li">LinkedIn</a>
+    </div>
+  </div>
+  <div class="bio-body" id="bioBody"></div>
+</dialog>
 </main>
 
 <footer>
@@ -401,181 +109,98 @@ footer a:hover{text-decoration:underline;}
 
 <script>
 (function(){
-  var C=window.CONFIG, RQ=window.ROLE_QUESTIONS, SH=window.SHARED, BANDS=window.SIZE_BANDS;
-  function $(id){return document.getElementById(id);}
-  function esc(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML;}
+  var M = window.METRIS, C = window.METRIS_CONTENT, NET = window.METRIS_NET;
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ var d=document.createElement("div"); d.textContent=s==null?"":s; return d.innerHTML; }
 
-  /* ---------- read the link ---------- */
-  var p=new URLSearchParams(location.search);
-  var seg={
-    role: (p.get("r")||"").toLowerCase().trim(),
-    head: parseInt(p.get("s")||"",10),
-    industry:(p.get("i")||"").trim(),
-    campaign:(p.get("c")||p.get("utm_campaign")||"").trim()
-  };
-  if(!RQ[seg.role]) seg.role="";
-  var known={role:!!seg.role, size:!isNaN(seg.head)&&seg.head>0, industry:!!seg.industry};
+  var SIZE_BANDS = ["1 to 50","51 to 250","251 to 1,000","1,001 to 5,000","More than 5,000"];
 
-  function bandOf(n){
-    if(n<=50)return BANDS[0]; if(n<=250)return BANDS[1];
-    if(n<=1000)return BANDS[2]; if(n<=5000)return BANDS[3]; return BANDS[4];
-  }
-  var sizeBand = known.size ? bandOf(seg.head) : "";
-  function isSmall(){
-    var b = known.size ? sizeBand : $("sizeBand").value;
-    return b===BANDS[0]||b===BANDS[1];
-  }
-
-  /* ---------- paint the event ---------- */
-  $("eyebrow").textContent=C.event.eyebrow;
-  $("title").textContent=C.event.title;
-  $("abstract").innerHTML=C.event.abstract.map(function(x){return "<p>"+esc(x)+"</p>";}).join("");
-  $("d-date").textContent=C.event.date; $("d-time").textContent=C.event.time;
-  $("d-loc").textContent=C.event.location; $("calNote").textContent=C.event.calendarNote;
-  if(C.event.takeaways&&C.event.takeaways.length){
-    $("takeaways").innerHTML=C.event.takeaways.map(function(t){return "<li>"+esc(t)+"</li>";}).join("");
-  } else { $("takeaway-block").style.display="none"; }
-  $("speakers").innerHTML=(C.speakers||[]).map(function(s){
-    var ini=s.name.split(" ").map(function(w){return w[0];}).slice(0,2).join("");
-    var av=s.photo?'<img class="avatar" src="'+esc(s.photo)+'" alt="'+esc(s.name)+'"/>'
-                  :'<div class="avatar" aria-hidden="true">'+esc(ini)+'</div>';
-    return '<div class="speaker">'+av+'<div><p class="nm">'+esc(s.name)+'</p><p class="rl">'+
-      esc(s.role)+'<br>'+esc(s.org)+'</p>'+(s.linkedin?'<a href="'+esc(s.linkedin)+
-      '" target="_blank" rel="noopener">LinkedIn</a>':'')+'</div></div>';
+  /* every seat is offered, whatever the company size */
+  $("tiles").innerHTML = M.SEATS.map(function(s){
+    return '<button type="button" class="tile" data-id="'+s.id+'" aria-pressed="false">'+esc(s.label)+'</button>';
   }).join("");
-  $("consent").innerHTML='By registering you agree we may contact you about this session and related work. Read the <a href="'+esc(C.footer.privacyUrl)+'" target="_blank" rel="noopener">privacy policy</a>.';
-  $("footOrg").textContent=C.footer.org;
-  $("footLinks").innerHTML='<a href="'+esc(C.footer.privacyUrl)+'">Privacy policy</a><a href="'+
-    esc(C.footer.termsUrl)+'">Terms</a><a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
+  $("sizeBand").innerHTML = '<option value="">Select</option>' +
+    SIZE_BANDS.map(function(b){ return "<option>"+esc(b)+"</option>"; }).join("");
+  $("priceNote").innerHTML = "<b>"+esc(M.PRICE.display)+"</b> for one 90-minute session.";
 
-  var COUNTRIES=["United States","Canada","United Kingdom","India","Australia","Germany","France","Netherlands","Ireland","Singapore","United Arab Emirates","Saudi Arabia","South Africa","Nigeria","Kenya","Brazil","Mexico","Japan","New Zealand","Spain","Italy","Sweden","Switzerland","Other"];
-  $("country").innerHTML='<option value="">Select</option>'+COUNTRIES.map(function(c){return "<option>"+esc(c)+"</option>";}).join("");
-  $("sizeBand").innerHTML='<option value="">Select</option>'+BANDS.map(function(b){return "<option>"+esc(b)+"</option>";}).join("");
+  $("footOrg").textContent = C.footer.org;
+  $("footLinks").innerHTML =
+    '<a href="'+esc(C.footer.privacyUrl)+'">Privacy policy</a>'+
+    '<a href="'+esc(C.footer.termsUrl)+'">Terms</a>'+
+    '<a href="'+esc(C.footer.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
 
-  /* ---------- the slug ---------- */
-  function roleName(id){
-    var r=RQ[id]; if(!r) return "";
-    return (isSmall()&&r.smallLabel)?r.smallLabel:r.label;
-  }
-  function paintSlug(){
-    if(!known.role) return;
-    var bits=[ "<b>"+esc(roleName(seg.role))+"</b>" ];
-    if(known.industry) bits.push("in "+esc(seg.industry));
-    if(known.size) bits.push("at a company of "+esc(sizeBand)+" people");
-    $("slugText").innerHTML=bits.join(", ");
-    $("slug").hidden=false;
-  }
-  $("slugEdit").addEventListener("click",function(){
-    known.role=false; known.size=false; known.industry=false;
-    $("slug").hidden=true; $("rolePick").hidden=false; $("segFields").hidden=false;
-    if(sizeBand) $("sizeBand").value=sizeBand;
-    if(seg.industry) $("industry").value=seg.industry;
-    paintRoles(); $("questions").innerHTML="";
-    if(seg.role){ var t=$("tiles").querySelector('[data-id="'+seg.role+'"]'); if(t) t.click(); }
-  });
-
-  /* ---------- role picker ---------- */
-  function paintRoles(){
-    var ids=isSmall()?window.SMALL_ROLES:window.LARGE_ROLES;
-    $("tiles").innerHTML=ids.map(function(id){
-      return '<button type="button" class="tile" data-id="'+id+'" aria-pressed="false">'+esc(roleName(id))+'</button>';
-    }).join("");
-  }
-  $("tiles").addEventListener("click",function(e){
-    var t=e.target.closest(".tile"); if(!t) return;
-    Array.prototype.forEach.call(this.querySelectorAll(".tile"),function(b){b.setAttribute("aria-pressed","false");});
+  var seatId = "";
+  $("tiles").addEventListener("click", function(e){
+    var t = e.target.closest(".tile"); if(!t) return;
+    Array.prototype.forEach.call(this.querySelectorAll(".tile"), function(b){
+      b.setAttribute("aria-pressed","false");
+    });
     t.setAttribute("aria-pressed","true");
-    seg.role=t.dataset.id;
-    $("otherSeatWrap").style.display=RQ[seg.role].freeText?"block":"none";
-    paintQuestions();
-  });
-  $("sizeBand").addEventListener("change",function(){
-    if(!known.role){ var cur=seg.role; paintRoles();
-      if(cur){ var t=$("tiles").querySelector('[data-id="'+cur+'"]'); if(t) t.click(); } }
-    else { paintQuestions(); paintSlug(); }
+    seatId = t.dataset.id;
+    var seat = M.seat(seatId);
+    $("otherSeatWrap").style.display = (seat && seat.freeText) ? "block" : "none";
   });
 
-  /* ---------- the three questions ---------- */
-  function paintQuestions(){
-    if(!seg.role){ $("questions").innerHTML=""; return; }
-    var band=isSmall()?"small":"large", r=RQ[seg.role];
-    var list=[
-      {key:"q1",label:SH.q1.label,options:SH.q1[band]},
-      {key:"q2",label:SH.q2.label,options:SH.q2[band]},
-      {key:"q3",label:r.q,options:r.options,textarea:r.textarea,placeholder:r.placeholder}
-    ];
-    $("questions").innerHTML=list.map(function(q,i){
-      if(q.textarea){
-        return '<div class="q"><span class="q-label" id="l'+i+'">'+esc(q.label)+'</span>'+
-          '<textarea data-key="'+q.key+'" aria-labelledby="l'+i+'" placeholder="'+esc(q.placeholder||"")+'"></textarea></div>';
-      }
-      return '<div class="q"><span class="q-label">'+esc(q.label)+'</span><div class="opts" role="radiogroup" aria-label="'+esc(q.label)+'">'+
-        q.options.map(function(o){
-          return '<label class="opt"><input type="radio" name="'+q.key+'" value="'+esc(o)+'"/> <span>'+esc(o)+'</span></label>';
-        }).join("")+'</div></div>';
-    }).join("");
-  }
-  var A={q1:"",q2:"",q3:""};
-  $("questions").addEventListener("change",function(e){
-    if(e.target.type!=="radio") return;
-    A[e.target.name]=e.target.value;
-    var g=e.target.closest(".opts");
-    Array.prototype.forEach.call(g.querySelectorAll(".opt"),function(l){l.classList.remove("is-picked");});
-    e.target.closest(".opt").classList.add("is-picked");
-  });
-  $("questions").addEventListener("input",function(e){
-    if(e.target.tagName==="TEXTAREA"&&e.target.dataset.key) A[e.target.dataset.key]=e.target.value;
-  });
+  /* whatever the link already carried, so a campaign can pre-fill */
+  var p = new URLSearchParams(location.search);
+  if(p.get("i")) $("industry").value = p.get("i");
+  var campaign = (p.get("c") || p.get("utm_campaign") || "").trim();
 
-  /* ---------- first paint ---------- */
-  if(known.size) $("sizeBand").value=sizeBand;
-  if(known.industry) $("industry").value=seg.industry;
-  if(!known.size||!known.industry) $("segFields").hidden=false;
-  if(known.role){ paintSlug(); paintQuestions(); }
-  else { $("rolePick").hidden=false; paintRoles(); }
+  $("go").addEventListener("click", async function(){
+    var err = $("err"), btn = this;
+    function fail(m){ err.hidden=false; err.textContent=m; err.scrollIntoView({block:"center"}); }
 
-  /* ---------- submit ---------- */
-  $("send").addEventListener("click",async function(){
-    var err=$("err"), btn=this;
-    var roleLabel=roleName(seg.role);
-    if(seg.role==="other"&&$("otherSeat").value.trim()) roleLabel="Another seat: "+$("otherSeat").value.trim();
-    var data={
-      firstName:$("firstName").value.trim(), lastName:$("lastName").value.trim(),
-      email:$("email").value.trim(), jobTitle:$("jobTitle").value.trim(),
-      company:$("company").value.trim(), country:$("country").value,
-      role:roleLabel, headcount:known.size?String(seg.head):"",
-      sizeBand:known.size?sizeBand:$("sizeBand").value, industry:$("industry").value.trim()||seg.industry,
-      q1:A.q1, q2:A.q2, q3:A.q3, openAsk:$("openAsk").value.trim(), campaign:seg.campaign
-    };
-    function fail(m){err.hidden=false;err.textContent=m;err.scrollIntoView({block:"center"});}
+    if(!seatId) return fail("Pick the seat you sit in, then continue.");
+    var industry = $("industry").value.trim();
+    var sizeBand = $("sizeBand").value;
+    if(!industry || !sizeBand) return fail("Industry and company size are still blank.");
 
-    if(!seg.role) return fail("Pick the seat you sit in, then register.");
-    if(!data.sizeBand||!data.industry) return fail("Company size and industry are still blank.");
-    if(!A.q1||!A.q2||!A.q3) return fail("Three questions above are still unanswered.");
-    var miss=["firstName","lastName","email","jobTitle","company","country"].filter(function(k){return !data[k];});
-    if(miss.length) return fail("Fill in every field marked with a star, then register.");
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return fail("That email address does not look complete.");
+    var seat = M.seat(seatId);
+    var otherSeat = $("otherSeat").value.trim();
+    if(seat.freeText && !otherSeat) return fail("Tell us the seat you sit in, then continue.");
 
-    err.hidden=true; btn.disabled=true; btn.textContent="Registering";
+    err.hidden = true; btn.disabled = true; btn.textContent = "One moment";
+
+    /* Everything below is wrapped, because a throw between here and the
+       redirect used to leave the button disabled and reading "One moment"
+       with nothing to explain it. */
     try{
-      if(!C.submit.url) throw new Error("no endpoint configured");
-      if(C.submit.type==="google-form"){
-        var body=new URLSearchParams();
-        Object.keys(C.submit.fields).forEach(function(k){ if(data[k]) body.append(C.submit.fields[k],data[k]); });
-        await fetch(C.submit.url,{method:"POST",mode:"no-cors",body:body});
-      } else {
-        var res=await fetch(C.submit.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-        if(!res.ok) throw new Error("status "+res.status);
-      }
-      $("doneRole").textContent="We have you down as "+roleLabel+". The agenda gets built around the seats that register.";
-      $("formBox").hidden=true; $("doneBox").hidden=false;
-      document.querySelector(".panel").scrollIntoView({block:"start"});
+      /* The id is minted here, so routing never waits on the server to hand one
+         back. Recorded before we route, so somebody who filters and leaves is
+         still a lead, and marked stage "filter" to tell those rows apart. */
+      var id = NET.newId();
+      var capture = NET.postJson("/api/register", {
+        stage:"filter", id:id, seat:seatId, industry:industry, sizeBand:sizeBand,
+        campaign:campaign, jobTitle: seat.freeText ? otherSeat : ""
+      }, { timeoutMs: 12000, keepalive: true });
+
+      /* No wait at all. The id was minted here, so nothing downstream needs the
+         response, and keepalive lets the request finish after this page is gone.
+         Waiting only bought write ordering, and the endpoint is slower than any
+         wait worth making a person sit through: at ~3.5s the old 2.5s race was
+         exhausted on every submit, so everyone paid it. The row still lands. */
+      capture.then(function(saved){
+        if(saved && !saved.ok) console.warn("METRIS: lead capture failed —", saved.error);
+      });
+
+      var group = M.groupForSeat(seatId);
+      var qs = new URLSearchParams();
+      qs.set("seat", seatId);
+      qs.set("i", industry);
+      qs.set("s", sizeBand);
+      qs.set("id", id);
+      if(campaign) qs.set("c", campaign);
+      if(seat.freeText && otherSeat) qs.set("t", otherSeat);
+
+      location.assign((group ? "/" + group.slug : "/other") + "?" + qs.toString());
     }catch(e){
-      btn.disabled=false; btn.textContent="Register";
-      fail("That did not go through. Try once more, and if it fails again write to "+C.footer.replyTo+" and you will be registered by hand.");
+      btn.disabled = false; btn.textContent = "Continue";
+      fail("Something went wrong on this page: " + ((e && e.message) || e) +
+           ". Nothing was lost \u2014 press Continue to try again.");
     }
   });
 })();
 </script>
+<script src="/panel.js"></script>
 </body>
 </html>

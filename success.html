@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registration · METRIS</title>
+<meta name="description" content="Confirmation of your seat at the METRIS live session." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#1F272B" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script src="/sessions.js"></script>
+<script src="/time.js"></script>
+<script src="/content.js"></script>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="/" aria-label="METRIS">
+      <img src="/metris-mark.png" alt="" width="240" height="240" />
+      <span>METRIS</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- nothing is shown until Stripe has been asked, server side, whether this
+         session was actually paid -->
+    <p class="loading" id="checking">Checking your payment&hellip;</p>
+
+    <div id="paid" hidden>
+      <p class="mark">Payment received</p>
+      <h1>Your seat is booked.</h1>
+      <p>A receipt is on its way from Stripe to <span id="payerEmail">the address you paid with</span> for <span id="paidAmount">your seat</span>. Keep it &mdash; it is your proof of registration.</p>
+
+      <div class="panel">
+        <h2>Your session</h2>
+        <ul class="sessions" id="sessions"></ul>
+      </div>
+
+      <div class="next">
+        <p><strong>The joining link is above</strong>, and it is in the confirmation email as well.</p>
+        <p>If a date turns out not to work, keep the email anyway. The recording goes to the same address.</p>
+      </div>
+
+      <p class="ref" id="ref" hidden></p>
+    </div>
+
+    <!-- cancelled, unpaid, or an invented session id: confirm nothing -->
+    <div id="unpaid" hidden>
+      <p class="mark warn">No payment recorded</p>
+      <h1>This seat is not booked.</h1>
+      <p id="whyUnpaid">We cannot find a completed payment for this link, so nothing has been reserved and you have not been charged.</p>
+      <p>Your details are still with us. Go back to the session page and finish the payment when you are ready, and if you think this is wrong, write to <a href="mailto:hello@sanjeevaniai.com">hello@sanjeevaniai.com</a> and we will sort it out by hand.</p>
+      <p><a class="btn" href="/">Back to the start</a></p>
+    </div>
+
+    <p style="margin-top:26px"><a href="/">Back to the start</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-org">METRIS by SANJEEVANI AI LLC · St. Louis, Missouri</p>
+  </div>
+</footer>
+
+<script>
+/* The session id in the URL is whatever the visitor's address bar says, so it
+   proves nothing on its own. /api/session asks Stripe and only reports paid when
+   payment_status comes back "paid". Until that answer arrives, and on any
+   failure, this page confirms nothing. */
+(function(){
+  var M = window.METRIS, T = window.METRIS_TIME;
+  function $(id){ return document.getElementById(id); }
+  function esc(x){ var d=document.createElement("div"); d.textContent=x==null?"":x; return d.innerHTML; }
+  function missing(w){ return '<em class="tbc">'+esc(w)+'</em>'; }
+
+  /* The session for the track that was actually bought. The group comes
+     from the server, which derived it from the seat on the Stripe session. */
+  function renderSessions(groupSlug, joinUrl){
+    var g = groupSlug ? M.group(groupSlug) : null;
+    if(!g){
+      $("sessions").innerHTML = '<li class="session session-solo">'+
+        '<div><p class="when">'+missing("we could not tell which track this was")+'</p>'+
+        '<p class="note">Write to hello@sanjeevaniai.com quoting the reference below and we will confirm your dates.</p></div></li>';
+      return;
+    }
+    document.title = "Track " + g.letter + " \u00b7 METRIS";
+    $("sessions").innerHTML = g.sessions.map(function(sn, i){
+      var d = T.describe(sn, { timezone: M.TIMEZONE, zones: M.ZONES });
+      var when = d.known ? esc(d.date) : missing("date to be confirmed");
+      var len = d.duration ? esc(d.duration) : missing("length to be confirmed");
+      var times = d.known
+        ? '<ul class="zones">' + d.times.map(function(t){
+            return "<li><b>"+esc(t.time)+" "+esc(t.abbr)+"</b> "+esc(t.label)+"</li>";
+          }).join("") + '</ul>'
+        : '<p class="len">'+missing("start time to be confirmed")+'</p>';
+      var join = joinUrl
+        ? '<p class="note"><a href="'+esc(joinUrl)+'">Join this session</a></p>'
+        : '<p class="note">'+missing("joining link to be confirmed, it will be emailed")+'</p>';
+      var num = g.sessions.length > 1
+        ? '<span class="num">'+("0"+(i+1)).slice(-2)+'</span>' : '';
+      return '<li class="session'+(num?'':' session-solo')+'">'+num+
+             '<div><p class="when">'+when+'</p><p class="len">'+len+'</p>'+times+join+'</div></li>';
+    }).join("");
+  }
+
+  var id = new URLSearchParams(location.search).get("session_id");
+  if(!id){
+    return show("unpaid", "This page was opened without a payment reference, so there is nothing to confirm.");
+  }
+
+  fetch("/api/session?session_id=" + encodeURIComponent(id))
+    .then(function(r){ return r.json().then(function(b){ return {status:r.status, body:b}; }); })
+    .then(function(res){
+      var b = res.body || {};
+      if(b.ok && b.paid === true){
+        if(b.email) $("payerEmail").textContent = b.email;
+        if(b.amount) $("paidAmount").textContent = "$" + b.amount + (b.currency ? " " + b.currency : "");
+        $("ref").textContent = "Reference: " + id;
+        $("ref").hidden = false;
+        renderSessions(b.group, b.joinUrl || "");
+        return show("paid");
+      }
+      if(b.paymentStatus === "unpaid" || b.status === "expired" || b.status === "open"){
+        return show("unpaid", "Stripe says this payment was not completed, so nothing has been reserved and you have not been charged.");
+      }
+      show("unpaid", b.error || "We could not confirm a payment for this link, so nothing has been reserved.");
+    })
+    .catch(function(){
+      show("unpaid", "We could not reach Stripe to confirm this payment, so we will not say your seat is booked. If you were charged, write to hello@sanjeevaniai.com and we will confirm it by hand.");
+    });
+})();
+</script>
+</body>
+</html>
