@@ -11,10 +11,11 @@
    After ANY edit here, publish a new version or the deployment keeps serving the
    old code: Deploy > Manage deployments > pencil > Version: New version.
 
-   SHARED_SECRET must match the SHEET_SHARED_SECRET env var. The /exec URL has to
-   be readable by anyone, so this is what stops strangers writing to your sheet. */
+   Set SHARED_SECRET in Project Settings > Script Properties - never in this file,
+   which is committed to a public repository. It must match the SHEET_SHARED_SECRET
+   env var. The /exec URL has to be readable by anyone, so this is what stops
+   strangers writing to your sheet. */
 
-var SHARED_SECRET = "REDACTED-SET-VIA-SCRIPT-PROPERTY";
 var SHEET_NAME    = "Entries";
 
 /* [heading, key in the posted JSON] - one list, so headings and values cannot
@@ -82,12 +83,18 @@ function json_(o){
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+function sharedSecret_(){
+  return PropertiesService.getScriptProperties().getProperty("SHARED_SECRET") || "";
+}
+
 function doPost(e){
   var d;
   try { d = JSON.parse(e.postData.contents); }
   catch(err){ return json_({ ok:false, error:"body was not valid JSON" }); }
 
-  if(d.secret !== SHARED_SECRET) return json_({ ok:false, error:"bad secret" });
+  var expected = sharedSecret_();
+  if(!expected) return json_({ ok:false, error:"SHARED_SECRET script property is not set" });
+  if(d.secret !== expected) return json_({ ok:false, error:"bad secret" });
 
   var lock = LockService.getScriptLock();
   lock.waitLock(20000);

@@ -32,7 +32,9 @@ There is no webhook, which means **nothing ever changes the paid column**. See
 1. Make a new Google Sheet, name it something like `METRIS registrations`.
 2. **Extensions → Apps Script**, delete what is there, paste in
    `apps-script/Code.gs` from this repo.
-3. Change `SHARED_SECRET` at the top to a long random string. Keep it handy.
+3. **Project Settings → Script Properties → Add script property**: name it
+   `SHARED_SECRET`, value a long random string. Keep it handy. Do not put the
+   value in `Code.gs` — this repository is public.
 4. **Deploy → New deployment → Web app**
    - Execute as: **Me**
    - Who has access: **Anyone**
